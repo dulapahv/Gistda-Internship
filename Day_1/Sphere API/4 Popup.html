@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Map Sample | sphere Map</title>
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+            body {
+                margin: 0px;
+                height: 100%;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+            function init() {
+                var popup1 = new sphere.Popup(
+                    { lon: 99, lat: 14 },
+                    {
+                        title: "Popup",
+                        detail: '<a target="_blank" href="https://gistda.or.th">GISTDA</a>',
+                    }
+                );
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                });
+                map.Overlays.add(popup1);
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>

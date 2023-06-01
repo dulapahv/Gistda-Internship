@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Custom Draw Tools | sphere Map</title>
+        <style type="text/css">
+            html,
+            body {
+                margin: 0px;
+                padding: 0px;
+                width: 100%;
+                height: 100%;
+            }
+
+            #map {
+                width: 100%;
+                height: 100%;
+            }
+
+            #map .mapbox-gl-draw_ctrl-draw-btn {
+                background-size: 22px;
+                background-color: #ffa939;
+                border: 1px solid #f3b96e;
+            }
+
+            #map .mapbox-gl-draw_ctrl-draw-btn:hover {
+                background-size: 24px;
+                background-color: #ec9421;
+            }
+
+            #map .mapbox-gl-draw_ctrl-draw-btn:first-child {
+                border-radius: 3px 3px 0px 0px;
+            }
+
+            #map .mapbox-gl-draw_ctrl-draw-btn:last-child {
+                border-radius: 0px 0px 3px 3px;
+            }
+
+            #map .mapbox-gl-draw_line {
+                background-image: url("https://www.svgrepo.com/show/309501/data-line.svg");
+            }
+            #map .mapbox-gl-draw_polygon {
+                background-image: url("https://www.svgrepo.com/show/399227/polygon-pt.svg");
+            }
+            #map .mapbox-gl-draw_point {
+                background-image: url("https://www.svgrepo.com/show/399217/point.svg");
+            }
+            #map .mapbox-gl-draw_trash {
+                background-image: url("https://www.svgrepo.com/show/379248/remove.svg");
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+            function init() {
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                });
+
+                map.Event.bind(window.sphere.EventName.Ready, () => {
+                    map.Ui.Toolbar.visible(false);
+
+                    window.sphere.Util.loadStyle(
+                        sphere.Server.map + "/js/mapbox-gl-draw.css"
+                    ),
+                        window.sphere.Util.loadScript(
+                            sphere.Server.map + "/js/mapbox-gl-draw.js",
+                            () => {
+                                // see more options https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md#options
+                                const drawOptions = {
+                                    controls: {
+                                        point: true,
+                                        line_string: true,
+                                        polygon: true,
+                                        trash: true,
+                                        combine_features: false,
+                                        uncombine_features: false,
+                                    },
+                                };
+
+                                var drawPanel = new window.MapboxDraw(
+                                    drawOptions
+                                );
+                                map.Renderer.addControl(drawPanel, "top-right"); // see details https://docs.mapbox.com/mapbox-gl-js/api/#map#addcontrol
+                            }
+                        );
+                });
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>

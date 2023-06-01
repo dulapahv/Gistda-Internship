@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Map Sample | sphere Map</title>
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+            body {
+                margin: 0px;
+                height: 100%;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+            var marker1 = new sphere.Marker(
+                { lon: 101.2, lat: 12.8 },
+                {
+                    title: "Marker",
+                    icon: {
+                        url: "https://map.sphere.com/mmmap/images/pin_mark.png",
+                        offset: { x: 12, y: 45 },
+                    },
+                    detail: "Drag me",
+                    visibleRange: { min: 7, max: 9 },
+                    draggable: true,
+                }
+            );
+            function init() {
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                });
+                map.Overlays.add(marker1);
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>

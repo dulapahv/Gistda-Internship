@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Map Sample | sphere Map</title>
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+            body {
+                margin: 0px;
+                height: 100%;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+            function init() {
+                var circle = new sphere.Circle(
+                    {
+                        lon: 101,
+                        lat: 15,
+                    },
+                    1,
+                    {
+                        title: "Geom 3",
+                        detail: "-",
+                        lineWidth: 2,
+                        lineColor: "rgba(255, 0, 0, 0.8)",
+                        fillColor: "rgba(255, 0, 0, 0.4)",
+                    }
+                );
+
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                });
+                map.Overlays.add(circle); // add geometry object
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>

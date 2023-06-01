@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Map Sample | Sphere Map</title>
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+            body {
+                margin: 0px;
+                height: 100%;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+
+            function init() {
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                    center: [-120, 50],
+                    zoom: 2,
+                });
+                let geom1 = new sphere.Polygon([
+                    { lon: 100, lat: 17 },
+                    { lon: 101, lat: 17 },
+                    { lon: 101, lat: 16 },
+                    { lon: 100, lat: 16 },
+                ]);
+                let geom2 = new sphere.Polygon([
+                    { lon: 100, lat: 16 },
+                    { lon: 101, lat: 16 },
+                    { lon: 101, lat: 15 },
+                    { lon: 100, lat: 15 },
+                ]);
+
+                map.Event.bind(sphere.EventName.Ready, function () {
+                    map.Overlays.add(
+                        geom1.union(geom2, { label: "top U bottom" })
+                    );
+                });
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>

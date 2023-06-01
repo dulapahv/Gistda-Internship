@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Map Sample | sphere Map</title>
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+            body {
+                margin: 0px;
+                height: 100%;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+        <script
+            type="text/javascript"
+            src="https://api.sphere.gistda.or.th/map/?key=A390BBB3092649CA820DB32296268670"
+        ></script>
+        <script>
+            var map;
+
+            function init() {
+                map = new sphere.Map({
+                    placeholder: document.getElementById("map"),
+                });
+
+                map.Event.bind("ready", function (location) {
+                    map.Layers.insert(
+                        "",
+                        new sphere.Layer({
+                            sources: {
+                                earthquakes: {
+                                    type: "geojson",
+                                    data: "https://maplibre.org/maplibre-gl-js-docs/assets/earthquakes.geojson",
+                                    cluster: true,
+                                    clusterMaxZoom: 14, // Max zoom to cluster points on
+                                    clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+                                },
+                            },
+                            layers: [
+                                {
+                                    id: "clusters",
+                                    type: "circle",
+                                    source: "earthquakes",
+                                    filter: ["has", "point_count"],
+                                    paint: {
+                                        "circle-color": [
+                                            "step",
+                                            ["get", "point_count"],
+                                            "#51bbd6",
+                                            100,
+                                            "#f1f075",
+                                            750,
+                                            "#f28cb1",
+                                        ],
+                                        "circle-radius": [
+                                            "step",
+                                            ["get", "point_count"],
+                                            20,
+                                            100,
+                                            30,
+                                            750,
+                                            40,
+                                        ],
+                                    },
+                                },
+                                {
+                                    id: "cluster-count",
+                                    type: "symbol",
+                                    source: "earthquakes",
+                                    filter: ["has", "point_count"],
+                                    layout: {
+                                        "text-field":
+                                            "{point_count_abbreviated}",
+                                        "text-font": ["noto"],
+                                        "text-size": 12,
+                                    },
+                                },
+                                {
+                                    id: "unclustered-point",
+                                    type: "circle",
+                                    source: "earthquakes",
+                                    filter: ["!", ["has", "point_count"]],
+                                    paint: {
+                                        "circle-color": "#11b4da",
+                                        "circle-radius": 4,
+                                        "circle-stroke-width": 1,
+                                        "circle-stroke-color": "#fff",
+                                    },
+                                },
+                            ],
+                        })
+                    );
+                });
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="map"></div>
+    </body>
+</html>
