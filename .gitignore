@@ -1,3 +1,9 @@
+# Database files
+data/
+gistda_project/backend/agriculture
+gistda_project/backend/hotspot
+gistda_project/backend/pm25
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
