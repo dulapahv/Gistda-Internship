@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 
 export let sphere;
 export let map;
@@ -7,14 +7,17 @@ export class SphereMap extends Component {
     constructor(props) {
         super(props);
         this.mapCallback = this.mapCallback.bind(this);
+        this.forceRender = false;
     }
 
     mapCallback() {
-        sphere = window.sphere;
-        map = new window.sphere.Map({
-            placeholder: document.getElementById(this.props.id),
-            language: "en",
-        });
+        if (window.sphere) {
+            sphere = window.sphere;
+            map = new window.sphere.Map({
+                placeholder: document.getElementById(this.props.id),
+                language: "en",
+            });
+        }
     }
 
     componentDidMount() {
@@ -28,13 +31,17 @@ export class SphereMap extends Component {
             document.body.appendChild(script);
 
             script.onload = () => {
-                this.mapCallback();
-                if (callback) callback();
+                try {
+                    this.mapCallback();
+                    if (callback) callback();
+                } catch {}
             };
         }
 
         if (existingScript) this.mapCallback();
         if (existingScript && callback) callback();
+
+        this.forceRender = !this.forceRender;
     }
 
     render() {

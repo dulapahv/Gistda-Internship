@@ -4,19 +4,21 @@ import env from "react-dotenv";
 
 class Map extends Component {
     initMap() {
-        map.Layers.setBase(sphere.Layers.STREETS);
+        if (map) map.Layers.setBase(sphere.Layers.STREETS);
     }
 
     render() {
         const mapKey = env.API_KEY;
         return (
             <div className="App">
-                [map should be here]
-                <SphereMap
-                    id="sphere-map"
-                    mapKey={mapKey}
-                    callback={this.initMap}
-                />
+                <div className="h-[calc(100vh-12rem)]">
+                    <SphereMap
+                        id="sphere-map"
+                        mapKey={mapKey}
+                        callback={this.initMap}
+                        style={{ width: "100%", height: "100%" }}
+                    />
+                </div>
             </div>
         );
     }

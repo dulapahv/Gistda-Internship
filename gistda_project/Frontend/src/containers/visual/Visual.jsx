@@ -17,11 +17,11 @@ const Visual = () => {
                     </button>
                 </div>
             </div>
-            <div className="md:flex bg-white rounded">
-                <div className="flex-1 md:order-last">
+            <div className="flex mb-4 md:flex-row bg-white rounded">
+                <div className="w-3/5 md:order-last">
                     <Map />
                 </div>
-                <div className="flex-none w-48 max-w-sm md:order-first">
+                <div className="w-2/5 md:order-first">
                     <Detail />
                 </div>
             </div>
