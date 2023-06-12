@@ -1,43 +1,73 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Banner, Header, Footer, Visual, Analysis } from "./containers";
+
+const baseURL = "http://localhost:3000/";
 
 function App() {
-    const [query, setQuery] = useState("");
-    const [data, setData] = useState([]);
+    const [posts, setPosts] = useState([]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await fetch(
-                `http://localhost:3000/?query=${query}`
-            );
-            const result = await response.json();
-            setData(result);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // useEffect(() => {
+    //     fetchPosts();
+    // }, []);
+
+    // const fetchPosts = async () => {
+    //     try {
+    //         const response = await axios.get(
+    //             `${baseURL}?data=hotspot_202303&select=objectid,latitude,longitude,pv_tn&where=objectid%3C%3D100&order_by=acq_date&order=desc&limit=5`
+    //         );
+    //         setPosts(response.data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    // if (!posts) {
+    //     return <div>No data</div>;
+    // }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Enter SQL query:
-                    <input
-                        type="text"
-                        style={{ width: "500px", background: "#f2f2f2" }}
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                </label>
-                <button type="submit">Execute</button>
-            </form>
+        <div className="flex flex-col w-screen">
+            <Banner />
+            <Header />
+            <Visual />
+            <Analysis />
+            <Footer />
             <div>
-                <h1>Result:</h1>
-                <ul>
-                    {data.map((item, index) => (
-                        <li key={index}>{item}</li>
-                    ))}
-                </ul>
+                <input
+                    type="text"
+                    id="user_query"
+                    className="w-screen bg-red-300"
+                />
+                <button
+                    onClick={async () => {
+                        try {
+                            const response = await axios.get(
+                                `${baseURL}?${
+                                    document.getElementById("user_query").value
+                                }`
+                            );
+                            setPosts(response.data);
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }}
+                    className="bg-red-200"
+                >
+                    Search
+                </button>
+            </div>
+            <div>
+                {Object.keys(posts).map((key) => {
+                    return posts[key].map((item) => (
+                        <div key={item.objectid}>
+                            <p>{item.objectid}</p>
+                            <p>{item.latitude}</p>
+                            <p>{item.longitude}</p>
+                            <p>{item.pv_tn}</p>
+                        </div>
+                    ));
+                })}
             </div>
         </div>
     );

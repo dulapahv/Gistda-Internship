@@ -4,7 +4,10 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      'sans': ['Work Sans', 'sans-serif'],
+      'kanit': ['Kanit', 'sans-serif'],
+    }
   },
   plugins: [],
 }

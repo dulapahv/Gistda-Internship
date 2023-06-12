@@ -2,6 +2,7 @@ const { Client } = require("pg");
 const dotenv = require("dotenv");
 const express = require("express");
 const querystring = require("querystring");
+const cors = require("cors");
 
 dotenv.config();
 
@@ -87,6 +88,8 @@ const validateQueryParams = async (queryParams, client) => {
         throw new Error("`limit` query parameter must be a number");
     }
 };
+
+app.use(cors());
 
 app.get("/", async (req, res) => {
     try {
