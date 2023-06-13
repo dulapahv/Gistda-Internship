@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 
 export let sphere;
 export let map;
@@ -48,7 +48,7 @@ export class SphereMap extends Component {
         return (
             <div
                 id={this.props.id}
-                style={{ width: "100%", height: "100%" }}
+                class="w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg"
             ></div>
         );
     }

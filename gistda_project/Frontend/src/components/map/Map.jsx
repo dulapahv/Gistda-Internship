@@ -8,17 +8,15 @@ class Map extends Component {
     }
 
     render() {
+        const { mapStyle } = this.props;
         const mapKey = env.API_KEY;
         return (
-            <div className="App">
-                <div className="h-[calc(100vh-12rem)]">
-                    <SphereMap
-                        id="sphere-map"
-                        mapKey={mapKey}
-                        callback={this.initMap}
-                        style={{ width: "100%", height: "100%" }}
-                    />
-                </div>
+            <div class={mapStyle}>
+                <SphereMap
+                    id="sphere-map"
+                    mapKey={mapKey}
+                    callback={this.initMap}
+                />
             </div>
         );
     }

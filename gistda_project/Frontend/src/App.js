@@ -27,17 +27,17 @@ function App() {
     // }
 
     return (
-        <div className="flex flex-col w-screen">
+        <div class="flex flex-col w-full">
             <Banner />
             <Header />
             <Visual />
             <Analysis />
             <Footer />
-            <div>
+            {/* <div>
                 <input
                     type="text"
                     id="user_query"
-                    className="w-screen bg-red-300"
+                    class="w-screen bg-red-300"
                 />
                 <button
                     onClick={async () => {
@@ -52,7 +52,7 @@ function App() {
                             console.log(error);
                         }
                     }}
-                    className="bg-red-200"
+                    class="bg-red-200"
                 >
                     Search
                 </button>
@@ -68,7 +68,7 @@ function App() {
                         </div>
                     ));
                 })}
-            </div>
+            </div> */}
         </div>
     );
 }
