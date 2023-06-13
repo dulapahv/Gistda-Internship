@@ -1,27 +1,65 @@
 import React from "react";
 import { Map, Detail } from "../../components";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const button_theme = createTheme({
+    palette: {
+        primary: {
+            main: "#F390B0",
+            dark: "#FF9AAE",
+            contrastText: "#ffffff",
+        },
+    },
+    typography: {
+        fontFamily: ["Kanit", "sans-serif"].join(","),
+    },
+});
 
 const Visual = () => {
+    const [alignment, setAlignment] = React.useState("left");
+
+    const handleAlignment = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
     return (
-        <div class="flex flex-col h-auto px-10 drop-shadow-xl space-y-10">
-            <div class="flex flex-row justify-center">
-                <div class="flex flex-col order-2 sm:flex-row">
-                    <button class="font-kanit bg-[#F690B0] text-white font-light rounded-t-md sm:rounded-none sm:rounded-l-md px-5 py-2">
-                        แสดงจุดความร้อน
-                    </button>
-                    <button class="font-kanit bg-[#d8d8d8] text-neutral-900 px-5 py-2 border-neutral-900 border-y md:border-y-transparent md:border-x">
-                        แสดงประเภทพื้นที่เพาะปลูก
-                    </button>
-                    <button class="font-kanit bg-[#d8d8d8] text-neutral-900 rounded-b-md sm:rounded-none sm:rounded-r-md px-5 py-2">
-                        แสดงทั้งหมด
-                    </button>
+        <div className="flex flex-col h-auto px-10 drop-shadow-xl space-y-10">
+            <div className="flex flex-row justify-center">
+                <div className="flex flex-col order-2 sm:flex-row">
+                    <ThemeProvider theme={button_theme}>
+                        <ToggleButtonGroup
+                            color="primary"
+                            value={alignment}
+                            exclusive
+                            onChange={handleAlignment}
+                            aria-label="text alignment"
+                        >
+                            <ToggleButton
+                                value="left"
+                                aria-label="left aligned"
+                            >
+                                แสดงจุดความร้อน
+                            </ToggleButton>
+                            <ToggleButton value="center" aria-label="centered">
+                                แสดงประเภทพื้นที่เพาะปลูก
+                            </ToggleButton>
+                            <ToggleButton
+                                value="right"
+                                aria-label="right aligned"
+                            >
+                                แสดงทั้งหมด
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </ThemeProvider>
                 </div>
             </div>
-            <div class="flex mb-4 flex-col md:flex-row bg-white rounded-lg">
-                <div class="md:w-3/5 md:order-last">
+            <div className="flex mb-4 flex-col md:flex-row bg-white rounded-lg">
+                <div className="md:w-3/5 md:order-last">
                     <Map mapStyle="h-[calc(100vh-12rem)]" />
                 </div>
-                <div class="md:w-2/5 md:order-first p-4">
+                <div className="md:w-2/5 md:order-first p-4">
                     <Detail />
                 </div>
             </div>

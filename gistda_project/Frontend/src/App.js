@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Banner, Header, Footer, Visual, Analysis } from "./containers";
+import { Banner, Footer, Visual, Analysis } from "./containers";
+import { Header } from "./components";
 
 const baseURL = "http://localhost:3000/";
 
@@ -27,17 +28,27 @@ function App() {
     // }
 
     return (
-        <div class="flex flex-col w-full">
+        <div className="flex flex-col w-full">
             <Banner />
-            <Header />
+            <Header
+                text={
+                    <span>
+                        ระบบติดตามจุดความร้อน ประเภทพื้นที่เพาะปลูก
+                        และผลกระทบที่มีต่อการเพาะปลูกพืชเศรษฐกิจของประเทศไทย
+                        <br />
+                        จากเทคโนโลยีดาวเทียมและภูมิสารสนเทศ
+                    </span>
+                }
+            />
             <Visual />
+            <Header text="วิเคราะห์ผลกระทบจากจุดความร้อน" />
             <Analysis />
             <Footer />
             {/* <div>
                 <input
                     type="text"
                     id="user_query"
-                    class="w-screen bg-red-300"
+                    className="w-screen bg-red-300"
                 />
                 <button
                     onClick={async () => {
@@ -52,7 +63,7 @@ function App() {
                             console.log(error);
                         }
                     }}
-                    class="bg-red-200"
+                    className="bg-red-200"
                 >
                     Search
                 </button>

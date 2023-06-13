@@ -11,7 +11,7 @@ class Map extends Component {
         const { mapStyle } = this.props;
         const mapKey = env.API_KEY;
         return (
-            <div class={mapStyle}>
+            <div className={mapStyle}>
                 <SphereMap
                     id="sphere-map"
                     mapKey={mapKey}

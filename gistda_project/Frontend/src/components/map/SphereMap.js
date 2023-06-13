@@ -48,7 +48,7 @@ export class SphereMap extends Component {
         return (
             <div
                 id={this.props.id}
-                class="w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg"
+                className="w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg"
             ></div>
         );
     }

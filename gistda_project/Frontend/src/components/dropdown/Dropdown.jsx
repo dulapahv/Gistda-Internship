@@ -1,21 +1,36 @@
-import React from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-const Dropdown = ({ title, value }) => {
+const Dropdown = ({ label, items }) => {
+    const [item, setItem] = React.useState(items[0]);
+
+    const handleChange = (event) => {
+        setItem(event.target.value);
+    };
+
     return (
-        <div class="relative border border-slate-400 rounded-md p-3 min-w-[135px] my-3">
-            <div class="absolute -top-[0.8rem] left-3 bg-white px-2">
-                <h1 class="font-kanit text-neutral-900">{title}</h1>
-            </div>
-            <div class="flex flex-row">
-                <div class="flex-1">
-                    <p class="font-kanit">{value[0]}</p>
-                </div>
-                <button class="">
-                    <IoIosArrowDown />
-                </button>
-            </div>
-        </div>
+        <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={item}
+                    label={label}
+                    onChange={handleChange}
+                >
+                    {items.map((item) => (
+                        <MenuItem value={item} key={item}>
+                            {item}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Box>
     );
 };
 
