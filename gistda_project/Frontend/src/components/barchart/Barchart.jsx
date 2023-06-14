@@ -39,11 +39,7 @@ export const data = {
 };
 
 const Barchart = () => {
-    return (
-        <div>
-            <Bar options={options} data={data} />
-        </div>
-    );
+    return <Bar options={options} data={data} />;
 };
 
 export default Barchart;

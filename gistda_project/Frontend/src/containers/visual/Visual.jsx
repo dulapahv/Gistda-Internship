@@ -8,12 +8,11 @@ const button_theme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
-            dark: "#FF99BA",
-            contrastText: "#ffffff",
         },
     },
     typography: {
         fontFamily: ["Kanit", "sans-serif"].join(","),
+        fontSize: 15,
     },
 });
 
@@ -27,7 +26,7 @@ const Visual = () => {
     };
 
     return (
-        <div className="flex flex-col h-auto px-10 drop-shadow-xl space-y-10">
+        <div className="flex flex-col h-auto drop-shadow-xl space-y-10">
             <div className="flex flex-row justify-center">
                 <div className="flex flex-col order-2 sm:flex-row">
                     <ThemeProvider theme={button_theme}>
