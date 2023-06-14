@@ -8,7 +8,7 @@ const button_theme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
-            dark: "#FF9AAE",
+            dark: "#FF99BA",
             contrastText: "#ffffff",
         },
     },
@@ -21,7 +21,9 @@ const Visual = () => {
     const [alignment, setAlignment] = React.useState("left");
 
     const handleAlignment = (event, newAlignment) => {
-        setAlignment(newAlignment);
+        if (newAlignment !== null) {
+            setAlignment(newAlignment);
+        }
     };
 
     return (
@@ -55,11 +57,11 @@ const Visual = () => {
                     </ThemeProvider>
                 </div>
             </div>
-            <div className="flex mb-4 flex-col md:flex-row bg-white rounded-lg">
-                <div className="md:w-3/5 md:order-last">
+            <div className="flex mb-4 flex-col xl:flex-row bg-white rounded-lg">
+                <div className="xl:w-3/5 xl:order-last">
                     <Map mapStyle="h-[calc(100vh-12rem)]" />
                 </div>
-                <div className="md:w-2/5 md:order-first p-4">
+                <div className="xl:w-2/5 xl:order-first p-4">
                     <Detail />
                 </div>
             </div>

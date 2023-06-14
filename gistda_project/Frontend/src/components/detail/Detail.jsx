@@ -24,7 +24,7 @@ const button_theme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
-            dark: "#FF9AAE",
+            dark: "#FF99BA",
             contrastText: "#ffffff",
         },
     },
@@ -37,7 +37,7 @@ const dropdown_theme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
-            dark: "#FF9AAE",
+            dark: "#FF99BA",
         },
     },
     typography: {
@@ -48,9 +48,12 @@ const dropdown_theme = createTheme({
 const Detail = () => {
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row space-x-4 space-y-4 flex-wrap items-center justify-center sm:justify-start">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 <ThemeProvider theme={button_theme}>
-                    <Button variant="contained" style={{ minHeight: "50px" }}>
+                    <Button
+                        variant="contained"
+                        sx={{ minHeight: "50px", maxHeight: "55px" }}
+                    >
                         เปิดชั้นข้อมูลขอบเขตจังหวัด
                     </Button>
                 </ThemeProvider>
