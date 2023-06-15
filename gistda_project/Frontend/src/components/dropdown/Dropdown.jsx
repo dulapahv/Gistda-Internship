@@ -4,8 +4,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useTranslation } from "react-i18next";
 
 const Dropdown = ({ label, items }) => {
+    const { t } = useTranslation();
+
     const [item, setItem] = React.useState(items[0]);
 
     const handleChange = (event) => {
@@ -19,13 +22,13 @@ const Dropdown = ({ label, items }) => {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={item}
+                    value={t(item)}
                     label={label}
                     onChange={handleChange}
                 >
                     {items.map((item) => (
-                        <MenuItem value={item} key={item}>
-                            {item}
+                        <MenuItem value={t(item)} key={t(item)}>
+                            {t(item)}
                         </MenuItem>
                     ))}
                 </Select>

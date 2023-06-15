@@ -1,8 +1,9 @@
 import React from "react";
-import { Map, Detail } from "../../components";
+import { Map, DetailHotspot, DetailAgri, DetailAll } from "../../components";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 const button_theme = createTheme({
     palette: {
@@ -16,12 +17,53 @@ const button_theme = createTheme({
     },
 });
 
+const showElement = (show, hide1, hide2) => {
+    hide1.classList.add("hidden");
+    hide2.classList.add("hidden");
+    show.classList.remove("hidden");
+};
+
+const showHotspot = () => {
+    const hotspot = document.getElementById("hotspot");
+    const agri = document.getElementById("agri");
+    const all = document.getElementById("all");
+    showElement(hotspot, agri, all);
+};
+
+const showAgri = () => {
+    const hotspot = document.getElementById("hotspot");
+    const agri = document.getElementById("agri");
+    const all = document.getElementById("all");
+    showElement(agri, hotspot, all);
+};
+
+const showAll = () => {
+    const hotspot = document.getElementById("hotspot");
+    const agri = document.getElementById("agri");
+    const all = document.getElementById("all");
+    showElement(all, hotspot, agri);
+};
+
 const Visual = () => {
+    const { t } = useTranslation();
+
     const [alignment, setAlignment] = React.useState("left");
 
     const handleAlignment = (event, newAlignment) => {
-        if (newAlignment !== null) {
-            setAlignment(newAlignment);
+        if (!newAlignment) return;
+        setAlignment(newAlignment);
+        switch (newAlignment) {
+            case "left":
+                showHotspot();
+                break;
+            case "center":
+                showAgri();
+                break;
+            case "right":
+                showAll();
+                break;
+            default:
+                break;
         }
     };
 
@@ -35,22 +77,15 @@ const Visual = () => {
                             value={alignment}
                             exclusive
                             onChange={handleAlignment}
-                            aria-label="text alignment"
                         >
-                            <ToggleButton
-                                value="left"
-                                aria-label="left aligned"
-                            >
-                                แสดงจุดความร้อน
+                            <ToggleButton value="left" className="!capitalize">
+                                {t("map_type.hotspot")}
                             </ToggleButton>
-                            <ToggleButton value="center" aria-label="centered">
-                                แสดงประเภทพื้นที่เพาะปลูก
+                            <ToggleButton value="center" className="!capitalize">
+                                {t("map_type.agri")}
                             </ToggleButton>
-                            <ToggleButton
-                                value="right"
-                                aria-label="right aligned"
-                            >
-                                แสดงทั้งหมด
+                            <ToggleButton value="right" className="!capitalize">
+                                {t("map_type.all")}
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </ThemeProvider>
@@ -60,8 +95,14 @@ const Visual = () => {
                 <div className="xl:w-3/5 xl:order-last">
                     <Map mapStyle="h-[calc(100vh-12rem)]" />
                 </div>
-                <div className="xl:w-2/5 xl:order-first p-4">
-                    <Detail />
+                <div id="hotspot" className="xl:w-2/5 xl:order-first p-4">
+                    <DetailHotspot />
+                </div>
+                <div id="agri" className="xl:w-2/5 xl:order-first p-4 hidden">
+                    <DetailAgri />
+                </div>
+                <div id="all" className="xl:w-2/5 xl:order-first p-4 hidden">
+                    <DetailAll />
                 </div>
             </div>
         </div>

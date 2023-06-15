@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { sphere, map, SphereMap } from "./SphereMap";
 import env from "react-dotenv";
 
+export { map };
+
 class Map extends Component {
     initMap() {
         if (map) map.Layers.setBase(sphere.Layers.STREETS);

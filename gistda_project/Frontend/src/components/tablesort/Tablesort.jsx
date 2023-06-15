@@ -122,9 +122,9 @@ function rowContent(_index, row) {
     );
 }
 
-const Tablesort = () => {
+const Tablesort = ({ height = "100vh" }) => {
     return (
-        <Paper style={{ height: "67vh", width: "100%" }}>
+        <Paper style={{ height: height, width: "100%" }}>
             <TableVirtuoso
                 data={rows}
                 components={VirtuosoTableComponents}

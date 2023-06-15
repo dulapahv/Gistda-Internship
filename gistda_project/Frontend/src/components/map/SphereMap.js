@@ -7,7 +7,7 @@ export class SphereMap extends Component {
     constructor(props) {
         super(props);
         this.mapCallback = this.mapCallback.bind(this);
-        this.forceRender = false;
+        this.forceRender = true;
     }
 
     mapCallback() {
@@ -15,7 +15,7 @@ export class SphereMap extends Component {
             sphere = window.sphere;
             map = new window.sphere.Map({
                 placeholder: document.getElementById(this.props.id),
-                language: "en",
+                // language: "en",
             });
         }
     }

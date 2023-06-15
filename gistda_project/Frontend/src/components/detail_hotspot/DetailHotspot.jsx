@@ -1,7 +1,8 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Dropdown, Tablesort } from "../";
+import { Dropdown, Tablesort } from "..";
+import { useTranslation } from "react-i18next";
 
 const months = [
     "มกราคม",
@@ -43,7 +44,9 @@ const dropdown_theme = createTheme({
     },
 });
 
-const Detail = () => {
+const DetailHotspot = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="flex flex-col space-y-4">
             <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
@@ -55,19 +58,20 @@ const Detail = () => {
                             width: "100%",
                             minHeight: "50px",
                         }}
+                        className="!capitalize"
                     >
-                        เปิดชั้นข้อมูลขอบเขตจังหวัด
+                        {t("toggle_province_boundary")}
                     </Button>
                 </ThemeProvider>
                 <ThemeProvider theme={dropdown_theme}>
-                    <Dropdown label="เดือน" items={months} />
+                    <Dropdown label={t("month")} items={months} />
                 </ThemeProvider>
             </div>
             <div className="">
-                <Tablesort />
+                <Tablesort height="620px" />
             </div>
         </div>
     );
 };
 
-export default Detail;
+export default DetailHotspot;

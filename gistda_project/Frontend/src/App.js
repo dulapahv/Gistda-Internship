@@ -33,16 +33,11 @@ function App() {
             <div className="px-5 sm:px-10">
                 <Header
                     text={
-                        <span>
-                            ระบบติดตามจุดความร้อน ประเภทพื้นที่เพาะปลูก
-                            และผลกระทบที่มีต่อการเพาะปลูกพืชเศรษฐกิจของประเทศไทย
-                            <br />
-                            จากเทคโนโลยีดาวเทียมและภูมิสารสนเทศ
-                        </span>
+                        "main_title"
                     }
                 />
                 <Visual />
-                <Header text="วิเคราะห์ผลกระทบจากจุดความร้อน" />
+                <Header text="analysis_title" />
                 <Analysis />
             </div>
             <Footer />
