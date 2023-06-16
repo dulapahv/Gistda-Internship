@@ -6,23 +6,24 @@ import en from "./locales/en.json";
 import th from "./locales/th.json";
 
 const resources = {
-    en: {
-        translation: en,
-    },
-    th: {
-        translation: th,
-    },
+  en: {
+    translation: en,
+  },
+  th: {
+    translation: th,
+  },
 };
 
-i18n.use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        resources,
-        fallbackLng: "en",
-        lng: "th",
-        interpolation: {
-            escapeValue: false,
-        },
-    });
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: "en",
+    lng: "th",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 
 export default i18n;
