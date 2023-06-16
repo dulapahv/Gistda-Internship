@@ -19,7 +19,7 @@ const buttonTheme = createTheme({
 });
 
 function Banner() {
-  // const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   const { t, i18n } = useTranslation();
 
@@ -30,7 +30,7 @@ function Banner() {
   if (map) map.language(i18n.language === "th" ? "th" : "en");
 
   return (
-    <div className="flex flex-row bg-[#FB568A] h-auto flex-wrap rounded-br-full px-5 py-2 items-center">
+    <div className="flex flex-row bg-[#FB568A] h-auto flex-wrap px-5 pt-2 items-center">
       <h1 className="grow font-kanit text-white font-light text-xl mr-8">
         {t("banner")}
       </h1>

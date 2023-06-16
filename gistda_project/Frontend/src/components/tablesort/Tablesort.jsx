@@ -1,80 +1,34 @@
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import { alpha } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
-import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { TableVirtuoso } from "react-virtuoso";
+import Typography from "@mui/material/Typography";
 
-const sample = [
-  ["Frozen yoghurt", 159, 6.0, 24, 4.0],
-  ["Ice cream sandwich", 237, 9.0, 37, 4.3],
-  ["Eclair", 262, 16.0, 24, 6.0],
-  ["Cupcake", 305, 3.7, 67, 4.3],
-  ["Gingerbread", 356, 16.0, 49, 3.9],
-];
+const handleButtonClick = (row) => {
+  console.log(row);
+};
 
-function createData(id, dessert, calories, fat, carbs, protein) {
-  return {
-    id,
-    dessert,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-const columns = [
-  {
-    width: 200,
-    label: "Dessert",
-    dataKey: "dessert",
+const tableTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#F390B0",
+    },
   },
-  {
-    width: 120,
-    label: "Calories (g)",
-    dataKey: "calories",
-    numeric: true,
+  typography: {
+    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontSize: 15,
   },
-  {
-    width: 120,
-    label: "Fat (g)",
-    dataKey: "fat",
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: "Carbs (g)",
-    dataKey: "carbs",
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: "Protein (g)",
-    dataKey: "protein",
-    numeric: true,
-  },
-];
-
-const rows = Array.from({ length: 100 }, (_, index) => {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  return createData(index, ...randomSelection);
 });
 
 const VirtuosoTableComponents = {
@@ -94,50 +48,145 @@ const VirtuosoTableComponents = {
   )),
 };
 
-function fixedHeaderContent() {
-  return (
-    <TableRow>
-      {columns.map((column) => (
+function Tablesort({ columns, rows, height = "100vh" }) {
+  const colSortDisabled = 2;
+  const colSortDefault = "spot";
+
+  const [sortConfig, setSortConfig] = useState({
+    key: colSortDefault,
+    direction: "desc",
+  });
+
+  function fixedHeaderContent() {
+    if (!columns) return null;
+
+    const requestSort = (key) => {
+      if (key === columns[colSortDisabled].dataKey) {
+        return;
+      }
+
+      let direction = "asc";
+      if (sortConfig.key === key && sortConfig.direction === "asc") {
+        direction = "desc";
+      }
+      setSortConfig({ key, direction });
+    };
+
+    return (
+      <TableRow>
         <TableCell
-          key={column.dataKey}
+          key="running-number"
           variant="head"
-          align={column.numeric || false ? "right" : "left"}
-          style={{ width: column.width }}
+          align="center"
+          style={{ width: "60px" }}
           sx={{
-            backgroundColor: "background.paper",
+            backgroundColor: "#f7eff2",
           }}
         >
-          {column.label}
+          <Typography variant="subtitle1" color="primary">
+            อันดับ
+          </Typography>
         </TableCell>
-      ))}
-    </TableRow>
-  );
-}
+        {columns.map((column, columnIndex) => (
+          <TableCell
+            key={column.dataKey}
+            variant="head"
+            align={column.align || "center"}
+            style={{ width: column.width }}
+            sx={{
+              backgroundColor: "#f7eff2",
+              cursor: columnIndex !== colSortDisabled ? "pointer" : "default",
+              "&:hover": {
+                backgroundColor:
+                  columnIndex !== colSortDisabled ? "#f7e8ec" : "inherit",
+              },
+              pointerEvents: columnIndex === colSortDisabled ? "none" : "auto",
+            }}
+            onClick={() => requestSort(column.dataKey)}
+          >
+            {columnIndex !== colSortDisabled ? (
+              <TableSortLabel
+                active={sortConfig.key === column.dataKey}
+                direction={
+                  sortConfig.key === column.dataKey
+                    ? sortConfig.direction
+                    : "asc"
+                }
+              >
+                <Typography variant="subtitle1" color="primary">
+                  {column.label}
+                </Typography>
+                {sortConfig.key === column.dataKey && (
+                  <Box component="span" sx={visuallyHidden}>
+                    {sortConfig.direction === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                )}
+              </TableSortLabel>
+            ) : (
+              <Typography variant="subtitle1" color="primary">
+                {column.label}
+              </Typography>
+            )}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  }
 
-function rowContent(_index, row) {
-  return (
-    <>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          align={column.numeric || false ? "right" : "left"}
-        >
-          {row[column.dataKey]}
+  function rowContent(index, row) {
+    const rowClasses = index % 2 === 0 ? "bg-gray-100" : "bg-white ";
+    const runningNumber = index + 1; // Calculate the running number
+
+    return (
+      <>
+        <TableCell align="center" className={rowClasses}>
+          <Typography variant="body1">{runningNumber}</Typography>
         </TableCell>
-      ))}
-    </>
-  );
-}
+        {columns.map((column, columnIndex) => (
+          <TableCell
+            key={column.dataKey}
+            align={column.align || "center"}
+            className={rowClasses}
+          >
+            {column.renderButton ? (
+              <IconButton size="small" onClick={() => handleButtonClick(row)}>
+                <FormatListNumberedIcon />
+              </IconButton>
+            ) : (
+              row[column.dataKey]
+            )}
+          </TableCell>
+        ))}
+      </>
+    );
+  }
 
-function Tablesort({ height = "100vh" }) {
+  const sortedRows =
+    rows &&
+    rows.sort((a, b) => {
+      if (sortConfig.direction === "asc") {
+        return a[sortConfig.key] > b[sortConfig.key] ? 1 : -1;
+      }
+      if (sortConfig.direction === "desc") {
+        return a[sortConfig.key] < b[sortConfig.key] ? 1 : -1;
+      }
+      return 0;
+    });
+
+  const data = sortConfig.key ? sortedRows : rows;
+
   return (
     <Paper style={{ height, width: "100%" }}>
-      <TableVirtuoso
-        data={rows}
-        components={VirtuosoTableComponents}
-        fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
-      />
+      <ThemeProvider theme={tableTheme}>
+        <TableVirtuoso
+          data={data}
+          components={VirtuosoTableComponents}
+          fixedHeaderContent={fixedHeaderContent}
+          itemContent={rowContent}
+        />
+      </ThemeProvider>
     </Paper>
   );
 }

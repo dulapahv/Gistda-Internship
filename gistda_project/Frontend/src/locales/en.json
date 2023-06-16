@@ -7,7 +7,8 @@
     "all": "Display All"
   },
   "analysisTitle": "Analysis of the Impacts from Hotspots",
-  "toggleProvinceBoundary": "Toggle Province Boundary Layer",
+  "showProvinceBoundary": "Show Province Boundary Layer",
+  "hideProvinceBoundary": "Hide Province Boundary Layer",
   "dateRange": "Date Range",
   "displayCropType": "Display Crop Type",
   "cropType": "Crop Type",

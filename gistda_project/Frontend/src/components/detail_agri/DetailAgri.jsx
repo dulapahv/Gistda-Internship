@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Dropdown, Tablesort } from "..";
@@ -18,6 +18,11 @@ const buttonTheme = createTheme({
     primary: {
       main: "#F390B0",
       dark: "#FF99BA",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#78bcfe",
+      dark: "#8bc2ff",
       contrastText: "#ffffff",
     },
   },
@@ -40,6 +45,7 @@ const dropdownTheme = createTheme({
 
 function DetailAgri() {
   const { t } = useTranslation();
+  const [boundary, setBoundary] = useState(false);
 
   return (
     <div className="flex flex-col space-y-4">
@@ -53,8 +59,10 @@ function DetailAgri() {
               minHeight: "50px",
             }}
             className="!capitalize"
+            onClick={() => setBoundary(!boundary)}
+            color={boundary ? "secondary" : "primary"}
           >
-            {t("toggleProvinceBoundary")}
+            {boundary ? t("hideProvinceBoundary") : t("showProvinceBoundary")}
           </Button>
         </ThemeProvider>
         <ThemeProvider theme={dropdownTheme}>
