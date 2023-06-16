@@ -6,12 +6,11 @@
         "agri": "Display Types of Cultivation Areas",
         "all": "Display All"
     },
-    "analysis_title": "Analysis of the Impacts from Hotspots",
-    "toggle_province_boundary": "Toggle Province Boundary Layer",
-    "month": "Month",
-    "date_range": "Date Range",
-    "display_crop_type": "Display Crop Type",
-    "crop_type": "Crop Type",
+    "analysisTitle": "Analysis of the Impacts from Hotspots",
+    "toggleProvinceBoundary": "Toggle Province Boundary Layer",
+    "dateRange": "Date Range",
+    "displayCropType": "Display Crop Type",
+    "cropType": "Crop Type",
     "crop": {
         "rice": "Rice",
         "maize": "Maize",
@@ -20,5 +19,20 @@
     },
     "province": "Province",
     "district": "District",
-    "sub_district": "Sub-district"
+    "subDistrict": "Sub-district",
+    "month": "Month",
+    "months": {
+        "jan": "January",
+        "feb": "February",
+        "mar": "March",
+        "apr": "April",
+        "may": "May",
+        "jun": "June",
+        "jul": "July",
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
+    }
 }

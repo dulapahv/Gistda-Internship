@@ -1,11 +1,12 @@
-import React from "react";
-import { Map, DetailHotspot, DetailAgri, DetailAll } from "../../components";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-const button_theme = createTheme({
+import { DetailAgri, DetailAll, DetailHotspot, Map } from "../../components";
+
+const buttonTheme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
@@ -44,7 +45,7 @@ const showAll = () => {
     showElement(all, hotspot, agri);
 };
 
-const Visual = () => {
+function Visual() {
     const { t } = useTranslation();
 
     const [alignment, setAlignment] = React.useState("left");
@@ -71,7 +72,7 @@ const Visual = () => {
         <div className="flex flex-col h-auto drop-shadow-xl space-y-10">
             <div className="flex flex-row justify-center">
                 <div className="flex flex-col order-2 sm:flex-row">
-                    <ThemeProvider theme={button_theme}>
+                    <ThemeProvider theme={buttonTheme}>
                         <ToggleButtonGroup
                             color="primary"
                             value={alignment}
@@ -81,7 +82,10 @@ const Visual = () => {
                             <ToggleButton value="left" className="!capitalize">
                                 {t("map_type.hotspot")}
                             </ToggleButton>
-                            <ToggleButton value="center" className="!capitalize">
+                            <ToggleButton
+                                value="center"
+                                className="!capitalize"
+                            >
                                 {t("map_type.agri")}
                             </ToggleButton>
                             <ToggleButton value="right" className="!capitalize">
@@ -107,6 +111,6 @@ const Visual = () => {
             </div>
         </div>
     );
-};
+}
 
 export default Visual;

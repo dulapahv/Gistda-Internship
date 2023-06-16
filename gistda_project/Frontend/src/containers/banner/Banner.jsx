@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+// import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from "@mui/icons-material/LightMode";
+import TranslateIcon from "@mui/icons-material/Translate";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import TranslateIcon from "@mui/icons-material/Translate";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
-import { map } from "../../components";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const button_theme = createTheme({
+import { map } from "../../components";
+
+const buttonTheme = createTheme({
     palette: {
         primary: {
             main: "#FFFFFF",
@@ -17,8 +18,8 @@ const button_theme = createTheme({
     },
 });
 
-const Banner = () => {
-    const [theme, setTheme] = useState("light");
+function Banner() {
+    // const [theme, setTheme] = useState('light');
 
     const { t, i18n } = useTranslation();
 
@@ -34,7 +35,7 @@ const Banner = () => {
                 {t("banner")}
             </h1>
             <Stack direction="row">
-                <ThemeProvider theme={button_theme}>
+                <ThemeProvider theme={buttonTheme}>
                     <Tooltip title="Switch language">
                         <IconButton
                             onClick={() => {
@@ -55,6 +56,6 @@ const Banner = () => {
             </Stack>
         </div>
     );
-};
+}
 
 export default Banner;

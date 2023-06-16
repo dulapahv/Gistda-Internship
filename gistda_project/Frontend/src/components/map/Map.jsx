@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { sphere, map, SphereMap } from "./SphereMap";
 import env from "react-dotenv";
+
+import { map, sphere, SphereMap } from "./SphereMap";
 
 export { map };
 

@@ -1,7 +1,7 @@
-import React from "react";
-import { Chart, CategoryScale, LinearScale, BarElement } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
+import { BarElement, CategoryScale, Chart, LinearScale } from "chart.js";
+import React from "react";
+import { Bar } from "react-chartjs-2";
 
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
@@ -38,8 +38,8 @@ export const data = {
     ],
 };
 
-const Barchart = () => {
+function Barchart() {
     return <Bar options={options} data={data} />;
-};
+}
 
 export default Barchart;

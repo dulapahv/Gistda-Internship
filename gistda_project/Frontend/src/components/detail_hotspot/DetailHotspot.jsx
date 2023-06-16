@@ -1,25 +1,26 @@
-import React from "react";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Dropdown, Tablesort } from "..";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
+import { Dropdown, Tablesort } from "..";
+
 const months = [
-    "มกราคม",
-    "กุมภาพันธ์",
-    "มีนาคม",
-    "เมษายน",
-    "พฤษภาคม",
-    "มิถุนายน",
-    "กรกฎาคม",
-    "สิงหาคม",
-    "กันยายน",
-    "ตุลาคม",
-    "พฤศจิกายน",
-    "ธันวาคม",
+    "months.jan",
+    "months.feb",
+    "months.mar",
+    "months.apr",
+    "months.may",
+    "months.jun",
+    "months.jul",
+    "months.aug",
+    "months.sep",
+    "months.oct",
+    "months.nov",
+    "months.dec",
 ];
 
-const button_theme = createTheme({
+const buttonTheme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
@@ -33,7 +34,7 @@ const button_theme = createTheme({
     },
 });
 
-const dropdown_theme = createTheme({
+const dropdownTheme = createTheme({
     palette: {
         primary: {
             main: "#F390B0",
@@ -44,13 +45,13 @@ const dropdown_theme = createTheme({
     },
 });
 
-const DetailHotspot = () => {
+function DetailHotspot() {
     const { t } = useTranslation();
 
     return (
         <div className="flex flex-col space-y-4">
             <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-                <ThemeProvider theme={button_theme}>
+                <ThemeProvider theme={buttonTheme}>
                     <Button
                         variant="contained"
                         sx={{
@@ -60,10 +61,10 @@ const DetailHotspot = () => {
                         }}
                         className="!capitalize"
                     >
-                        {t("toggle_province_boundary")}
+                        {t("toggleProvinceBoundary")}
                     </Button>
                 </ThemeProvider>
-                <ThemeProvider theme={dropdown_theme}>
+                <ThemeProvider theme={dropdownTheme}>
                     <Dropdown label={t("month")} items={months} />
                 </ThemeProvider>
             </div>
@@ -72,6 +73,6 @@ const DetailHotspot = () => {
             </div>
         </div>
     );
-};
+}
 
 export default DetailHotspot;

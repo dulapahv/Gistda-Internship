@@ -1,12 +1,12 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 
-const Dropdown = ({ label, items }) => {
+function Dropdown({ label, items }) {
     const { t } = useTranslation();
 
     const [item, setItem] = React.useState(items[0]);
@@ -35,6 +35,6 @@ const Dropdown = ({ label, items }) => {
             </FormControl>
         </Box>
     );
-};
+}
 
 export default Dropdown;

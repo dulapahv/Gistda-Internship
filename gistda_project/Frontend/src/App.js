@@ -1,12 +1,13 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Banner, Footer, Visual, Analysis } from "./containers";
-import { Header } from "./components";
+// import axios from 'axios';
+import React from "react";
 
-const baseURL = "http://localhost:3000/";
+import { Header } from "./components";
+import { Analysis, Banner, Footer, Visual } from "./containers";
+
+// const baseURL = 'http://localhost:3000/';
 
 function App() {
-    const [posts, setPosts] = useState([]);
+    //   const [posts, setPosts] = useState([]);
 
     // useEffect(() => {
     //     fetchPosts();
@@ -31,13 +32,9 @@ function App() {
         <div className="flex flex-col w-full">
             <Banner />
             <div className="px-5 sm:px-10">
-                <Header
-                    text={
-                        "main_title"
-                    }
-                />
+                <Header text="main_title" />
                 <Visual />
-                <Header text="analysis_title" />
+                <Header text="analysisTitle" />
                 <Analysis />
             </div>
             <Footer />

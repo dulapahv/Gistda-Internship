@@ -10,19 +10,9 @@ export class SphereMap extends Component {
         this.forceRender = true;
     }
 
-    mapCallback() {
-        if (window.sphere) {
-            sphere = window.sphere;
-            map = new window.sphere.Map({
-                placeholder: document.getElementById(this.props.id),
-                // language: "en",
-            });
-        }
-    }
-
     componentDidMount() {
         const existingScript = document.getElementById("sphereMapScript");
-        const callback = this.props.callback;
+        const { callback } = this.props;
 
         if (!existingScript) {
             const script = document.createElement("script");
@@ -44,12 +34,21 @@ export class SphereMap extends Component {
         this.forceRender = !this.forceRender;
     }
 
+    mapCallback() {
+        if (window.sphere) {
+            sphere = window.sphere;
+            map = new window.sphere.Map({
+                placeholder: document.getElementById(this.props.id),
+            });
+        }
+    }
+
     render() {
         return (
             <div
                 id={this.props.id}
                 className="w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg"
-            ></div>
+            />
         );
     }
 }
