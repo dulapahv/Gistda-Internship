@@ -127,7 +127,13 @@ function DetailHotspot() {
         </ThemeProvider>
       </div>
       <div className="">
-        <Tablesort columns={columns} rows={rows} height="620px" />
+        <Tablesort
+          columns={columns}
+          rows={rows}
+          height="620px"
+          colSortDisabled={["district"]}
+          colSortDefault="spot"
+        />
       </div>
     </div>
   );

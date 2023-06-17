@@ -51,10 +51,14 @@ const VirtuosoTableComponents = {
   )),
 };
 
-function Tablesort({ columns, rows, height = "100vh" }) {
+function Tablesort({
+  columns,
+  rows,
+  height = "100vh",
+  colSortDisabled,
+  colSortDefault,
+}) {
   const { t } = useTranslation();
-  const colSortDisabled = 2;
-  const colSortDefault = "spot";
 
   const [sortConfig, setSortConfig] = useState({
     key: colSortDefault,
@@ -65,7 +69,7 @@ function Tablesort({ columns, rows, height = "100vh" }) {
     if (!columns) return null;
 
     const requestSort = (key) => {
-      if (key === columns[colSortDisabled].dataKey) {
+      if (colSortDisabled.includes(key.dataKey)) {
         return;
       }
 
@@ -99,16 +103,21 @@ function Tablesort({ columns, rows, height = "100vh" }) {
             style={{ width: column.width }}
             sx={{
               backgroundColor: "#f7eff2",
-              cursor: columnIndex !== colSortDisabled ? "pointer" : "default",
+              cursor: !colSortDisabled.includes(column.dataKey)
+                ? "pointer"
+                : "default",
               "&:hover": {
-                backgroundColor:
-                  columnIndex !== colSortDisabled ? "#f7e8ec" : "inherit",
+                backgroundColor: !colSortDisabled.includes(column.dataKey)
+                  ? "#f7e8ec"
+                  : "inherit",
               },
-              pointerEvents: columnIndex === colSortDisabled ? "none" : "auto",
+              pointerEvents: colSortDisabled.includes(column.dataKey)
+                ? "none"
+                : "auto",
             }}
             onClick={() => requestSort(column.dataKey)}
           >
-            {columnIndex !== colSortDisabled ? (
+            {!colSortDisabled.includes(column.dataKey) ? (
               <TableSortLabel
                 active={sortConfig.key === column.dataKey}
                 direction={
@@ -141,7 +150,7 @@ function Tablesort({ columns, rows, height = "100vh" }) {
 
   function rowContent(index, row) {
     const rowClasses = index % 2 === 0 ? "bg-gray-100" : "bg-white ";
-    const runningNumber = index + 1; // Calculate the running number
+    const runningNumber = index + 1;
 
     return (
       <>
@@ -170,12 +179,10 @@ function Tablesort({ columns, rows, height = "100vh" }) {
   const sortedRows =
     rows &&
     rows.sort((a, b) => {
-      if (sortConfig.direction === "asc") {
+      if (sortConfig.direction === "asc")
         return a[sortConfig.key] > b[sortConfig.key] ? 1 : -1;
-      }
-      if (sortConfig.direction === "desc") {
+      if (sortConfig.direction === "desc")
         return a[sortConfig.key] < b[sortConfig.key] ? 1 : -1;
-      }
       return 0;
     });
 
