@@ -21,6 +21,9 @@
   "province": "Province",
   "district": "District",
   "subDistrict": "Sub-district",
+  "rank": "Rank",
+  "spot": "Hotspot",
+  "date": "Date",
   "month": "Month",
   "months": {
     "jan": "January",
