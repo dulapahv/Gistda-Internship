@@ -1,7 +1,9 @@
+import React, { useState } from "react";
+
+import { useTranslation } from "react-i18next";
+
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { Dropdown, Tablesort } from "..";
 
@@ -28,7 +30,7 @@ const buttonTheme = createTheme({
   },
   typography: {
     fontFamily: ["Kanit", "sans-serif"].join(","),
-    fontSize: 15,
+    fontSize: 16,
   },
 });
 

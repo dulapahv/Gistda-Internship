@@ -1,19 +1,22 @@
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import React, { useState } from "react";
+
+import { useTranslation } from "react-i18next";
+import { TableVirtuoso } from "react-virtuoso";
+
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Table from "@mui/material/Table";
+import { visuallyHidden } from "@mui/utils";
+import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import { visuallyHidden } from "@mui/utils";
-import React, { useState } from "react";
-import { TableVirtuoso } from "react-virtuoso";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import TableContainer from "@mui/material/TableContainer";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 
 const handleButtonClick = (row) => {
   console.log(row);
@@ -49,6 +52,7 @@ const VirtuosoTableComponents = {
 };
 
 function Tablesort({ columns, rows, height = "100vh" }) {
+  const { t } = useTranslation();
   const colSortDisabled = 2;
   const colSortDefault = "spot";
 
@@ -84,7 +88,7 @@ function Tablesort({ columns, rows, height = "100vh" }) {
           }}
         >
           <Typography variant="subtitle1" color="primary">
-            อันดับ
+            {t("rank")}
           </Typography>
         </TableCell>
         {columns.map((column, columnIndex) => (

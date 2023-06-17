@@ -1,7 +1,8 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
+
 import { useTranslation } from "react-i18next";
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Barchart, Checkbox, Dropdown } from "../../components";
 
 const dateRange = [

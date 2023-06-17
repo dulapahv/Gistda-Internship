@@ -1,7 +1,9 @@
+import React, { useState } from "react";
+
+import { useTranslation } from "react-i18next";
+
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { Dropdown, Tablesort } from "..";
 
@@ -35,7 +37,7 @@ const buttonTheme = createTheme({
   },
   typography: {
     fontFamily: ["Kanit", "sans-serif"].join(","),
-    fontSize: 15,
+    fontSize: 16,
   },
 });
 
@@ -56,25 +58,25 @@ function DetailHotspot() {
 
   const columns = [
     {
-      width: 120,
-      label: "จังหวัด",
+      width: 115,
+      label: t("province"),
       dataKey: "province",
       align: "left",
     },
     {
-      width: 110,
-      label: "จำนวนจุด",
+      width: 130,
+      label: t("spot"),
       dataKey: "spot",
     },
     {
-      width: 105,
-      label: "รายเขต/อำเภอ",
+      width: 100,
+      label: t("district"),
       dataKey: "district",
       renderButton: true,
     },
     {
-      width: 135,
-      label: "ข้อมูลเมื่อวันที่",
+      width: 140,
+      label: t("date"),
       dataKey: "date",
     },
   ];

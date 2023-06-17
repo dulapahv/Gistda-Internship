@@ -1,7 +1,9 @@
-import { faker } from "@faker-js/faker";
-import { BarElement, CategoryScale, Chart, LinearScale } from "chart.js";
 import React from "react";
+
 import { Bar } from "react-chartjs-2";
+import { BarElement, CategoryScale, Chart, LinearScale } from "chart.js";
+
+import { faker } from "@faker-js/faker";
 
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
