@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-// import DarkModeIcon from '@mui/icons-material/DarkMode';
+import NightsStayIcon from "@mui/icons-material/NightsStay";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import TranslateIcon from "@mui/icons-material/Translate";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,9 +21,16 @@ const buttonTheme = createTheme({
 });
 
 function Banner() {
-  const [theme, setTheme] = useState("light");
-
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "light";
+  });
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(theme));
+  }, [theme]);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -50,8 +57,17 @@ function Banner() {
             </IconButton>
           </Tooltip>
           <Tooltip title="Switch theme">
-            <IconButton>
-              <LightModeIcon color="primary" />
+            <IconButton
+              onClick={() => {
+                theme === "light" ? setTheme("dark") : setTheme("light");
+                window.location.reload();
+              }}
+            >
+              {theme === "light" ? (
+                <LightModeIcon color="primary" />
+              ) : (
+                <NightsStayIcon color="primary" />
+              )}
             </IconButton>
           </Tooltip>
         </ThemeProvider>

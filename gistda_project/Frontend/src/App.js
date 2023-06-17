@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // import axios from 'axios';
 
@@ -29,8 +29,23 @@ function App() {
   //   return <div>No data</div>;
   // }
 
+  // get "theme" from localStorage, no need to setTheme
+  const [theme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "light";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(theme));
+  }, [theme]);
+
   return (
-    <div className="flex flex-col w-full">
+    <div
+      className={`flex flex-col w-full ${
+        theme === "light" ? "bg-white text-[#212121]" : "bg-[#2c2c2c] text-white"
+      }`}
+    >
       <Banner />
       <div style={{ overflow: "hidden" }}>
         <svg
