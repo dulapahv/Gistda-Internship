@@ -8,8 +8,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { DetailAgri, DetailAll, DetailHotspot, Map } from "../../components";
 
-const buttonTheme = createTheme({
+const ToggleButtonGroupThemeDark = createTheme({
   palette: {
+    mode: JSON.parse(localStorage.getItem("theme")),
     primary: {
       main: "#F390B0",
     },
@@ -74,7 +75,7 @@ function Visual() {
     <div className="flex flex-col h-auto drop-shadow-xl space-y-10">
       <div className="flex flex-row justify-center">
         <div className="flex flex-col order-2 sm:flex-row">
-          <ThemeProvider theme={buttonTheme}>
+          <ThemeProvider theme={ToggleButtonGroupThemeDark}>
             <ToggleButtonGroup
               color="primary"
               value={alignment}
@@ -94,7 +95,7 @@ function Visual() {
           </ThemeProvider>
         </div>
       </div>
-      <div className="flex mb-4 flex-col xl:flex-row bg-white rounded-lg">
+      <div className="flex mb-4 flex-col xl:flex-row bg-white rounded-lg dark:bg-[#444444]">
         <div className="xl:w-3/5 xl:order-last">
           <Map mapStyle="h-[calc(100vh-12rem)]" />
         </div>

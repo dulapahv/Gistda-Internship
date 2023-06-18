@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 // import axios from 'axios';
 
@@ -30,21 +30,10 @@ function App() {
   // }
 
   // get "theme" from localStorage, no need to setTheme
-  const [theme] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "light";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("theme", JSON.stringify(theme));
-  }, [theme]);
 
   return (
     <div
-      className={`flex flex-col w-full ${
-        theme === "light" ? "bg-white text-[#212121]" : "bg-[#2c2c2c] text-white"
-      }`}
+      className={`flex flex-col w-full bg-white dark:bg-[#2c2c2c] text-[#212121]`}
     >
       <Banner />
       <div style={{ overflow: "hidden" }}>
@@ -77,7 +66,7 @@ function App() {
           viewBox="0 0 1200 120"
           xmlns="http://www.w3.org/2000/svg"
           style={{
-            fill: "#212121",
+            fill: "#f7588a",
             width: "100%",
             height: 40,
             transform: "rotate(180deg)",

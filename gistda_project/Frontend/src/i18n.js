@@ -20,7 +20,7 @@ i18n
   .init({
     resources,
     fallbackLng: "en",
-    lng: "th",
+    lng: localStorage.getItem("i18nextLng") || "th",
     interpolation: {
       escapeValue: false,
     },

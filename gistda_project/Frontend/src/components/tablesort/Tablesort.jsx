@@ -24,6 +24,7 @@ const handleButtonClick = (row) => {
 
 const tableTheme = createTheme({
   palette: {
+    mode: JSON.parse(localStorage.getItem("theme")),
     primary: {
       main: "#F390B0",
     },
@@ -149,7 +150,10 @@ function Tablesort({
   }
 
   function rowContent(index, row) {
-    const rowClasses = index % 2 === 0 ? "bg-gray-100" : "bg-white ";
+    const rowClasses =
+      index % 2 === 0
+        ? "bg-gray-100 dark:bg-[#555555]"
+        : "bg-white dark:bg-[#6c6c6c]";
     const runningNumber = index + 1;
 
     return (

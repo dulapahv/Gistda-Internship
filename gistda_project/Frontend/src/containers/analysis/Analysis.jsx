@@ -40,7 +40,7 @@ function Analysis() {
 
   return (
     <div className="flex flex-col h-auto drop-shadow-xl space-y-10">
-      <div className="mb-4 md:flex-row bg-white rounded-lg p-4 space-y-4">
+      <div className="mb-4 md:flex-row bg-white rounded-lg p-4 space-y-4 dark:bg-[#444444]">
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           <ThemeProvider theme={dropdownTheme}>
             <Dropdown label={t("dateRange")} items={dateRange} />
@@ -51,7 +51,7 @@ function Analysis() {
         </div>
         <div className="flex flex-col md:flex-row space-x-0 md:space-x-8">
           <div className="flex flex-col justify-center">
-            <p className="font-kanit">{t("displayCropType")}</p>
+            <p className="font-kanit dark:text-white">{t("displayCropType")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
             <ThemeProvider theme={checkboxTheme}>
