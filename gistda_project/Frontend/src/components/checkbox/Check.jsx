@@ -1,24 +1,24 @@
-import React from "react";
+import React from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const FormControlLabelTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      main: "#F390B0",
+      main: '#F390B0',
     },
   },
   typography: {
-    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
   },
 });
 
-function Check({ label }) {
+export default function Check({ label }) {
   const { t } = useTranslation();
 
   return (
@@ -27,11 +27,9 @@ function Check({ label }) {
         <FormControlLabel
           control={<Checkbox defaultChecked />}
           label={t(label)}
-          className="dark:text-white"
+          className='dark:text-white'
         />
       </ThemeProvider>
     </div>
   );
 }
-
-export default Check;

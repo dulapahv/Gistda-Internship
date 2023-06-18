@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export let sphere;
 export let map;
@@ -11,13 +11,13 @@ export class SphereMap extends Component {
   }
 
   componentDidMount() {
-    const existingScript = document.getElementById("sphereMapScript");
+    const existingScript = document.getElementById('sphereMapScript');
     const { callback } = this.props;
 
     if (!existingScript) {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.src = `https://api.sphere.gistda.or.th/map/?key=${this.props.mapKey}`;
-      script.id = "sphereMapScript";
+      script.id = 'sphereMapScript';
       document.body.appendChild(script);
 
       script.onload = () => {
@@ -47,7 +47,7 @@ export class SphereMap extends Component {
     return (
       <div
         id={this.props.id}
-        className="w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg"
+        className='w-full h-full rounded-t-lg md:rounded-none md:rounded-r-lg'
       />
     );
   }

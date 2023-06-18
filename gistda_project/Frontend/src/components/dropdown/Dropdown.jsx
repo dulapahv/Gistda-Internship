@@ -1,27 +1,27 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Box from '@mui/material/Box';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const DropdownTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem("theme")),
+    mode: JSON.parse(localStorage.getItem('theme')),
     primary: {
-      main: "#F390B0",
+      main: '#F390B0',
     },
   },
   typography: {
-    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
   },
 });
 
-function Dropdown({ label, items }) {
+export default function Dropdown({ label, items }) {
   const { t } = useTranslation();
 
   const [item, setItem] = React.useState(items[0]);
@@ -34,10 +34,10 @@ function Dropdown({ label, items }) {
     <ThemeProvider theme={DropdownTheme}>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+          <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
             value={t(item)}
             label={label}
             onChange={handleChange}
@@ -53,5 +53,3 @@ function Dropdown({ label, items }) {
     </ThemeProvider>
   );
 }
-
-export default Dropdown;

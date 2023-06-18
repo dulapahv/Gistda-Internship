@@ -1,69 +1,69 @@
-import React from "react";
+import React from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { DetailAgri, DetailAll, DetailHotspot, Map } from "../../components";
+import { DetailAgri, DetailAll, DetailHotspot, Map } from '../../components';
 
 const ToggleButtonGroupThemeDark = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem("theme")),
+    mode: JSON.parse(localStorage.getItem('theme')),
     primary: {
-      main: "#F390B0",
+      main: '#F390B0',
     },
   },
   typography: {
-    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
     fontSize: 15,
   },
 });
 
 const showElement = (show, hide1, hide2) => {
-  hide1.classList.add("hidden");
-  hide2.classList.add("hidden");
-  show.classList.remove("hidden");
+  hide1.classList.add('hidden');
+  hide2.classList.add('hidden');
+  show.classList.remove('hidden');
 };
 
 const showHotspot = () => {
-  const hotspot = document.getElementById("hotspot");
-  const agri = document.getElementById("agri");
-  const all = document.getElementById("all");
+  const hotspot = document.getElementById('hotspot');
+  const agri = document.getElementById('agri');
+  const all = document.getElementById('all');
   showElement(hotspot, agri, all);
 };
 
 const showAgri = () => {
-  const hotspot = document.getElementById("hotspot");
-  const agri = document.getElementById("agri");
-  const all = document.getElementById("all");
+  const hotspot = document.getElementById('hotspot');
+  const agri = document.getElementById('agri');
+  const all = document.getElementById('all');
   showElement(agri, hotspot, all);
 };
 
 const showAll = () => {
-  const hotspot = document.getElementById("hotspot");
-  const agri = document.getElementById("agri");
-  const all = document.getElementById("all");
+  const hotspot = document.getElementById('hotspot');
+  const agri = document.getElementById('agri');
+  const all = document.getElementById('all');
   showElement(all, hotspot, agri);
 };
 
-function Visual() {
+export default function Visual() {
   const { t } = useTranslation();
 
-  const [alignment, setAlignment] = React.useState("left");
+  const [alignment, setAlignment] = React.useState('left');
 
   const handleAlignment = (event, newAlignment) => {
     if (!newAlignment) return;
     setAlignment(newAlignment);
     switch (newAlignment) {
-      case "left":
+      case 'left':
         showHotspot();
         break;
-      case "center":
+      case 'center':
         showAgri();
         break;
-      case "right":
+      case 'right':
         showAll();
         break;
       default:
@@ -72,45 +72,43 @@ function Visual() {
   };
 
   return (
-    <div className="flex flex-col h-auto drop-shadow-xl space-y-10">
-      <div className="flex flex-row justify-center">
-        <div className="flex flex-col order-2 sm:flex-row">
+    <div className='flex flex-col h-auto drop-shadow-xl space-y-10'>
+      <div className='flex flex-row justify-center'>
+        <div className='flex flex-col order-2 sm:flex-row'>
           <ThemeProvider theme={ToggleButtonGroupThemeDark}>
             <ToggleButtonGroup
-              color="primary"
+              color='primary'
               value={alignment}
               exclusive
               onChange={handleAlignment}
             >
-              <ToggleButton value="left" className="!capitalize">
-                {t("map_type.hotspot")}
+              <ToggleButton value='left' className='!capitalize'>
+                {t('map_type.hotspot')}
               </ToggleButton>
-              <ToggleButton value="center" className="!capitalize">
-                {t("map_type.agri")}
+              <ToggleButton value='center' className='!capitalize'>
+                {t('map_type.agri')}
               </ToggleButton>
-              <ToggleButton value="right" className="!capitalize">
-                {t("map_type.all")}
+              <ToggleButton value='right' className='!capitalize'>
+                {t('map_type.all')}
               </ToggleButton>
             </ToggleButtonGroup>
           </ThemeProvider>
         </div>
       </div>
-      <div className="flex mb-4 flex-col xl:flex-row bg-white rounded-lg dark:bg-[#444444]">
-        <div className="xl:w-3/5 xl:order-last">
-          <Map mapStyle="h-[calc(100vh-12rem)]" />
+      <div className='flex mb-4 flex-col xl:flex-row bg-white rounded-lg dark:bg-[#444444]'>
+        <div className='xl:w-3/5 xl:order-last'>
+          <Map mapStyle='h-[calc(100vh-12rem)]' />
         </div>
-        <div id="hotspot" className="xl:w-2/5 xl:order-first p-4">
+        <div id='hotspot' className='xl:w-2/5 xl:order-first p-4'>
           <DetailHotspot />
         </div>
-        <div id="agri" className="xl:w-2/5 xl:order-first p-4 hidden">
+        <div id='agri' className='xl:w-2/5 xl:order-first p-4 hidden'>
           <DetailAgri />
         </div>
-        <div id="all" className="xl:w-2/5 xl:order-first p-4 hidden">
+        <div id='all' className='xl:w-2/5 xl:order-first p-4 hidden'>
           <DetailAll />
         </div>
       </div>
     </div>
   );
 }
-
-export default Visual;

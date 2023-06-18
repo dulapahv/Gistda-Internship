@@ -1,42 +1,42 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Dropdown, Tablesort } from "..";
+import { Dropdown, Tablesort } from '..';
 
 const months = [
-  "months.jan",
-  "months.feb",
-  "months.mar",
-  "months.apr",
-  "months.may",
-  "months.jun",
-  "months.jul",
-  "months.aug",
-  "months.sep",
-  "months.oct",
-  "months.nov",
-  "months.dec",
+  'months.jan',
+  'months.feb',
+  'months.mar',
+  'months.apr',
+  'months.may',
+  'months.jun',
+  'months.jul',
+  'months.aug',
+  'months.sep',
+  'months.oct',
+  'months.nov',
+  'months.dec',
 ];
 
 const buttonTheme = createTheme({
   palette: {
     primary: {
-      main: "#F390B0",
-      dark: "#FF99BA",
-      contrastText: "#ffffff",
+      main: '#F390B0',
+      dark: '#FF99BA',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: "#78bcfe",
-      dark: "#8bc2ff",
-      contrastText: "#ffffff",
+      main: '#78bcfe',
+      dark: '#8bc2ff',
+      contrastText: '#ffffff',
     },
   },
   typography: {
-    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
     fontSize: 16,
   },
 });
@@ -44,40 +44,40 @@ const buttonTheme = createTheme({
 const dropdownTheme = createTheme({
   palette: {
     primary: {
-      main: "#F390B0",
+      main: '#F390B0',
     },
   },
   typography: {
-    fontFamily: ["Kanit", "sans-serif"].join(","),
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
   },
 });
 
-function DetailHotspot() {
+export default function DetailHotspot() {
   const { t } = useTranslation();
   const [boundary, setBoundary] = useState(false);
 
   const columns = [
     {
       width: 115,
-      label: t("province"),
-      dataKey: "province",
-      align: "left",
+      label: t('province'),
+      dataKey: 'province',
+      align: 'left',
     },
     {
       width: 130,
-      label: t("spot"),
-      dataKey: "spot",
+      label: t('spot'),
+      dataKey: 'spot',
     },
     {
       width: 100,
-      label: t("district"),
-      dataKey: "district",
+      label: t('district'),
+      dataKey: 'district',
       renderButton: true,
     },
     {
       width: 140,
-      label: t("date"),
-      dataKey: "date",
+      label: t('date'),
+      dataKey: 'date',
     },
   ];
 
@@ -92,11 +92,11 @@ function DetailHotspot() {
   }
 
   const sample = [
-    ["กรุงเทพมหานคร", 6.0, 24, 4.0],
-    ["ภูเก็ต", 9.0, 37, 4.3],
-    ["เชียงใหม่", 16.0, 24, 6.0],
-    ["นครศรีธรรมราช", 3.7, 67, 4.3],
-    ["นนทบุรี", 16.0, 49, 3.9],
+    ['กรุงเทพมหานคร', 6.0, 24, 4.0],
+    ['ภูเก็ต', 9.0, 37, 4.3],
+    ['เชียงใหม่', 16.0, 24, 6.0],
+    ['นครศรีธรรมราช', 3.7, 67, 4.3],
+    ['นนทบุรี', 16.0, 49, 3.9],
   ];
 
   const rows = Array.from({ length: 77 }, (_, index) => {
@@ -105,38 +105,36 @@ function DetailHotspot() {
   });
 
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+    <div className='flex flex-col space-y-4'>
+      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
         <ThemeProvider theme={buttonTheme}>
           <Button
-            variant="contained"
+            variant='contained'
             sx={{
-              height: "100%",
-              width: "100%",
-              minHeight: "50px",
+              height: '100%',
+              width: '100%',
+              minHeight: '50px',
             }}
-            className="!capitalize"
+            className='!capitalize'
             onClick={() => setBoundary(!boundary)}
-            color={boundary ? "secondary" : "primary"}
+            color={boundary ? 'secondary' : 'primary'}
           >
-            {boundary ? t("hideProvinceBoundary") : t("showProvinceBoundary")}
+            {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
           </Button>
         </ThemeProvider>
         <ThemeProvider theme={dropdownTheme}>
-          <Dropdown label={t("month")} items={months} />
+          <Dropdown label={t('month')} items={months} />
         </ThemeProvider>
       </div>
-      <div className="">
+      <div className=''>
         <Tablesort
           columns={columns}
           rows={rows}
-          height="620px"
-          colSortDisabled={["district"]}
-          colSortDefault="spot"
+          height='620px'
+          colSortDisabled={['district']}
+          colSortDefault='spot'
         />
       </div>
     </div>
   );
 }
-
-export default DetailHotspot;
