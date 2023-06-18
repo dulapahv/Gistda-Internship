@@ -13,7 +13,7 @@ export default function Footer() {
           <span className='font-sans'>©</span> 2023 Dulapah Vibulsanti
         </p>
       </div>
-      <div className='flex-1 font-kanit text-white font-light sm:text-right underline decoration-[#f7588a] text-right'>
+      <div className='flex-1 font-kanit text-white font-light sm:text-right underline text-right'>
         <a href='https://github.com/dulapahv' target='_blank' rel='noreferrer'>
           github/dulapahv
         </a>

@@ -40,10 +40,7 @@ const VirtuosoTableComponents = {
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
-    <Table
-      {...props}
-      sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }}
-    />
+    <Table {...props} className='border-collapse-separate table-fixed' />
   ),
   TableHead,
   TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
@@ -88,9 +85,7 @@ export default function Tablesort({
           variant='head'
           align='center'
           style={{ width: '60px' }}
-          sx={{
-            backgroundColor: '#f7eff2',
-          }}
+          className='bg-[#f7eff2] dark:bg-[#2c2c2c]'
         >
           <Typography variant='subtitle1' color='primary'>
             {t('rank')}
@@ -102,20 +97,17 @@ export default function Tablesort({
             variant='head'
             align={column.align || 'center'}
             style={{ width: column.width }}
-            sx={{
-              backgroundColor: '#f7eff2',
-              cursor: !colSortDisabled.includes(column.dataKey)
-                ? 'pointer'
-                : 'default',
-              '&:hover': {
-                backgroundColor: !colSortDisabled.includes(column.dataKey)
-                  ? '#f7e8ec'
-                  : 'inherit',
-              },
-              pointerEvents: colSortDisabled.includes(column.dataKey)
-                ? 'none'
-                : 'auto',
-            }}
+            className={`bg-[#f7eff2] dark:bg-[#2c2c2c] cursor-${
+              colSortDisabled.includes(column.dataKey) ? 'default' : 'pointer'
+            } ${
+              !colSortDisabled.includes(column.dataKey)
+                ? 'hover:bg-[#f7e8ec] dark:hover:bg-[#4b3b40]'
+                : ''
+            } ${
+              colSortDisabled.includes(column.dataKey)
+                ? 'pointer-events-none'
+                : 'pointer-events-auto'
+            }`}
             onClick={() => requestSort(column.dataKey)}
           >
             {!colSortDisabled.includes(column.dataKey) ? (

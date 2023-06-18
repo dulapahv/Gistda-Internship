@@ -110,12 +110,7 @@ export default function DetailHotspot() {
         <ThemeProvider theme={buttonTheme}>
           <Button
             variant='contained'
-            sx={{
-              height: '100%',
-              width: '100%',
-              minHeight: '50px',
-            }}
-            className='!capitalize'
+            className='h-full w-full min-h-50 !capitalize'
             onClick={() => setBoundary(!boundary)}
             color={boundary ? 'secondary' : 'primary'}
           >

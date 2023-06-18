@@ -32,7 +32,7 @@ export default function Dropdown({ label, items }) {
 
   return (
     <ThemeProvider theme={DropdownTheme}>
-      <Box sx={{ minWidth: 120 }}>
+      <Box className='min-w-120'>
         <FormControl fullWidth>
           <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
           <Select
