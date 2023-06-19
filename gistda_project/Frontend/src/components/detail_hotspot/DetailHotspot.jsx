@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Dropdown, Tablesort } from '..';
+
+const baseURL = 'http://localhost:3001/';
 
 const months = [
   'months.jan',
@@ -56,6 +59,25 @@ export default function DetailHotspot() {
   const { t } = useTranslation();
   const [boundary, setBoundary] = useState(false);
 
+  let [data, setPosts] = useState({ result: [] });
+
+  const fetchPosts = async ({ query }) => {
+    try {
+      const response = await axios.get(`${baseURL}?${query}`);
+      setPosts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  if (!data) {
+    return <div>No data</div>;
+  }
+
   const columns = [
     {
       width: 115,
@@ -64,7 +86,7 @@ export default function DetailHotspot() {
       align: 'left',
     },
     {
-      width: 130,
+      width: 150,
       label: t('spot'),
       dataKey: 'spot',
     },
@@ -75,7 +97,7 @@ export default function DetailHotspot() {
       renderButton: true,
     },
     {
-      width: 140,
+      width: 145,
       label: t('date'),
       dataKey: 'date',
     },
@@ -86,23 +108,32 @@ export default function DetailHotspot() {
       id,
       province,
       district,
-      spot,
+      spot: 0,
       date,
     };
   }
 
-  const sample = [
-    ['กรุงเทพมหานคร', 6.0, 24, 4.0],
-    ['ภูเก็ต', 9.0, 37, 4.3],
-    ['เชียงใหม่', 16.0, 24, 6.0],
-    ['นครศรีธรรมราช', 3.7, 67, 4.3],
-    ['นนทบุรี', 16.0, 49, 3.9],
-  ];
+  const rowsMap = new Map();
 
-  const rows = Array.from({ length: 77 }, (_, index) => {
-    const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-    return createData(index, ...randomSelection);
+  data.result.forEach((item) => {
+    const key = item.changwat;
+    if (rowsMap.has(key)) {
+      rowsMap.get(key).spot++;
+    } else {
+      rowsMap.set(
+        key,
+        createData(
+          rowsMap.size,
+          item.changwat,
+          item.amphoe,
+          item.tambol,
+          item.th_date
+        )
+      );
+    }
   });
+
+  const rows = Array.from(rowsMap.values());
 
   return (
     <div className='flex flex-col space-y-4'>
@@ -129,6 +160,22 @@ export default function DetailHotspot() {
           colSortDisabled={['district']}
           colSortDefault='spot'
         />
+      </div>
+      <div>
+        <input
+          type='text'
+          id='user_query'
+          className='w-64 bg-black text-white'
+          value="data=hotspot_202303&select=*&where=to_date(acq_date,%20'DD-MM-YY')%20BETWEEN%20to_date('2023-03-01',%20'YYYY-MM-DD')%20AND%20to_date('2023-03-31',%20'YYYY-MM-DD')&order_by=acq_date&order=desc"
+        />
+        <button
+          onClick={() =>
+            fetchPosts({ query: document.getElementById('user_query').value })
+          }
+          className='bg-white'
+        >
+          GET
+        </button>
       </div>
     </div>
   );

@@ -1,36 +1,9 @@
 import React from 'react';
 
-// import axios from 'axios';
-
 import { Header } from './components';
 import { Analysis, Banner, Footer, Visual } from './containers';
 
-// const baseURL = 'http://localhost:3000/';
-
 export default function App() {
-  // const [posts, setPosts] = useState([]);
-
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
-
-  // const fetchPosts = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${baseURL}?data=hotspot_202303&select=objectid,latitude,longitude,pv_tn&where=objectid%3C%3D100&order_by=acq_date&order=desc&limit=5`
-  //     );
-  //     setPosts(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // if (!posts) {
-  //   return <div>No data</div>;
-  // }
-
-  // get "theme" from localStorage, no need to setTheme
-
   return (
     <div
       className={`flex flex-col w-full bg-white dark:bg-[#2c2c2c] text-[#212121]`}
@@ -84,36 +57,6 @@ export default function App() {
         </svg>
       </div>
       <Footer />
-      {/* <div>
-        <input type="text" id="user_query" className="w-screen bg-red-300" />
-        <button
-          onClick={async () => {
-            try {
-              const response = await axios.get(
-                `${baseURL}?${document.getElementById("user_query").value}`
-              );
-              setPosts(response.data);
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-          className="bg-red-200"
-        >
-          Search
-        </button>
-      </div>
-      <div>
-        {Object.keys(posts).map((key) => {
-          return posts[key].map((item) => (
-            <div key={item.objectid}>
-              <p>{item.objectid}</p>
-              <p>{item.latitude}</p>
-              <p>{item.longitude}</p>
-              <p>{item.pv_tn}</p>
-            </div>
-          ));
-        })}
-      </div> */}
     </div>
   );
 }

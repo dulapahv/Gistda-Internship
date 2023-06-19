@@ -63,7 +63,7 @@ export default function Analysis() {
           </div>
         </div>
         <div className='flex justify-center'>
-          <div className='w-full md:w-9/12 max-w-screen-2xl'>
+          <div className='w-full md:w-9/12 max-w-screen-2xl dark:bg-white rounded-lg p-4'>
             <Barchart />
           </div>
         </div>
