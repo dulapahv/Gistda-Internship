@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Dropdown, Tablesort } from '..';
+import { Dropdown, Tablesort } from '.';
 
 const baseURL = 'http://localhost:3001/';
 

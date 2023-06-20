@@ -10,7 +10,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import TranslateIcon from '@mui/icons-material/Translate';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { map } from '../../components';
+import { map } from '../components';
 
 const buttonTheme = createTheme({
   palette: {

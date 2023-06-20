@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Dropdown } from '..';
+import { Dropdown } from '.';
 
 const dateRange = [
   '2023/03/01 - 2023/03/31',

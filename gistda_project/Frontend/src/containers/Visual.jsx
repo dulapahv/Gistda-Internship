@@ -6,7 +6,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { DetailAgri, DetailAll, DetailHotspot, Map } from '../../components';
+import { DetailAgri, DetailAll, DetailHotspot, Map } from '../components';
 
 const ToggleButtonGroupThemeDark = createTheme({
   palette: {
