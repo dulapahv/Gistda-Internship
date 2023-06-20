@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
@@ -63,7 +64,9 @@ export default function DetailHotspot() {
   const { t, i18n } = useTranslation();
   const [boundary, setBoundary] = useState(false);
   const [isTableLoaded, setIsTableLoaded] = useState(false);
-  const [month, setMonth] = useState([`${t('months.feb')}`]);
+  const months = ['months.feb', 'months.mar', 'months.apr', 'months.may'];
+  const [month, setMonth] = useState(t(months[0]));
+
   let [data, setData] = useState();
 
   const fetchData = async ({ query }) => {
@@ -77,40 +80,24 @@ export default function DetailHotspot() {
     }
   };
 
-  // get only unique "acq_date" column in data.result
-  // const getUniqueDate = (data) => {
-  //   const unique = [...new Set(data.map((item) => item.acq_date))];
-  //   return unique;
-  // };
-
-  // if (data) console.log(getUniqueDate(data.result));
-
-  const months = ['months.feb', 'months.mar', 'months.apr', 'months.may'];
-
-  // useEffect(() => {
-  //   fetchData({
-  //     query:
-  //       "data=hotspot_202303&select=*&where=to_date(acq_date,%20'DD-MM-YY')%20BETWEEN%20to_date('2023-03-01',%20'YYYY-MM-DD')%20AND%20to_date('2023-03-31',%20'YYYY-MM-DD')&order_by=acq_date&order=desc",
-  //   });
-  // }, []);
-  // const removeDot = () => {
-  //   dots.forEach((dot) => {
-  //     map.Overlays.remove(dot);
-  //   });
-  // };
-  // use useEffect to handle "handleChange" for dropdown
   useEffect(() => {
     const monthToNum = {
-      [`${t('months.feb')}`]: '02',
-      [`${t('months.mar')}`]: '03',
-      [`${t('months.apr')}`]: '04',
-      [`${t('months.may')}`]: '05',
+      [t(months[0])]: '02',
+      [t(months[1])]: '03',
+      [t(months[2])]: '04',
+      [t(months[3])]: '05',
     };
-    const monthNum = monthToNum[[month]];
+
+    const monthNum = monthToNum[t(month)];
+    const monthStartDate = moment(`2023-${monthNum}-01`).format('YYYY-MM-DD');
+    const monthEndDate = moment(`2023-${monthNum}`)
+      .endOf('month')
+      .format('YYYY-MM-DD');
+
     fetchData({
-      query: `data=hotspot_2023${monthNum}&select=*&where=to_date(acq_date,%20'DD-MM-YY')%20BETWEEN%20to_date('2023-${monthNum}-01',%20'YYYY-MM-DD')%20AND%20to_date('2023-${monthNum}-28',%20'YYYY-MM-DD')&order_by=acq_date&order=desc`,
+      query: `data=hotspot_2023${monthNum}&select=*&where=to_date(acq_date,%20'DD-MM-YY')%20BETWEEN%20to_date('${monthStartDate}',%20'YYYY-MM-DD')%20AND%20to_date('${monthEndDate}',%20'YYYY-MM-DD')&order_by=acq_date&order=desc`,
     });
-  }, [month, t]);
+  }, [t(month)]);
 
   const handleChange = (event) => {
     setMonth(event.target.value);
@@ -125,12 +112,13 @@ export default function DetailHotspot() {
       {
         lineWidth: lineWidth,
         draggable: draggable,
+        lineColor: '#FB568A',
       }
     );
     return dot;
   };
 
-  if (isTableLoaded && map) {
+  if (data && isTableLoaded && map) {
     map.Overlays.clear();
     data.result.forEach((item) => {
       const dot = dotFactory(
@@ -140,17 +128,6 @@ export default function DetailHotspot() {
       map.Overlays.add(dot);
     });
   }
-
-  // if (data && map) {
-  //   data.result.forEach((item) => {
-  //     const dot = dotFactory(
-  //       JSON.parse(item.latitude),
-  //       JSON.parse(item.longitude)
-  //     );
-  //     dots.push(dot);
-  //     map.Overlays.add(dot);
-  //   });
-  // }
 
   if (!data || !isTableLoaded) {
     return (
@@ -172,12 +149,12 @@ export default function DetailHotspot() {
                 <FormControl fullWidth>
                   <InputLabel>{t('month')}</InputLabel>
                   <Select
-                    value={t(month)}
+                    value={month}
                     label={t('month')}
                     onChange={handleChange}
                   >
                     {months.map((item) => (
-                      <MenuItem value={t(item)} key={t(item)}>
+                      <MenuItem value={item} key={t(item)}>
                         {t(item)}
                       </MenuItem>
                     ))}
@@ -285,12 +262,12 @@ export default function DetailHotspot() {
                 <FormControl fullWidth>
                   <InputLabel>{t('month')}</InputLabel>
                   <Select
-                    value={t(month)}
+                    value={month}
                     label={t('month')}
                     onChange={handleChange}
                   >
                     {months.map((item) => (
-                      <MenuItem value={t(item)} key={t(item)}>
+                      <MenuItem value={item} key={t(item)}>
                         {t(item)}
                       </MenuItem>
                     ))}
