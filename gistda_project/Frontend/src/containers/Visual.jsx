@@ -129,7 +129,7 @@ export default function Visual() {
               </div>
             </ThemeProvider>
           ) : null}
-          <Map mapStyle='h-[500px] min-[425px]:h-[550px] md:h-[725px] z-0' />
+          <Map mapStyle='h-[500px] min-[425px]:h-[550px] md:h-[812px] z-0' />
         </div>
         <div id='hotspot' className='xl:w-2/5 xl:order-first p-4'>
           <DetailHotspot />

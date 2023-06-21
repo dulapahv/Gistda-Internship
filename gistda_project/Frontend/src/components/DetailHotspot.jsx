@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
 import Skeleton from '@mui/material/Skeleton';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { Tablesort } from '.';
 import { map, sphere } from '.';
-
 const baseURL = 'http://localhost:3001/';
 
 const buttonTheme = createTheme({
@@ -39,7 +36,7 @@ const buttonTheme = createTheme({
   },
 });
 
-const dropdownTheme = createTheme({
+const datePickerTheme = createTheme({
   palette: {
     mode: JSON.parse(localStorage.getItem('theme')),
     primary: {
@@ -64,8 +61,7 @@ export default function DetailHotspot() {
   const { t, i18n } = useTranslation();
   const [boundary, setBoundary] = useState(false);
   const [isTableLoaded, setIsTableLoaded] = useState(false);
-  const months = ['months.feb', 'months.mar', 'months.apr', 'months.may'];
-  const [month, setMonth] = useState(t(months[0]));
+  const [date, setDate] = React.useState(dayjs('2023-02-01'));
 
   let [data, setData] = useState();
 
@@ -81,29 +77,21 @@ export default function DetailHotspot() {
   };
 
   useEffect(() => {
-    const monthToNum = {
-      [t(months[0])]: '02',
-      [t(months[1])]: '03',
-      [t(months[2])]: '04',
-      [t(months[3])]: '05',
-    };
-
-    const monthNum = monthToNum[t(month)];
-    const monthStartDate = moment(`2023-${monthNum}-01`).format('YYYY-MM-DD');
-    const monthEndDate = moment(`2023-${monthNum}`)
-      .endOf('month')
-      .format('YYYY-MM-DD');
-
+    const month = date.format('MM');
     fetchData({
-      query: `data=hotspot_2023${monthNum}&select=*&where=to_date(acq_date,%20'DD-MM-YY')%20BETWEEN%20to_date('${monthStartDate}',%20'YYYY-MM-DD')%20AND%20to_date('${monthEndDate}',%20'YYYY-MM-DD')&order_by=acq_date&order=desc`,
+      query: `data=hotspot_2023${month}&select=*&where=acq_date='${date.format(
+        'DD-MM-YY'
+      )}'`,
     });
-  }, [t(month)]);
+  }, [date]);
 
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  const dotFactory = (lat, lon, lineWidth = 10, draggable = false) => {
+  const dotFactory = (
+    lat,
+    lon,
+    lineWidth = 10,
+    draggable = false,
+    lineColor = '#FB568A'
+  ) => {
     const dot = new sphere.Dot(
       {
         lon: lon,
@@ -112,7 +100,7 @@ export default function DetailHotspot() {
       {
         lineWidth: lineWidth,
         draggable: draggable,
-        lineColor: '#FB568A',
+        lineColor: lineColor,
       }
     );
     return dot;
@@ -123,11 +111,46 @@ export default function DetailHotspot() {
     data.result.forEach((item) => {
       const dot = dotFactory(
         JSON.parse(item.latitude),
-        JSON.parse(item.longitude)
+        JSON.parse(item.longitude),
+        10,
+        false,
+        getColorByCode(item.lu_hp)
       );
       map.Overlays.add(dot);
     });
   }
+
+  function getColorByCode(lu_hp) {
+    switch (lu_hp) {
+      case 'A101':
+        return '#FB568A';
+      case 'A202':
+        return '#FFC700';
+      case 'A203':
+        return '#00B4FF';
+      case 'A999':
+        return '#00FF00';
+      case 'F000':
+        return '#FF0000';
+      case 'O000':
+        return '#FF00FF';
+      default:
+        return '#000000';
+    }
+  }
+
+  const Legend = ({ color, label }) => {
+    return (
+      <div className='flex flex-row items-center space-x-2'>
+        <div>
+          <div className={`bg-[${color}] rounded-full w-5 h-5`}></div>
+        </div>
+        <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+          'landUse.' + label
+        )}`}</div>
+      </div>
+    );
+  };
 
   if (!data || !isTableLoaded) {
     return (
@@ -143,26 +166,28 @@ export default function DetailHotspot() {
               {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
             </Button>
           </ThemeProvider>
-          <ThemeProvider theme={dropdownTheme}>
-            <ThemeProvider theme={dropdownTheme}>
-              <Box className='min-w-120'>
-                <FormControl fullWidth>
-                  <InputLabel>{t('month')}</InputLabel>
-                  <Select
-                    value={month}
-                    label={t('month')}
-                    onChange={handleChange}
-                  >
-                    {months.map((item) => (
-                      <MenuItem value={item} key={t(item)}>
-                        {t(item)}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </ThemeProvider>
+          <ThemeProvider theme={datePickerTheme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label={t('date')}
+                minDate={dayjs('01-02-23', 'DD-MM-YY')}
+                maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                format='DD/MM/YYYY'
+              />
+            </LocalizationProvider>
           </ThemeProvider>
+        </div>
+        <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
+          <Legend color='#FB568A' label='นาข้าว' />
+          <Legend color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
+          <Legend color='#00B4FF' label='อ้อย' />
+          <Legend color='#00FF00' label='เกษตรอื่น ๆ' />
+          <Legend color='#FF0000' label='พื้นที่ป่า' />
+          <Legend color='#FF00FF' label='อื่น ๆ' />
         </div>
         <div>
           <Stack spacing={-2}>
@@ -184,13 +209,13 @@ export default function DetailHotspot() {
 
   const columns = [
     {
-      width: 115,
+      width: 120,
       label: t('province'),
       dataKey: 'province',
       align: 'left',
     },
     {
-      width: 150,
+      width: 130,
       label: t('spot'),
       dataKey: 'spot',
     },
@@ -201,19 +226,19 @@ export default function DetailHotspot() {
       renderButton: true,
     },
     {
-      width: 145,
-      label: t('date'),
-      dataKey: 'date',
+      width: 110,
+      label: t('time'),
+      dataKey: 'time',
     },
   ];
 
-  function createData(id, province, district, spot, date) {
+  function createData(id, province, district, spot, time) {
     return {
       id,
       province,
       district,
-      spot: 0,
-      date,
+      spot: 1,
+      time,
     };
   }
 
@@ -221,6 +246,9 @@ export default function DetailHotspot() {
 
   data.result.forEach((item) => {
     const key = item.changwat;
+    const hour = item.th_time.toString().slice(0, 2).padStart(2, '0');
+    const minute = item.th_time.toString().slice(2, 4).padStart(2, '0');
+    const formattedTime = `${hour}:${minute}`;
     if (rowsMap.has(key)) {
       rowsMap.get(key).spot++;
     } else {
@@ -231,16 +259,59 @@ export default function DetailHotspot() {
           `${i18n.language === 'th' ? item.pv_tn : item.pv_en}`,
           `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
           `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
-          `${item.acq_date.slice(0, 2)}/${item.acq_date.slice(
-            3,
-            5
-          )}/20${item.acq_date.slice(6, 8)}`
+          formattedTime
         )
       );
     }
   });
 
   const rows = Array.from(rowsMap.values());
+
+  if (rows.length === 0) {
+    return (
+      <div className='flex flex-col space-y-4'>
+      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+        <ThemeProvider theme={buttonTheme}>
+          <Button
+            variant='contained'
+            className='h-full w-full min-h-50 !capitalize'
+            onClick={() => setBoundary(!boundary)}
+            color={boundary ? 'secondary' : 'primary'}
+          >
+            {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+          </Button>
+        </ThemeProvider>
+        <ThemeProvider theme={datePickerTheme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label={t('date')}
+              minDate={dayjs('01-02-23', 'DD-MM-YY')}
+              maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+              value={date}
+              onChange={(newValue) => {
+                setDate(newValue);
+              }}
+              format='DD/MM/YYYY'
+            />
+          </LocalizationProvider>
+        </ThemeProvider>
+      </div>
+      <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
+        <Legend color='#FB568A' label='นาข้าว' />
+        <Legend color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
+        <Legend color='#00B4FF' label='อ้อย' />
+        <Legend color='#00FF00' label='เกษตรอื่น ๆ' />
+        <Legend color='#FF0000' label='พื้นที่ป่า' />
+        <Legend color='#FF00FF' label='อื่น ๆ' />
+      </div>
+      <div className='flex flex-col items-center justify-center space-y-4'>
+        <p className='font-kanit text-2xl font-semibold text-gray-500 dark:text-gray-400'>
+          {t('noData')}
+        </p>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className='flex flex-col space-y-4'>
@@ -255,30 +326,30 @@ export default function DetailHotspot() {
             {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
           </Button>
         </ThemeProvider>
-        <ThemeProvider theme={dropdownTheme}>
-          <ThemeProvider theme={dropdownTheme}>
-            <ThemeProvider theme={dropdownTheme}>
-              <Box className='min-w-120'>
-                <FormControl fullWidth>
-                  <InputLabel>{t('month')}</InputLabel>
-                  <Select
-                    value={month}
-                    label={t('month')}
-                    onChange={handleChange}
-                  >
-                    {months.map((item) => (
-                      <MenuItem value={item} key={t(item)}>
-                        {t(item)}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </ThemeProvider>
-          </ThemeProvider>
+        <ThemeProvider theme={datePickerTheme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label={t('date')}
+              minDate={dayjs('01-02-23', 'DD-MM-YY')}
+              maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+              value={date}
+              onChange={(newValue) => {
+                setDate(newValue);
+              }}
+              format='DD/MM/YYYY'
+            />
+          </LocalizationProvider>
         </ThemeProvider>
       </div>
-      <div>
+      <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
+        <Legend color='#FB568A' label='นาข้าว' />
+        <Legend color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
+        <Legend color='#00B4FF' label='อ้อย' />
+        <Legend color='#00FF00' label='เกษตรอื่น ๆ' />
+        <Legend color='#FF0000' label='พื้นที่ป่า' />
+        <Legend color='#FF00FF' label='อื่น ๆ' />
+      </div>
+      <div className='drop-shadow-md'>
         <Tablesort
           columns={columns}
           rows={rows}

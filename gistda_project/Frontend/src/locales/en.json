@@ -24,6 +24,7 @@
   "rank": "Rank",
   "spot": "Hotspot",
   "date": "Date",
+  "time": "Time",
   "month": "Month",
   "months": {
     "jan": "January",
@@ -38,5 +39,14 @@
     "oct": "October",
     "nov": "November",
     "dec": "December"
-  }
+  },
+  "landUse": {
+    "นาข้าว": "Rice Field",
+    "ข้าวโพดและไร่หมุนเวียน": "Maize and Swidden Fields",
+    "อ้อย": "Sugarcane",
+    "เกษตรอื่น ๆ": "Other Crops",
+    "พื้นที่ป่า": "Forest Area",
+    "อื่น ๆ": "Other"
+  },
+  "noData": "No Data"
 }

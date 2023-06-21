@@ -34,7 +34,7 @@ export default function Dropdown({ label, items }) {
     <ThemeProvider theme={DropdownTheme}>
       <Box className='min-w-120'>
         <FormControl fullWidth>
-          <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
+          <InputLabel>{label}</InputLabel>
           <Select value={t(dropdownItem)} label={label} onChange={handleChange}>
             {items.map((item) => (
               <MenuItem value={t(item)} key={t(item)}>
