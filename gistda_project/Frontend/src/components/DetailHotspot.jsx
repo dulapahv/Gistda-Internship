@@ -66,14 +66,16 @@ export default function DetailHotspot() {
   let [data, setData] = useState();
 
   const fetchData = async ({ query }) => {
-    try {
-      setIsTableLoaded(false);
-      const response = await axios.get(`${baseURL}?${query}`);
-      setData(response.data);
-      setIsTableLoaded(true);
-    } catch (error) {
-      console.log(error);
-    }
+    setIsTableLoaded(false);
+    axios
+      .get(`${baseURL}?${query}`)
+      .then(function (response) {
+        setData(response.data);
+        setIsTableLoaded(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -270,46 +272,46 @@ export default function DetailHotspot() {
   if (rows.length === 0) {
     return (
       <div className='flex flex-col space-y-4'>
-      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
-        <ThemeProvider theme={buttonTheme}>
-          <Button
-            variant='contained'
-            className='h-full w-full min-h-50 !capitalize'
-            onClick={() => setBoundary(!boundary)}
-            color={boundary ? 'secondary' : 'primary'}
-          >
-            {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
-          </Button>
-        </ThemeProvider>
-        <ThemeProvider theme={datePickerTheme}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={t('date')}
-              minDate={dayjs('01-02-23', 'DD-MM-YY')}
-              maxDate={dayjs('31-05-23', 'DD-MM-YY')}
-              value={date}
-              onChange={(newValue) => {
-                setDate(newValue);
-              }}
-              format='DD/MM/YYYY'
-            />
-          </LocalizationProvider>
-        </ThemeProvider>
+        <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+          <ThemeProvider theme={buttonTheme}>
+            <Button
+              variant='contained'
+              className='h-full w-full min-h-50 !capitalize'
+              onClick={() => setBoundary(!boundary)}
+              color={boundary ? 'secondary' : 'primary'}
+            >
+              {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+            </Button>
+          </ThemeProvider>
+          <ThemeProvider theme={datePickerTheme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label={t('date')}
+                minDate={dayjs('01-02-23', 'DD-MM-YY')}
+                maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                format='DD/MM/YYYY'
+              />
+            </LocalizationProvider>
+          </ThemeProvider>
+        </div>
+        <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
+          <Legend color='#FB568A' label='นาข้าว' />
+          <Legend color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
+          <Legend color='#00B4FF' label='อ้อย' />
+          <Legend color='#00FF00' label='เกษตรอื่น ๆ' />
+          <Legend color='#FF0000' label='พื้นที่ป่า' />
+          <Legend color='#FF00FF' label='อื่น ๆ' />
+        </div>
+        <div className='flex flex-col items-center justify-center space-y-4'>
+          <p className='font-kanit text-2xl font-semibold text-gray-500 dark:text-gray-400'>
+            {t('noData')}
+          </p>
+        </div>
       </div>
-      <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
-        <Legend color='#FB568A' label='นาข้าว' />
-        <Legend color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
-        <Legend color='#00B4FF' label='อ้อย' />
-        <Legend color='#00FF00' label='เกษตรอื่น ๆ' />
-        <Legend color='#FF0000' label='พื้นที่ป่า' />
-        <Legend color='#FF00FF' label='อื่น ๆ' />
-      </div>
-      <div className='flex flex-col items-center justify-center space-y-4'>
-        <p className='font-kanit text-2xl font-semibold text-gray-500 dark:text-gray-400'>
-          {t('noData')}
-        </p>
-      </div>
-    </div>
     );
   }
 

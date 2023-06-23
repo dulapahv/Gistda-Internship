@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
+    "fast-json-stringify": "^5.7.0",
     "pg": "^8.11.0",
     "querystring": "^0.2.1"
   }

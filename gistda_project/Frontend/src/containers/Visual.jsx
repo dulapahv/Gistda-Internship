@@ -94,7 +94,7 @@ export default function Visual() {
       sphere.EventName.Ready = '';
       clearInterval(intervalId);
     }
-  }, 3000);
+  }, 10000);
 
   return (
     <div className='flex flex-col h-auto drop-shadow-xl space-y-10'>
