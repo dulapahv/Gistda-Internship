@@ -100,11 +100,12 @@ export default function DetailHotspot() {
   const { t, i18n } = useTranslation();
   const [boundary, setBoundary] = useState(false);
   const [isTableLoaded, setIsTableLoaded] = useState(false);
-  const [date, setDate] = React.useState(dayjs('2023-02-01'));
+  const [date, setDate] = React.useState(dayjs('2023-03-06'));
+  const [crop, setCrop] = useState('rice');
+  const [hotspotData, setHotspotData] = useState();
+  const [cropData, setCropData] = useState();
 
-  let [data, setData] = useState();
-
-  const fetchData = async ({ query }) => {
+  const fetchData = async ({ query, setData }) => {
     setIsTableLoaded(false);
     axios
       .get(`${baseURL}?${query}`)
@@ -119,12 +120,31 @@ export default function DetailHotspot() {
 
   useEffect(() => {
     const month = date.format('MM');
+    const lastDate =
+      date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
+    const dateCrop = date.format('YYYY-MM') + '-' + lastDate;
+
+    const hotspotQuery = `data=hotspot_2023${month}&select=*&where=acq_date='${date.format(
+      'DD-MM-YY'
+    )}'`;
+    const cropQuery = `data=${crop}_2023${month}${lastDate}&select=p_name,rai,yield&where=data_date='${dateCrop}'`;
+
     fetchData({
-      query: `data=hotspot_2023${month}&select=*&where=acq_date='${date.format(
-        'DD-MM-YY'
-      )}'`,
+      query: hotspotQuery,
+      setData: setHotspotData,
+    });
+
+    fetchData({
+      query: cropQuery,
+      setData: setCropData,
     });
   }, [date]);
+
+  useEffect(() => {
+    if (hotspotData && cropData) {
+      createTableData();
+    }
+  }, [hotspotData, cropData]);
 
   const dotFactory = (
     lat,
@@ -148,9 +168,9 @@ export default function DetailHotspot() {
     return dot;
   };
 
-  if (data && isTableLoaded && map) {
+  if (hotspotData && isTableLoaded && map) {
     map.Overlays.clear();
-    data.result.forEach((item) => {
+    hotspotData.result.forEach((item) => {
       const dot = dotFactory(
         JSON.parse(item.latitude),
         JSON.parse(item.longitude),
@@ -195,20 +215,7 @@ export default function DetailHotspot() {
     );
   };
 
-  const CropType = ({ color, label }) => {
-    return (
-      <div className='flex flex-row items-center space-x-2'>
-        <div>
-          <div className={`bg-[${color}] rounded-full w-5 h-5`}></div>
-        </div>
-        <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-          'crop.' + label
-        )}`}</div>
-      </div>
-    );
-  };
-
-  if (!data || !isTableLoaded) {
+  if (!hotspotData || !isTableLoaded) {
     return (
       <div className='flex flex-col space-y-4'>
         <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
@@ -271,60 +278,141 @@ export default function DetailHotspot() {
       align: 'left',
     },
     {
-      width: 130,
-      label: t('spot'),
-      dataKey: 'spot',
-    },
-    {
       width: 100,
       label: t('district'),
       dataKey: 'district',
       renderButton: true,
     },
     {
-      width: 110,
+      width: 130,
+      label: t('spot'),
+      dataKey: 'spot',
+    },
+    {
+      width: 150,
       label: t('time'),
       dataKey: 'time',
     },
+    {
+      width: 120,
+      label: t('rai'),
+      dataKey: 'rai',
+    },
+    {
+      width: 120,
+      label: t('yield'),
+      dataKey: 'yields',
+    },
   ];
 
-  function createData(id, province, district, spot, time) {
+  function createData(id, province, district, spot = 1, rai, yields, time) {
     return {
       id,
       province,
       district,
-      spot: 1,
+      spot,
+      rai: parseFloat(rai),
+      yields: parseFloat(yields),
       time,
     };
   }
 
   const rowsMap = new Map();
 
-  data.result.forEach((item) => {
-    const key = item.changwat;
-    const hour = item.th_time.toString().slice(0, 2).padStart(2, '0');
-    const minute = item.th_time.toString().slice(2, 4).padStart(2, '0');
-    const formattedTime = `${hour}:${minute}`;
-    if (rowsMap.has(key)) {
-      rowsMap.get(key).spot++;
-    } else {
-      rowsMap.set(
-        key,
-        createData(
-          item.pv_idn,
-          `${i18n.language === 'th' ? item.pv_tn : item.pv_en}`,
-          `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
-          `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
-          formattedTime
-        )
-      );
-    }
-  });
+  const formatNumber = (number) => {
+    const formattedNumber = parseFloat(number).toFixed(3);
+    return parseFloat(formattedNumber).toLocaleString('en-US');
+  };
 
-  const rows = Array.from(rowsMap.values());
+  const createTableData = () => {
+    const maxLength = Math.max(
+      hotspotData.result.length,
+      cropData.result.length
+    );
+
+    for (let i = 0; i < maxLength; i++) {
+      const hotspotItem = hotspotData.result[i];
+      const cropItem = cropData.result[i];
+
+      const id = hotspotItem ? hotspotItem.changwat : cropItem.p_name;
+      const hour = hotspotItem
+        ? hotspotItem.th_time.toString().slice(0, 2).padStart(2, '0')
+        : '';
+      const minute = hotspotItem
+        ? hotspotItem.th_time.toString().slice(2, 4).padStart(2, '0')
+        : '';
+      const formattedTime = hotspotItem ? `${hour}:${minute}` : '';
+
+      if (hotspotItem && cropItem) {
+        if (rowsMap.has(id)) {
+          rowsMap.get(id).spot++;
+          rowsMap.get(id).rai += parseFloat(cropItem.rai);
+          rowsMap.get(id).yields += parseFloat(cropItem.yield);
+        } else {
+          rowsMap.set(
+            id,
+            createData(
+              hotspotItem.pv_idn,
+              i18n.language === 'th' ? hotspotItem.pv_tn : hotspotItem.pv_en,
+              i18n.language === 'th' ? hotspotItem.ap_tn : hotspotItem.ap_en,
+              1,
+              cropItem.rai,
+              cropItem.yield,
+              formattedTime
+            )
+          );
+        }
+      } else if (hotspotItem) {
+        // Handle case when cropData is shorter
+        if (rowsMap.has(id)) {
+          rowsMap.get(id).spot++;
+        } else {
+          rowsMap.set(
+            id,
+            createData(
+              hotspotItem.pv_idn,
+              i18n.language === 'th' ? hotspotItem.pv_tn : hotspotItem.pv_en,
+              i18n.language === 'th' ? hotspotItem.ap_tn : hotspotItem.ap_en,
+              0,
+              0,
+              0,
+              formattedTime
+            )
+          );
+        }
+      } else if (cropItem) {
+        // Handle case when hotspotData is shorter
+        if (rowsMap.has(id)) {
+          rowsMap.get(id).rai += parseFloat(cropItem.rai);
+          rowsMap.get(id).yields += parseFloat(cropItem.yield);
+        } else {
+          rowsMap.set(
+            id,
+            createData(
+              cropItem.p_code,
+              cropItem.p_name,
+              cropItem.a_name,
+              0,
+              cropItem.rai,
+              cropItem.yield,
+              '-'
+            )
+          );
+        }
+      }
+    }
+  };
+
+  if (hotspotData && cropData) createTableData();
+
+  const rows = Array.from(rowsMap.values()).map((row) => ({
+    ...row,
+    rai: formatNumber(row.rai),
+    yields: formatNumber(row.yields),
+  }));
 
   return (
-    <div className='flex flex-col space-y-4'>
+    <div className='flex flex-col space-y-4 h-full'>
       <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
         <ThemeProvider theme={buttonTheme}>
           <Button
@@ -351,34 +439,34 @@ export default function DetailHotspot() {
           </LocalizationProvider>
         </ThemeProvider>
       </div>
-      <div className='bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 drop-shadow-md'>
+      <div className='flex flex-col bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 drop-shadow-md'>
         <ThemeProvider theme={RadioButtonTheme}>
+          <FormLabel>{t('showCropType')}</FormLabel>
           <FormControl>
-            <FormLabel>{t('showCropType')}</FormLabel>
-            <RadioGroup defaultValue='rice' row>
+            <RadioGroup defaultValue='rice' row className='gap-4'>
               <FormControlLabel
                 value='rice'
-                control={<Radio />}
+                control={<Radio onChange={(e) => setCrop(e.target.crop)} />}
                 label={t('crop.rice')}
-                className='text-white'
+                className='text-[#212121] dark:text-white'
               />
               <FormControlLabel
                 value='maize'
-                control={<Radio />}
+                control={<Radio onChange={(e) => setCrop(e.target.crop)} />}
                 label={t('crop.maize')}
-                className='text-white'
+                className='text-[#212121] dark:text-white'
               />
               <FormControlLabel
                 value='sugarcane'
-                control={<Radio />}
+                control={<Radio onChange={(e) => setCrop(e.target.crop)} />}
                 label={t('crop.sugarcane')}
-                className='text-white'
+                className='text-[#212121] dark:text-white'
               />
               <FormControlLabel
                 value='cassava'
-                control={<Radio />}
+                control={<Radio onChange={(e) => setCrop(e.target.crop)} />}
                 label={t('crop.cassava')}
-                className='text-white'
+                className='text-[#212121] dark:text-white'
               />
             </RadioGroup>
           </FormControl>
@@ -387,46 +475,100 @@ export default function DetailHotspot() {
       <div className=' bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
         <ThemeProvider theme={CheckBoxTheme}>
           <FormLabel>{t('showHotspotInLandType')}</FormLabel>
-          <div className='grid grid-cols-2 sm:grid-cols-3'>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#FB568A' label='นาข้าว' />
+          <div className='grid grid-cols-2 sm:grid-cols-3 '>
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#FB568A] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.นาข้าว'
+                )}`}</div>
+              </div>
             </div>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#FFC700] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.ข้าวโพดและไร่หมุนเวียน'
+                )}`}</div>
+              </div>
             </div>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#00B4FF' label='อ้อย' />
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#00B4FF] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.อ้อย'
+                )}`}</div>
+              </div>
             </div>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#00FF00' label='เกษตรอื่น ๆ' />
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#00FF00] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.เกษตรอื่น ๆ'
+                )}`}</div>
+              </div>
             </div>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#FF0000' label='พื้นที่ป่า' />
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#FF0000] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.พื้นที่ป่า'
+                )}`}</div>
+              </div>
             </div>
-            <div className='flex flex-row'>
-              <Checkbox defaultChecked />
-              <CultivationType color='#FF00FF' label='อื่น ๆ' />
+            <div className='flex flex-row items-center'>
+              <div>
+                <Checkbox defaultChecked />
+              </div>
+              <div className='flex flex-row items-center space-x-2'>
+                <div>
+                  <div className={`bg-[#FF00FF] rounded-full w-5 h-5`}></div>
+                </div>
+                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                  'landUse.อื่น ๆ'
+                )}`}</div>
+              </div>
             </div>
           </div>
         </ThemeProvider>
       </div>
       {rows.length === 0 ? (
-        <div className='flex flex-col items-center justify-center space-y-4'>
+        <div className='flex flex-col items-center justify-center space-y-4 flex-1'>
           <p className='font-kanit text-2xl font-semibold text-gray-500 dark:text-gray-400'>
             {t('noData')}
           </p>
         </div>
       ) : (
-        <div className='drop-shadow-md'>
+        <div className='drop-shadow-md aspect-square xl:flex-1'>
           <TableOverview
             columns={columns}
             rows={rows}
-            height='620px'
+            height='100%'
             colSortDisabled={['district']}
             colSortDefault='spot'
           />

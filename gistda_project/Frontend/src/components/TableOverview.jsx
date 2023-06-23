@@ -19,7 +19,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
-import { map, sphere } from '../components';
+import { map } from '../components';
 
 const baseURL = 'http://localhost:3001/';
 

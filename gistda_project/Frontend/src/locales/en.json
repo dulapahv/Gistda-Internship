@@ -1,10 +1,10 @@
 {
   "banner": "Spatial Correlation Analysis System between Crop Cultivation and Hotspot Occurrences Using Satellite Technology and Geospatial Data",
   "map_type": {
-    "overall": "Display Crop Cultivation and Hotspot Overview",
-    "analysis": "Display Spatial Correlation Analysis"
+    "overall": "Display Overview",
+    "analysis": "Display Analysis"
   },
-  "overviewTitle": "Overview of Crop Cultivation and Hotspot Occurrences",
+  "overviewTitle": "Overview of Types of Crop Cultivated and Hotspot Occurrences",
   "analysisTitle": "Spatial Correlation Analysis between Crop Cultivation and Hotspot Occurrences",
   "showProvinceBoundary": "Show Province Boundary Layer",
   "hideProvinceBoundary": "Hide Province Boundary Layer",

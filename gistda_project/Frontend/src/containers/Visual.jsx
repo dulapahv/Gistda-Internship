@@ -52,17 +52,17 @@ const showAnalysis = () => {
 export default function Visual() {
   const { t } = useTranslation();
 
-  const [page, setPage] = React.useState('overview');
+  const [page, setPage] = React.useState('overviewPage');
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const handleAlignment = (event, newAlignment) => {
     if (!newAlignment) return;
     setPage(newAlignment);
     switch (newAlignment) {
-      case 'overview':
+      case 'overviewPage':
         showOverview();
         break;
-      case 'analysis':
+      case 'analysisPage':
         showAnalysis();
         break;
       default:
@@ -76,14 +76,14 @@ export default function Visual() {
       sphere.EventName.Ready = '';
       clearInterval(intervalId);
     }
-  }, 10000);
+  }, 3000);
 
   return (
-    <div className='px-5 sm:px-10'>
+    <div className='px-5 h-fit xl:h-screen xl:mb-44'>
       <Header text={page === 'overview' ? 'overviewTitle' : 'analysisTitle'} />
-      <div className='flex flex-col h-auto drop-shadow-xl space-y-10'>
+      <div className='flex flex-col drop-shadow-xl space-y-10 h-[calc(100%-32px)]'>
         <div className='flex flex-row justify-center'>
-          <div className='flex flex-col order-2 sm:flex-row'>
+          <div className='flex flex-col xl:flex-row'>
             <ThemeProvider theme={ToggleButtonGroupTheme}>
               <ToggleButtonGroup
                 color='primary'
@@ -91,31 +91,36 @@ export default function Visual() {
                 exclusive
                 onChange={handleAlignment}
               >
-                <ToggleButton value='overview' className='!capitalize'>
+                <ToggleButton value='overviewPage' className='!capitalize'>
                   {t('map_type.overall')}
                 </ToggleButton>
-                <ToggleButton value='analysis' className='!capitalize'>
+                <ToggleButton value='analysisPage' className='!capitalize'>
                   {t('map_type.analysis')}
                 </ToggleButton>
               </ToggleButtonGroup>
             </ThemeProvider>
           </div>
         </div>
-        <div className='flex mb-4 flex-col xl:flex-row bg-white rounded-lg dark:bg-[#444444]'>
-          <div className='xl:w-3/5 xl:order-last relative'>
-            {!isMapLoaded ? (
+        <div className='flex flex-col xl:flex-row mb-4 bg-white rounded-lg dark:bg-[#444444] h-full'>
+          <div className='xl:w-3/5 relative flex-grow order-1 xl:order-2 aspect-square'>
+            {!isMapLoaded && (
               <ThemeProvider theme={LinearProgressTheme}>
                 <div className='w-full absolute z-10 pt-[0.4px]'>
                   <LinearProgress className='rounded-t-lg xl:rounded-none xl:rounded-tr-lg' />
                 </div>
               </ThemeProvider>
-            ) : null}
-            <Map mapStyle='h-[500px] min-[425px]:h-[550px] md:h-[812px] z-0' />
+            )}
+            <div className='h-full'>
+              <Map mapStyle='h-full w-full' />
+            </div>
           </div>
-          <div id='overviewPage' className='xl:w-2/5 xl:order-first p-4'>
+          <div id='overviewPage' className='xl:w-2/5 p-4 order-2 xl:order-1'>
             <Overview />
           </div>
-          <div id='analysisPage' className='xl:w-2/5 xl:order-first p-4 hidden'>
+          <div
+            id='analysisPage'
+            className='xl:w-2/5 p-4 order-2 xl:order-1 hidden'
+          >
             <Analysis />
           </div>
         </div>
