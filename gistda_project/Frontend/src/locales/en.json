@@ -1,12 +1,11 @@
 {
-  "banner": "Spatial Correlation Analysis System between Crop Cultivation and Hotspot Occurrences",
-  "main_title": "Spatial Correlation Analysis System between Crop Cultivation and Hotspot Occurrences\nUsing Satellite Technology and Geospatial Data",
+  "banner": "Spatial Correlation Analysis System between Crop Cultivation and Hotspot Occurrences Using Satellite Technology and Geospatial Data",
   "map_type": {
-    "hotspot": "Display Hotspots",
-    "agri": "Display Types of Crop Cultivation",
-    "all": "Display All"
+    "overall": "Display Crop Cultivation and Hotspot Overview",
+    "analysis": "Display Spatial Correlation Analysis"
   },
-  "analysisTitle": "Analysis of the Impacts from Hotspots",
+  "overviewTitle": "Overview of Crop Cultivation and Hotspot Occurrences",
+  "analysisTitle": "Spatial Correlation Analysis between Crop Cultivation and Hotspot Occurrences",
   "showProvinceBoundary": "Show Province Boundary Layer",
   "hideProvinceBoundary": "Hide Province Boundary Layer",
   "dateRange": "Date Range",
@@ -44,6 +43,8 @@
     "nov": "November",
     "dec": "December"
   },
+  "showCropType": "Show Crop Type",
+  "showHotspotInLandType": "Show Hotspot in Land Usage",
   "landUse": {
     "นาข้าว": "Rice Field",
     "ข้าวโพดและไร่หมุนเวียน": "Maize and Swidden Fields",

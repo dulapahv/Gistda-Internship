@@ -21,3 +21,4 @@ export default class Map extends Component {
     );
   }
 }
+  

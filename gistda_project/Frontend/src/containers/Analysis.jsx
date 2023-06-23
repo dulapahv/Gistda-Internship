@@ -1,20 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import axios from 'axios';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
+import Skeleton from '@mui/material/Skeleton';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Barchart, Checkbox, Dropdown } from '../components';
 
-const dateRange = [
-  '2023/03/01 - 2023/03/31',
-  '2023/04/01 - 2023/04/31',
-  '2023/05/01 - 2023/05/31',
-];
+import { map } from '.';
+import { TableOverview } from '../components';
 
-const agriType = ['crop.rice', 'crop.maize', 'crop.sugarcane', 'crop.cassava'];
+const baseURL = 'http://localhost:3001/';
+
+const buttonTheme = createTheme({
+  palette: {
+    mode: JSON.parse(localStorage.getItem('theme')),
+    primary: {
+      main: '#F390B0',
+      dark: '#FF99BA',
+      contrastText: '#ffffff',
+    },
+    secondary: {
+      main: '#78bcfe',
+      dark: '#8bc2ff',
+      contrastText: '#ffffff',
+    },
+  },
+  typography: {
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
+    fontSize: 16,
+  },
+});
 
 const dropdownTheme = createTheme({
   palette: {
+    mode: JSON.parse(localStorage.getItem('theme')),
     primary: {
       main: '#F390B0',
     },
@@ -24,49 +51,318 @@ const dropdownTheme = createTheme({
   },
 });
 
-const checkboxTheme = createTheme({
+const skeletonTheme = createTheme({
   palette: {
-    primary: {
-      main: '#F390B0',
-    },
+    mode: JSON.parse(localStorage.getItem('theme')),
   },
   typography: {
     fontFamily: ['Kanit', 'sans-serif'].join(','),
   },
 });
 
-export default function Analysis() {
-  const { t } = useTranslation();
+const date = [
+  '01/02/2023 - 15/02/2023',
+  '16/02/2023 - 28/02/2023',
+  '01/03/2023 - 15/03/2023',
+  '16/03/2023 - 31/03/2023',
+  '01/04/2023 - 15/04/2023',
+  '16/04/2023 - 30/04/2023',
+  '01/05/2023 - 15/05/2023',
+  '16/05/2023 - 31/05/2023',
+];
 
-  return (
-    <div className='flex flex-col h-auto drop-shadow-xl space-y-10'>
-      <div className='mb-4 md:flex-row bg-white rounded-lg p-4 space-y-4 dark:bg-[#444444]'>
-        <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'>
+const agriType = ['Rice', 'Maize', 'Sugarcane', 'Cassava'];
+
+export default function DetailAgri() {
+  const { t, i18n } = useTranslation();
+  const [boundary, setBoundary] = useState(false);
+  const [isTableLoaded, setIsTableLoaded] = useState(false);
+  const [dateRange, setDateRange] = useState(date[1]);
+  const [crop, setCrop] = useState(agriType[0]);
+
+  let [data, setData] = useState();
+
+  // if (map) map.Overlays.clear();
+
+  const fetchData = async ({ query }) => {
+    setIsTableLoaded(false);
+    axios
+      .get(`${baseURL}?${query}`)
+      .then(function (response) {
+        setData(response.data);
+        setIsTableLoaded(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setData([]);
+      });
+  };
+
+  useEffect(() => {
+    const dateFrom = dayjs(dateRange.split(' - ')[0], 'DD/MM/YYYY').format(
+      'DD-MM-YYYY'
+    );
+    const dateTo = dayjs(dateRange.split(' - ')[1], 'DD/MM/YYYY').format(
+      'YYYY-MM-DD'
+    );
+    const month = dayjs(dateFrom, 'DD-MM-YYYY').format('MM');
+    const maxDate = dayjs(dateRange.split(' - ')[1], 'DD/MM/YYYY').format('DD');
+    fetchData({
+      query: `data=${i18n.t(('crop.' + crop).toLowerCase(), {
+        lng: 'en',
+      })}_2023${month}${maxDate}&select=p_name,rai,yield&where=data_date='${dateTo}'`,
+    });
+  }, [dateRange, crop]);
+
+  if (data && data.length === 0) {
+    return (
+      <div className='flex flex-col space-y-4'>
+        <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+          <ThemeProvider theme={buttonTheme}>
+            <Button
+              variant='contained'
+              className='h-full w-full min-h-50 !capitalize'
+              onClick={() => setBoundary(!boundary)}
+              color={boundary ? 'secondary' : 'primary'}
+            >
+              {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+            </Button>
+          </ThemeProvider>
           <ThemeProvider theme={dropdownTheme}>
-            <Dropdown label={t('dateRange')} items={dateRange} />
-            <Dropdown label={t('province')} items={dateRange} />
-            <Dropdown label={t('district')} items={dateRange} />
-            <Dropdown label={t('subDistrict')} items={dateRange} />
+            <Box className='min-w-120'>
+              <FormControl fullWidth>
+                <InputLabel>{t('dateRange')}</InputLabel>
+                <Select
+                  value={dateRange}
+                  label={t('dateRange')}
+                  onChange={(e) => setDateRange(e.target.value)}
+                >
+                  {date.map((item) => (
+                    <MenuItem value={item} key={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </ThemeProvider>
+          <ThemeProvider theme={dropdownTheme}>
+            <Box className='min-w-120'>
+              <FormControl fullWidth>
+                <InputLabel>{t('cropType')}</InputLabel>
+                <Select
+                  value={t(crop)}
+                  label={t('cropType')}
+                  onChange={(e) => setCrop(e.target.value)}
+                >
+                  {agriType.map((item) => (
+                    <MenuItem value={t(item)} key={t(item)}>
+                      {t(item)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
           </ThemeProvider>
         </div>
-        <div className='flex flex-col md:flex-row space-x-0 md:space-x-8'>
-          <div className='flex flex-col justify-center'>
-            <p className='font-kanit dark:text-white'>{t('displayCropType')}</p>
-          </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
-            <ThemeProvider theme={checkboxTheme}>
-              <Checkbox label={agriType[0]} />
-              <Checkbox label={agriType[1]} />
-              <Checkbox label={agriType[2]} />
-              <Checkbox label={agriType[3]} />
+        <div className='flex flex-col items-center justify-center space-y-4'>
+          <p className='font-kanit text-2xl font-semibold text-gray-500 dark:text-gray-400'>
+            {t('noData')}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data || !isTableLoaded) {
+    return (
+      <div className='flex flex-col space-y-4'>
+        <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+          <ThemeProvider theme={buttonTheme}>
+            <Button
+              variant='contained'
+              className='h-full w-full min-h-50 !capitalize'
+              onClick={() => setBoundary(!boundary)}
+              color={boundary ? 'secondary' : 'primary'}
+            >
+              {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+            </Button>
+          </ThemeProvider>
+          <ThemeProvider theme={dropdownTheme}>
+            <Box className='min-w-120'>
+              <FormControl fullWidth>
+                <InputLabel>{t('dateRange')}</InputLabel>
+                <Select
+                  value={dateRange}
+                  label={t('dateRange')}
+                  onChange={(e) => setDateRange(e.target.value.toLowerCase())}
+                >
+                  {date.map((item) => (
+                    <MenuItem
+                      value={item.toLowerCase()}
+                      key={item.toLowerCase()}
+                    >
+                      {item.toLowerCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </ThemeProvider>
+          <ThemeProvider theme={dropdownTheme}>
+            <Box className='min-w-120'>
+              <FormControl fullWidth>
+                <InputLabel>{t('cropType')}</InputLabel>
+                <Select
+                  value={t(crop)}
+                  label={t('cropType')}
+                  onChange={(e) => setCrop(e.target.value)}
+                >
+                  {agriType.map((item) => (
+                    <MenuItem value={t(item)} key={t(item)}>
+                      {t(item)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </ThemeProvider>
+        </div>
+        <div>
+          <Stack spacing={-2}>
+            <ThemeProvider theme={skeletonTheme}>
+              {Array.from({ length: 9 }).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  animation='wave'
+                  height={80}
+                  width='100%'
+                />
+              ))}
             </ThemeProvider>
-          </div>
+          </Stack>
         </div>
-        <div className='flex justify-center'>
-          <div className='w-full md:w-9/12 max-w-screen-2xl dark:bg-white rounded-lg p-4'>
-            <Barchart />
-          </div>
-        </div>
+      </div>
+    );
+  }
+
+  const columns = [
+    {
+      width: 120,
+      label: t('province'),
+      dataKey: 'province',
+      align: 'left',
+    },
+    {
+      width: 100,
+      label: t('district'),
+      dataKey: 'district',
+      renderButton: true,
+    },
+    {
+      width: 120,
+      label: t('rai'),
+      dataKey: 'rai',
+    },
+    {
+      width: 120,
+      label: t('yield'),
+      dataKey: 'yields',
+    },
+  ];
+
+  function createData(id, province, rai, yields) {
+    return {
+      id,
+      province,
+      rai,
+      yields,
+    };
+  }
+
+  const rowsMap = new Map();
+
+  data.result.forEach((item) => {
+    const id = item.p_name;
+    const province = t('pv.' + item.p_name);
+    const rai = parseFloat(item.rai);
+    const yields = parseFloat(item.yield);
+
+    if (rowsMap.has(id)) {
+      const row = rowsMap.get(id);
+      row.rai += rai;
+      row.yields += yields;
+    } else {
+      const row = createData(id, province, rai, yields);
+      rowsMap.set(id, row);
+    }
+  });
+
+  const rows = Array.from(rowsMap.values());
+
+  rows.forEach((row) => {
+    row.rai = row.rai.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    row.yields = row.yields.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  });
+
+  return (
+    <div className='flex flex-col space-y-4'>
+      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+        <ThemeProvider theme={buttonTheme}>
+          <Button
+            variant='contained'
+            className='h-full w-full min-h-50 !capitalize'
+            onClick={() => setBoundary(!boundary)}
+            color={boundary ? 'secondary' : 'primary'}
+          >
+            {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+          </Button>
+        </ThemeProvider>
+        <ThemeProvider theme={dropdownTheme}>
+          <Box className='min-w-120'>
+            <FormControl fullWidth>
+              <InputLabel>{t('dateRange')}</InputLabel>
+              <Select
+                value={dateRange}
+                label={t('dateRange')}
+                onChange={(e) => setDateRange(e.target.value)}
+              >
+                {date.map((item) => (
+                  <MenuItem value={item} key={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </ThemeProvider>
+        <ThemeProvider theme={dropdownTheme}>
+          <Box className='min-w-120'>
+            <FormControl fullWidth>
+              <InputLabel>{t('cropType')}</InputLabel>
+              <Select
+                value={t(crop)}
+                label={t('cropType')}
+                onChange={(e) => setCrop(e.target.value)}
+              >
+                {agriType.map((item) => (
+                  <MenuItem value={t(item)} key={t(item)}>
+                    {t(item)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </ThemeProvider>
+      </div>
+      <div className='drop-shadow-md'>
+        <TableOverview
+          columns={columns}
+          rows={rows}
+          height='620px'
+          colSortDisabled={['district']}
+          colSortDefault='rai'
+        />
       </div>
     </div>
   );

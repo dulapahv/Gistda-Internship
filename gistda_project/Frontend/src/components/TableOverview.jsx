@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { TableVirtuoso } from 'react-virtuoso';
 
+import axios from 'axios';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -18,9 +19,9 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
-const handleButtonClick = (row) => {
-  console.log(row);
-};
+import { map, sphere } from '../components';
+
+const baseURL = 'http://localhost:3001/';
 
 const tableTheme = createTheme({
   palette: {
@@ -62,6 +63,32 @@ export default function Tablesort({
     key: colSortDefault,
     direction: 'desc',
   });
+
+  const fetchData = async ({ row }) => {
+    try {
+      const response = await axios.get(
+        `${baseURL}?data=thai_coord&select=lat,long&where=ch_id='${row.id}'`
+      );
+      setData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    if (data && data.result && data.result.length > 0) {
+      map.goTo({
+        center: { lon: data.result[0].long, lat: data.result[0].lat },
+        zoom: 10,
+      });
+    }
+  }, [data]);
+
+  const handleButtonClick = (row) => {
+    fetchData({ row });
+  };
 
   function fixedHeaderContent() {
     if (!columns) return null;
@@ -182,13 +209,13 @@ export default function Tablesort({
       return 0;
     });
 
-  const data = sortConfig.key ? sortedRows : rows;
+  const dat = sortConfig.key ? sortedRows : rows;
 
   return (
     <Paper style={{ height, width: '100%' }}>
       <ThemeProvider theme={tableTheme}>
         <TableVirtuoso
-          data={data}
+          data={dat}
           components={VirtuosoTableComponents}
           fixedHeaderContent={fixedHeaderContent}
           itemContent={rowContent}

@@ -7,7 +7,7 @@ export default function Header({ text }) {
 
   return (
     <div className='flex flex-row place-content-center h-auto flex-wrap py-10'>
-      <h1 className='font-kanit text-neutral-900 dark:text-white text-center text-2xl'>
+      <h1 className='font-kanit text-neutral-900 dark:text-white text-center text-2xl capitalize'>
         {t(text)}
       </h1>
     </div>
