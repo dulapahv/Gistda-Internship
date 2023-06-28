@@ -13,12 +13,11 @@ export default class Map extends Component {
 
   render() {
     const { mapStyle } = this.props;
-    // const mapKey = env.API_KEY;
+    const mapKey = env.API_KEY;
     return (
       <div className={mapStyle}>
-        <SphereMap id='sphere-map' mapKey="A390BBB3092649CA820DB32296268670" callback={this.initMap} />
+        <SphereMap id='sphere-map' mapKey={mapKey} callback={this.initMap} />
       </div>
     );
   }
 }
-  

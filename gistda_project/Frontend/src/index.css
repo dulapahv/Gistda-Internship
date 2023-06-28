@@ -38,6 +38,34 @@
 }
 .dark ::-webkit-scrollbar-thumb {
   height: 50px;
-  background-color: #f390b0;
+  background-color: #fc99ba;
   border-radius: 9999px;
+}
+
+#sphere-map .mapbox-gl-draw_ctrl-draw-btn {
+  background-size: 22px;
+  background-color: #fc99ba;
+  border: 1px solid #dddddd;
+}
+#sphere-map .mapbox-gl-draw_ctrl-draw-btn:hover {
+  background-size: 24px;
+  background-color: #ffbdd4;
+}
+#sphere-map .mapbox-gl-draw_ctrl-draw-btn:first-child {
+  border-radius: 3px 3px 0px 0px;
+}
+#sphere-map .mapbox-gl-draw_ctrl-draw-btn:last-child {
+  border-radius: 0px 0px 3px 3px;
+}
+#sphere-map .mapbox-gl-draw_line {
+  background-image: url('https://www.svgrepo.com/show/309501/data-line.svg');
+}
+#sphere-map .mapbox-gl-draw_polygon {
+  background-image: url('https://www.svgrepo.com/show/399227/polygon-pt.svg');
+}
+#sphere-map .mapbox-gl-draw_point {
+  background-image: url('https://www.svgrepo.com/show/399217/point.svg');
+}
+#sphere-map .mapbox-gl-draw_trash {
+  background-image: url('https://www.svgrepo.com/show/511178/trash-full.svg');
 }
