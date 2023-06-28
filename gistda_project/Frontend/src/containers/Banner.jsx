@@ -74,7 +74,7 @@ export default function Banner() {
           </ThemeProvider>
         </Stack>
       </div>
-      <div style={{ overflow: 'hidden' }}>
+      <div className='overflow-hidden'>
         <svg
           preserveAspectRatio='none'
           viewBox='0 0 1200 120'

@@ -78,9 +78,38 @@ export default function Visual() {
     }
   }, 3000);
 
+  if (isMapLoaded) {
+    if (!window.sphereDrawLoaded) {
+      window.sphereDrawLoaded = true;
+      window.sphere.Util.loadStyle(
+        sphere.Server.map + '/js/mapbox-gl-draw.css'
+      );
+      window.sphere.Util.loadScript(
+        sphere.Server.map + '/js/mapbox-gl-draw.js',
+        () => {
+          // see more options https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md#options
+          const drawOptions = {
+            controls: {
+              point: true,
+              line_string: false,
+              polygon: true,
+              trash: true,
+              combine_features: true,
+              uncombine_features: true,
+            },
+          };
+          var drawPanel = new window.MapboxDraw(drawOptions);
+          map.Renderer.addControl(drawPanel, 'top-right'); // see details https://docs.mapbox.com/mapbox-gl-js/api/#map#addcontrol
+        }
+      );
+    }
+  }
+
   return (
     <div className='px-5 h-fit xl:h-screen xl:mb-44'>
-      <Header text={page === 'overview' ? 'overviewTitle' : 'analysisTitle'} />
+      <Header
+        text={page === 'overviewPage' ? 'overviewTitle' : 'analysisTitle'}
+      />
       <div className='flex flex-col drop-shadow-xl space-y-10 h-[calc(100%-32px)]'>
         <div className='flex flex-row justify-center'>
           <div className='flex flex-col xl:flex-row'>

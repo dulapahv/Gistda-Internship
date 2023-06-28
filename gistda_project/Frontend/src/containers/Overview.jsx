@@ -96,6 +96,28 @@ const hexToRGBA = (hex, alpha) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
+const dotFactory = (
+  lat,
+  lon,
+  lineWidth = 20,
+  draggable = false,
+  lineColor = '#FB568A',
+  alpha = 0.4
+) => {
+  const dot = new sphere.Dot(
+    {
+      lon: lon,
+      lat: lat,
+    },
+    {
+      lineWidth: lineWidth,
+      draggable: draggable,
+      lineColor: hexToRGBA(lineColor, alpha),
+    }
+  );
+  return dot;
+};
+
 export default function DetailHotspot() {
   const { t, i18n } = useTranslation();
   const [boundary, setBoundary] = useState(false);
@@ -104,6 +126,12 @@ export default function DetailHotspot() {
   const [crop, setCrop] = useState('rice');
   const [hotspotData, setHotspotData] = useState();
   const [cropData, setCropData] = useState();
+  const [isRiceLoaded, setIsRiceLoaded] = useState(true);
+  const [isMaizeLoaded, setIsMaizeLoaded] = useState(true);
+  const [isSugarcaneLoaded, setIsSugarcaneLoaded] = useState(true);
+  const [isOtherCropLoaded, setIsOtherCropLoaded] = useState(true);
+  const [isForestAreaLoaded, setIsForestAreaLoaded] = useState(true);
+  const [isOtherLoaded, setIsOtherLoaded] = useState(true);
 
   const fetchData = async ({ query, setData }) => {
     setIsTableLoaded(false);
@@ -124,10 +152,11 @@ export default function DetailHotspot() {
       date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
     const dateCrop = date.format('YYYY-MM') + '-' + lastDate;
 
-    const hotspotQuery = `data=hotspot_2023${month}&select=*&where=acq_date='${date.format(
+    const hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_time&where=acq_date='${date.format(
       'DD-MM-YY'
     )}'`;
-    const cropQuery = `data=${crop}_2023${month}${lastDate}&select=p_name,rai,yield&where=data_date='${dateCrop}'`;
+    // const cropQuery = `data=${crop}_2023${month}${lastDate}&select=p_name,rai,yield&where=data_date='${dateCrop}'`;
+    const cropQuery = `data=${crop}_2023${month}${lastDate}&select=st_asgeojson(geom)&where=data_date='${dateCrop}'limit 1`;
 
     fetchData({
       query: hotspotQuery,
@@ -140,80 +169,68 @@ export default function DetailHotspot() {
     });
   }, [date]);
 
-  useEffect(() => {
-    if (hotspotData && cropData) {
-      createTableData();
-    }
-  }, [hotspotData, cropData]);
-
-  const dotFactory = (
-    lat,
-    lon,
-    lineWidth = 20,
-    draggable = false,
-    lineColor = '#FB568A',
-    alpha = 0.4
-  ) => {
-    const dot = new sphere.Dot(
-      {
-        lon: lon,
-        lat: lat,
-      },
-      {
-        lineWidth: lineWidth,
-        draggable: draggable,
-        lineColor: hexToRGBA(lineColor, alpha),
-      }
-    );
-    return dot;
-  };
-
   if (hotspotData && isTableLoaded && map) {
     map.Overlays.clear();
+    let dot;
     hotspotData.result.forEach((item) => {
-      const dot = dotFactory(
-        JSON.parse(item.latitude),
-        JSON.parse(item.longitude),
-        20,
-        false,
-        getColorByCode(item.lu_hp),
-        0.4
-      );
-      map.Overlays.add(dot);
+      if (item.lu_hp === 'A101' && isRiceLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#FB568A',
+          0.4
+        );
+      } else if (item.lu_hp === 'A202' && isMaizeLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#FFC700',
+          0.4
+        );
+      } else if (item.lu_hp === 'A203' && isSugarcaneLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#00B4FF',
+          0.4
+        );
+      } else if (item.lu_hp === 'A999' && isOtherCropLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#00FF00',
+          0.4
+        );
+      } else if (item.lu_hp === 'F000' && isForestAreaLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#FF0000',
+          0.4
+        );
+      } else if (item.lu_hp === 'O000' && isOtherLoaded) {
+        dot = dotFactory(
+          JSON.parse(item.latitude),
+          JSON.parse(item.longitude),
+          20,
+          false,
+          '#FF00FF',
+          0.4
+        );
+      }
+      if (dot) map.Overlays.add(dot);
     });
   }
-
-  function getColorByCode(lu_hp) {
-    switch (lu_hp) {
-      case 'A101':
-        return '#FB568A';
-      case 'A202':
-        return '#FFC700';
-      case 'A203':
-        return '#00B4FF';
-      case 'A999':
-        return '#00FF00';
-      case 'F000':
-        return '#FF0000';
-      case 'O000':
-        return '#FF00FF';
-      default:
-        return '#000000';
-    }
-  }
-
-  const CultivationType = ({ color, label }) => {
-    return (
-      <div className='flex flex-row items-center space-x-2'>
-        <div>
-          <div className={`bg-[${color}] rounded-full w-5 h-5`}></div>
-        </div>
-        <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-          'landUse.' + label
-        )}`}</div>
-      </div>
-    );
-  };
 
   if (!hotspotData || !isTableLoaded) {
     return (
@@ -244,14 +261,6 @@ export default function DetailHotspot() {
             </LocalizationProvider>
           </ThemeProvider>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
-          <CultivationType color='#FB568A' label='นาข้าว' />
-          <CultivationType color='#FFC700' label='ข้าวโพดและไร่หมุนเวียน' />
-          <CultivationType color='#00B4FF' label='อ้อย' />
-          <CultivationType color='#00FF00' label='เกษตรอื่น ๆ' />
-          <CultivationType color='#FF0000' label='พื้นที่ป่า' />
-          <CultivationType color='#FF00FF' label='อื่น ๆ' />
-        </div>
         <div>
           <Stack spacing={-2}>
             <ThemeProvider theme={skeletonTheme}>
@@ -278,138 +287,57 @@ export default function DetailHotspot() {
       align: 'left',
     },
     {
+      width: 130,
+      label: t('spot'),
+      dataKey: 'spot',
+    },
+    {
       width: 100,
       label: t('district'),
       dataKey: 'district',
       renderButton: true,
     },
     {
-      width: 130,
-      label: t('spot'),
-      dataKey: 'spot',
-    },
-    {
-      width: 150,
+      width: 110,
       label: t('time'),
       dataKey: 'time',
     },
-    {
-      width: 120,
-      label: t('rai'),
-      dataKey: 'rai',
-    },
-    {
-      width: 120,
-      label: t('yield'),
-      dataKey: 'yields',
-    },
   ];
 
-  function createData(id, province, district, spot = 1, rai, yields, time) {
+  function createData(id, province, district, spot, time) {
     return {
       id,
       province,
       district,
-      spot,
-      rai: parseFloat(rai),
-      yields: parseFloat(yields),
+      spot: 1,
       time,
     };
   }
 
   const rowsMap = new Map();
 
-  const formatNumber = (number) => {
-    const formattedNumber = parseFloat(number).toFixed(3);
-    return parseFloat(formattedNumber).toLocaleString('en-US');
-  };
-
-  const createTableData = () => {
-    const maxLength = Math.max(
-      hotspotData.result.length,
-      cropData.result.length
-    );
-
-    for (let i = 0; i < maxLength; i++) {
-      const hotspotItem = hotspotData.result[i];
-      const cropItem = cropData.result[i];
-
-      const id = hotspotItem ? hotspotItem.changwat : cropItem.p_name;
-      const hour = hotspotItem
-        ? hotspotItem.th_time.toString().slice(0, 2).padStart(2, '0')
-        : '';
-      const minute = hotspotItem
-        ? hotspotItem.th_time.toString().slice(2, 4).padStart(2, '0')
-        : '';
-      const formattedTime = hotspotItem ? `${hour}:${minute}` : '';
-
-      if (hotspotItem && cropItem) {
-        if (rowsMap.has(id)) {
-          rowsMap.get(id).spot++;
-          rowsMap.get(id).rai += parseFloat(cropItem.rai);
-          rowsMap.get(id).yields += parseFloat(cropItem.yield);
-        } else {
-          rowsMap.set(
-            id,
-            createData(
-              hotspotItem.pv_idn,
-              i18n.language === 'th' ? hotspotItem.pv_tn : hotspotItem.pv_en,
-              i18n.language === 'th' ? hotspotItem.ap_tn : hotspotItem.ap_en,
-              1,
-              cropItem.rai,
-              cropItem.yield,
-              formattedTime
-            )
-          );
-        }
-      } else if (hotspotItem) {
-        // Handle case when cropData is shorter
-        if (rowsMap.has(id)) {
-          rowsMap.get(id).spot++;
-        } else {
-          rowsMap.set(
-            id,
-            createData(
-              hotspotItem.pv_idn,
-              i18n.language === 'th' ? hotspotItem.pv_tn : hotspotItem.pv_en,
-              i18n.language === 'th' ? hotspotItem.ap_tn : hotspotItem.ap_en,
-              0,
-              0,
-              0,
-              formattedTime
-            )
-          );
-        }
-      } else if (cropItem) {
-        // Handle case when hotspotData is shorter
-        if (rowsMap.has(id)) {
-          rowsMap.get(id).rai += parseFloat(cropItem.rai);
-          rowsMap.get(id).yields += parseFloat(cropItem.yield);
-        } else {
-          rowsMap.set(
-            id,
-            createData(
-              cropItem.p_code,
-              cropItem.p_name,
-              cropItem.a_name,
-              0,
-              cropItem.rai,
-              cropItem.yield,
-              '-'
-            )
-          );
-        }
-      }
+  hotspotData.result.forEach((item) => {
+    const key = item.pv_en;
+    const hour = item.th_time.toString().slice(0, 2).padStart(2, '0');
+    const minute = item.th_time.toString().slice(2, 4).padStart(2, '0');
+    const formattedTime = `${hour}:${minute}`;
+    if (rowsMap.has(key)) {
+      rowsMap.get(key).spot++;
+    } else {
+      rowsMap.set(
+        key,
+        createData(
+          item.pv_idn,
+          `${i18n.language === 'th' ? item.pv_tn : item.pv_en}`,
+          `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
+          1,
+          formattedTime
+        )
+      );
     }
-  };
+  });
 
-  if (hotspotData && cropData) createTableData();
-
-  const rows = Array.from(rowsMap.values()).map((row) => ({
-    ...row,
-    rai: formatNumber(row.rai),
-    yields: formatNumber(row.yields),
-  }));
+  const rows = Array.from(rowsMap.values());
 
   return (
     <div className='flex flex-col space-y-4 h-full'>
@@ -478,7 +406,10 @@ export default function DetailHotspot() {
           <div className='grid grid-cols-2 sm:grid-cols-3 '>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsRiceLoaded(!isRiceLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
@@ -491,7 +422,10 @@ export default function DetailHotspot() {
             </div>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsMaizeLoaded(!isMaizeLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
@@ -504,7 +438,10 @@ export default function DetailHotspot() {
             </div>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsSugarcaneLoaded(!isSugarcaneLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
@@ -517,7 +454,10 @@ export default function DetailHotspot() {
             </div>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsOtherCropLoaded(!isOtherCropLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
@@ -530,7 +470,10 @@ export default function DetailHotspot() {
             </div>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsForestAreaLoaded(!isForestAreaLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
@@ -543,7 +486,10 @@ export default function DetailHotspot() {
             </div>
             <div className='flex flex-row items-center'>
               <div>
-                <Checkbox defaultChecked />
+                <Checkbox
+                  defaultChecked
+                  onChange={() => setIsOtherLoaded(!isOtherLoaded)}
+                />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
