@@ -23,6 +23,12 @@ export default function Analysis() {
       if (e.features && e.features[0].geometry.coordinates.length === 1) {
         setArea(turf.area(e.features[0]));
         let count = 0;
+        riceCount = 0;
+        maizeCount = 0;
+        sugarcaneCount = 0;
+        otherCropCount = 0;
+        forestAreaCount = 0;
+        otherCount = 0;
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
           const coord = e.features[0].geometry.coordinates[i];
           let outputArray = [];
@@ -57,6 +63,12 @@ export default function Analysis() {
       } else {
         setArea(turf.area(e.createdFeatures[0]));
         let count = 0;
+        riceCount = 0;
+        maizeCount = 0;
+        sugarcaneCount = 0;
+        otherCropCount = 0;
+        forestAreaCount = 0;
+        otherCount = 0;
         for (
           let i = 0;
           i < e.createdFeatures[0].geometry.coordinates.length;
@@ -74,6 +86,20 @@ export default function Analysis() {
           dots.forEach((dot) => {
             if (geom.contains(dot)) {
               count++;
+              let data = dot._geojson.properties.data;
+              if (data === 'A101') {
+                riceCount++;
+              } else if (data === 'A202') {
+                maizeCount++;
+              } else if (data === 'A203') {
+                sugarcaneCount++;
+              } else if (data === 'A999') {
+                otherCropCount++;
+              } else if (data === 'F000') {
+                forestAreaCount++;
+              } else if (data === 'O000') {
+                otherCount++;
+              }
             }
           });
         }
@@ -96,6 +122,12 @@ export default function Analysis() {
       if (e.features[0].geometry.coordinates.length === 1) {
         setArea(turf.area(e.features[0]));
         let count = 0;
+        riceCount = 0;
+        maizeCount = 0;
+        sugarcaneCount = 0;
+        otherCropCount = 0;
+        forestAreaCount = 0;
+        otherCount = 0;
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
           let outputArray = [];
           const coord = e.features[0].geometry.coordinates[i];
@@ -109,6 +141,20 @@ export default function Analysis() {
           dots.forEach((dot) => {
             if (geom.contains(dot)) {
               count++;
+              let data = dot._geojson.properties.data;
+              if (data === 'A101') {
+                riceCount++;
+              } else if (data === 'A202') {
+                maizeCount++;
+              } else if (data === 'A203') {
+                sugarcaneCount++;
+              } else if (data === 'A999') {
+                otherCropCount++;
+              } else if (data === 'F000') {
+                forestAreaCount++;
+              } else if (data === 'O000') {
+                otherCount++;
+              }
             }
           });
         }
@@ -116,6 +162,12 @@ export default function Analysis() {
       } else {
         setArea(turf.area(e.features[0]));
         let count = 0;
+        riceCount = 0;
+        maizeCount = 0;
+        sugarcaneCount = 0;
+        otherCropCount = 0;
+        forestAreaCount = 0;
+        otherCount = 0;
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
           let outputArray = [];
           const coord = e.features[0].geometry.coordinates[i][0];
@@ -129,6 +181,20 @@ export default function Analysis() {
           dots.forEach((dot) => {
             if (geom.contains(dot)) {
               count++;
+              let data = dot._geojson.properties.data;
+              if (data === 'A101') {
+                riceCount++;
+              } else if (data === 'A202') {
+                maizeCount++;
+              } else if (data === 'A203') {
+                sugarcaneCount++;
+              } else if (data === 'A999') {
+                otherCropCount++;
+              } else if (data === 'F000') {
+                forestAreaCount++;
+              } else if (data === 'O000') {
+                otherCount++;
+              }
             }
           });
         }
@@ -166,12 +232,18 @@ export default function Analysis() {
               จำนวนจุดความร้อนที่อยู่ในพื้นที่: {dotCount} จุด
             </h1>
             <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-              ประเภทของพื้นที่ที่เกิดจุดความร้อนในพื้นที่:<br />
-              rice: {riceCount}<br />
-              maize: {maizeCount}<br />
-              sugarcane: {sugarcaneCount}<br />
-              otherCrop: {otherCropCount}<br />
-              forestArea: {forestAreaCount}<br />
+              ประเภทของพื้นที่ที่เกิดจุดความร้อนในพื้นที่:
+              <br />
+              rice: {riceCount}
+              <br />
+              maize: {maizeCount}
+              <br />
+              sugarcane: {sugarcaneCount}
+              <br />
+              otherCrop: {otherCropCount}
+              <br />
+              forestArea: {forestAreaCount}
+              <br />
               other: {otherCount}
             </h1>
           </div>

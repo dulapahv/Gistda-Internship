@@ -208,7 +208,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#00B4FF',
-          0.4
+          0.4,
+          item.lu_hp
         );
       } else if (item.lu_hp === 'A999' && isOtherCropLoaded) {
         dot = dotFactory(
