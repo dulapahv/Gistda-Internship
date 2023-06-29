@@ -90,12 +90,12 @@ export default function Visual() {
           // see more options https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md#options
           const drawOptions = {
             controls: {
-              point: true,
+              point: false,
               line_string: false,
               polygon: true,
               trash: true,
               combine_features: true,
-              uncombine_features: true,
+              uncombine_features: false,
             },
           };
           var drawPanel = new window.MapboxDraw(drawOptions);

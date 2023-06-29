@@ -96,13 +96,18 @@ const hexToRGBA = (hex, alpha) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
+let dots = [];
+
+export const getDots = () => dots;
+
 const dotFactory = (
   lat,
   lon,
   lineWidth = 20,
   draggable = false,
   lineColor = '#FB568A',
-  alpha = 0.4
+  alpha = 0.4,
+  land_use = 'rice'
 ) => {
   const dot = new sphere.Dot(
     {
@@ -113,8 +118,10 @@ const dotFactory = (
       lineWidth: lineWidth,
       draggable: draggable,
       lineColor: hexToRGBA(lineColor, alpha),
+      data: land_use,
     }
   );
+  dots.push(dot);
   return dot;
 };
 
@@ -171,6 +178,7 @@ export default function DetailHotspot() {
 
   if (hotspotData && isTableLoaded && map) {
     map.Overlays.clear();
+    dots = [];
     let dot;
     hotspotData.result.forEach((item) => {
       if (item.lu_hp === 'A101' && isRiceLoaded) {
@@ -180,7 +188,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#FB568A',
-          0.4
+          0.4,
+          item.lu_hp
         );
       } else if (item.lu_hp === 'A202' && isMaizeLoaded) {
         dot = dotFactory(
@@ -189,7 +198,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#FFC700',
-          0.4
+          0.4,
+          item.lu_hp
         );
       } else if (item.lu_hp === 'A203' && isSugarcaneLoaded) {
         dot = dotFactory(
@@ -207,7 +217,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#00FF00',
-          0.4
+          0.4,
+          item.lu_hp
         );
       } else if (item.lu_hp === 'F000' && isForestAreaLoaded) {
         dot = dotFactory(
@@ -216,7 +227,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#FF0000',
-          0.4
+          0.4,
+          item.lu_hp
         );
       } else if (item.lu_hp === 'O000' && isOtherLoaded) {
         dot = dotFactory(
@@ -225,7 +237,8 @@ export default function DetailHotspot() {
           20,
           false,
           '#FF00FF',
-          0.4
+          0.4,
+          item.lu_hp
         );
       }
       if (dot) map.Overlays.add(dot);
