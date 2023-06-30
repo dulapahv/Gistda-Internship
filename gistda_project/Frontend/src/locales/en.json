@@ -25,7 +25,8 @@
   "district": "District",
   "subDistrict": "Sub-district",
   "rank": "Rank",
-  "spot": "Hotspot",
+  "hotspot": "Hotspot",
+  "spot": "Spot",
   "date": "Date",
   "time": "Time",
   "month": "Month",
@@ -45,6 +46,8 @@
   },
   "showCropType": "Show Crop Type",
   "showHotspotInLandType": "Show Hotspot in Land Usage",
+  "amountHotspotInLandType": "Amount of Hotspot in Land Usage",
+  "allHotspotInLandType": "All Amount of Hotspot in Land Usage",
   "landUse": {
     "นาข้าว": "Rice Field",
     "ข้าวโพดและไร่หมุนเวียน": "Maize and Swidden Fields",
@@ -56,6 +59,9 @@
   "noData": "No Data",
   "rai": "Rai",
   "yield": "Yield",
+  "area": "Area",
+  "sqm": "sq.m.",
+  "drawAreaRequest": "Please Draw Your Area of Interest to Begin Analysis",
   "pv": {
     "ลำพูน": "Lamphun",
     "ยโสธร": "Yasothon",

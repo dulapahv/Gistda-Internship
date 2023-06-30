@@ -23,6 +23,15 @@ import { TableOverview } from '../components';
 
 const baseURL = 'http://localhost:3001/';
 
+const color = {
+  rice: '#fb6584',
+  maize: '#48a1e9',
+  sugarcane: '#fbce5c',
+  otherCrop: '#56c0c0',
+  forest: '#9c63fd',
+  other: '#fba046',
+};
+
 const buttonTheme = createTheme({
   palette: {
     mode: JSON.parse(localStorage.getItem('theme')),
@@ -105,8 +114,8 @@ const dotFactory = (
   lon,
   lineWidth = 20,
   draggable = false,
-  lineColor = '#FB568A',
-  alpha = 0.4,
+  lineColor = color.rice,
+  alpha = 0.5,
   land_use = 'rice'
 ) => {
   const dot = new sphere.Dot(
@@ -137,7 +146,7 @@ export default function DetailHotspot() {
   const [isMaizeLoaded, setIsMaizeLoaded] = useState(true);
   const [isSugarcaneLoaded, setIsSugarcaneLoaded] = useState(true);
   const [isOtherCropLoaded, setIsOtherCropLoaded] = useState(true);
-  const [isForestAreaLoaded, setIsForestAreaLoaded] = useState(true);
+  const [isForestLoaded, setIsForestLoaded] = useState(true);
   const [isOtherLoaded, setIsOtherLoaded] = useState(true);
 
   const fetchData = async ({ query, setData }) => {
@@ -187,8 +196,8 @@ export default function DetailHotspot() {
           JSON.parse(item.longitude),
           20,
           false,
-          '#FB568A',
-          0.4,
+          color.rice,
+          0.5,
           item.lu_hp
         );
       } else if (item.lu_hp === 'A202' && isMaizeLoaded) {
@@ -197,8 +206,8 @@ export default function DetailHotspot() {
           JSON.parse(item.longitude),
           20,
           false,
-          '#FFC700',
-          0.4,
+          color.maize,
+          0.5,
           item.lu_hp
         );
       } else if (item.lu_hp === 'A203' && isSugarcaneLoaded) {
@@ -207,8 +216,8 @@ export default function DetailHotspot() {
           JSON.parse(item.longitude),
           20,
           false,
-          '#00B4FF',
-          0.4,
+          color.sugarcane,
+          0.5,
           item.lu_hp
         );
       } else if (item.lu_hp === 'A999' && isOtherCropLoaded) {
@@ -217,17 +226,17 @@ export default function DetailHotspot() {
           JSON.parse(item.longitude),
           20,
           false,
-          '#00FF00',
-          0.4,
+          color.otherCrop,
+          0.5,
           item.lu_hp
         );
-      } else if (item.lu_hp === 'F000' && isForestAreaLoaded) {
+      } else if (item.lu_hp === 'F000' && isForestLoaded) {
         dot = dotFactory(
           JSON.parse(item.latitude),
           JSON.parse(item.longitude),
           20,
           false,
-          '#FF0000',
+          color.forest,
           0.4,
           item.lu_hp
         );
@@ -237,8 +246,8 @@ export default function DetailHotspot() {
           JSON.parse(item.longitude),
           20,
           false,
-          '#FF00FF',
-          0.4,
+          color.other,
+          0.5,
           item.lu_hp
         );
       }
@@ -302,8 +311,8 @@ export default function DetailHotspot() {
     },
     {
       width: 130,
-      label: t('spot'),
-      dataKey: 'spot',
+      label: t('hotspot'),
+      dataKey: 'hotspot',
     },
     {
       width: 100,
@@ -318,13 +327,14 @@ export default function DetailHotspot() {
     },
   ];
 
-  function createData(id, province, district, spot, time) {
+  function createData(id, province, district, hotspot, time, date) {
     return {
       id,
       province,
       district,
-      spot: 1,
+      hotspot: 1,
       time,
+      date,
     };
   }
 
@@ -336,7 +346,7 @@ export default function DetailHotspot() {
     const minute = item.th_time.toString().slice(2, 4).padStart(2, '0');
     const formattedTime = `${hour}:${minute}`;
     if (rowsMap.has(key)) {
-      rowsMap.get(key).spot++;
+      rowsMap.get(key).hotspot++;
     } else {
       rowsMap.set(
         key,
@@ -345,7 +355,8 @@ export default function DetailHotspot() {
           `${i18n.language === 'th' ? item.pv_tn : item.pv_en}`,
           `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
           1,
-          formattedTime
+          formattedTime,
+          date.format('DD-MM-YY')
         )
       );
     }
@@ -427,7 +438,7 @@ export default function DetailHotspot() {
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#FB568A] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#fb6584] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.นาข้าว'
@@ -443,7 +454,7 @@ export default function DetailHotspot() {
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#FFC700] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#48a1e9] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.ข้าวโพดและไร่หมุนเวียน'
@@ -459,7 +470,7 @@ export default function DetailHotspot() {
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#00B4FF] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#fbce5c] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.อ้อย'
@@ -475,7 +486,7 @@ export default function DetailHotspot() {
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#00FF00] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#56c0c0] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.เกษตรอื่น ๆ'
@@ -486,12 +497,12 @@ export default function DetailHotspot() {
               <div>
                 <Checkbox
                   defaultChecked
-                  onChange={() => setIsForestAreaLoaded(!isForestAreaLoaded)}
+                  onChange={() => setIsForestLoaded(!isForestLoaded)}
                 />
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#FF0000] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#9c63fd] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.พื้นที่ป่า'
@@ -507,7 +518,7 @@ export default function DetailHotspot() {
               </div>
               <div className='flex flex-row items-center space-x-2'>
                 <div>
-                  <div className={`bg-[#FF00FF] rounded-full w-5 h-5`}></div>
+                  <div className='bg-[#fba046] rounded-full w-5 h-5'></div>
                 </div>
                 <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
                   'landUse.อื่น ๆ'
@@ -530,7 +541,7 @@ export default function DetailHotspot() {
             rows={rows}
             height='100%'
             colSortDisabled={['district']}
-            colSortDefault='spot'
+            colSortDefault='hotspot'
           />
         </div>
       )}

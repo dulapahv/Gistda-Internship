@@ -10,6 +10,6 @@ module.exports = {
       'kanit': ['Kanit', 'sans-serif'],
     }
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 }
 
