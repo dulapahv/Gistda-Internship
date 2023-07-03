@@ -9,6 +9,7 @@ import * as turf from '@turf/turf';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
+import Button from '@mui/material/Button';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,8 +18,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 import { map, sphere } from '../components';
 
@@ -29,6 +31,8 @@ const tableTheme = createTheme({
     mode: JSON.parse(localStorage.getItem('theme')),
     primary: {
       main: '#F390B0',
+      dark: '#FF99BA',
+      contrastText: '#ffffff',
     },
   },
   typography: {
@@ -60,15 +64,24 @@ export default function Tablesort({
 }) {
   const { t, i18n } = useTranslation();
   const [coordinates, setCoordinates] = useState();
-  const [rowData, setRowData] = useState(rows);
+  const [columnsData, setColumnsData] = useState([columns]);
+  const [rowData, setRowData] = useState([rows]);
   const [district, setDistrict] = useState();
   const [subDistrict, setSubDistrict] = useState();
   const [sortConfig, setSortConfig] = useState({
     key: colSortDefault,
     direction: 'desc',
   });
-  const [date, setDate] = useState();
-  const [time, setTime] = useState();
+  const [colDisabled, setColDisabled] = useState(colSortDisabled);
+  const [date, setDate] = useState(dayjs('2023-03-06'));
+  const [zoom, setZoom] = useState([
+    {
+      minLon: 97.345,
+      minLat: 5.612,
+      maxLon: 105.819,
+      maxLat: 20.464,
+    },
+  ]);
 
   const fetchData = async ({ query, setData }) => {
     // setIsTableLoaded(false);
@@ -100,30 +113,34 @@ export default function Tablesort({
 
     if (points.length > 0) {
       const bbox = turf.bbox(turf.featureCollection(points));
-      sphere.Bound = {
-        minLon: bbox[0],
-        minLat: bbox[1],
-        maxLon: bbox[2],
-        maxLat: bbox[3],
-      };
-      map.bound(sphere.Bound);
+      const zoomTemp = [
+        ...zoom,
+        {
+          minLon: bbox[0],
+          minLat: bbox[1],
+          maxLon: bbox[2],
+          maxLat: bbox[3],
+        },
+      ];
+      setZoom(zoomTemp);
+      map.bound(zoomTemp.slice(-1)[0]);
     } else {
       console.log('No valid coordinates found.');
     }
   }, [coordinates]);
 
-  function createData(id, province, district, hotspot, time) {
+  function createDataDistrict(id, district, hotspot, subDistrict, time, date) {
     return {
       id,
-      province,
       district,
+      subDistrict,
       hotspot: 1,
       time,
+      date,
     };
   }
 
   useEffect(() => {
-    console.log(district);
     if (district) {
       const rowsMap = new Map();
 
@@ -137,41 +154,158 @@ export default function Tablesort({
         } else {
           rowsMap.set(
             key,
-            createData(
-              item.pv_idn,
+            createDataDistrict(
+              item.ap_idn,
               `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
               `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
               1,
-              formattedTime
+              formattedTime,
+              date.format('DD-MM-YY')
             )
           );
         }
       });
 
-      console.log(rowsMap);
+      const tempCol = [
+        columnsData,
+        [
+          {
+            width: 120,
+            label: t('district'),
+            dataKey: 'district',
+            align: 'left',
+          },
+          {
+            width: 130,
+            label: t('hotspot'),
+            dataKey: 'hotspot',
+          },
+          {
+            width: 100,
+            label: t('subDistrict'),
+            dataKey: 'subDistrict',
+            renderButton: true,
+          },
+          {
+            width: 110,
+            label: t('time'),
+            dataKey: 'time',
+          },
+        ],
+      ];
+      setColumnsData(tempCol);
 
-      setRowData(Array.from(rowsMap.values()));
+      const tempRow = [rowData, Array.from(rowsMap.values())];
+      setRowData(tempRow);
+
+      setColDisabled([colDisabled, 'subDistrict']);
     }
   }, [district]);
 
-  const handlePvClick = (row) => {
-    fetchData({
-      query: `data=thai_coord&select=lat,long&where=ch_id='${row.id}'`,
-      setData: setCoordinates,
-    });
+  function createDataSubDistrict(id, subDistrict, hotspot, time, date) {
+    return {
+      id,
+      subDistrict,
+      hotspot: 1,
+      time,
+      date,
+    };
+  }
 
-    // const month = dayjs(row.date, 'DD-MM-YY').format('MM');
-    // fetchData({
-    //   query: `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_time&where=acq_date='${row.date}'AND pv_idn='${row.id}'`,
-    //   setData: setDistrict,
-    // });
+  useEffect(() => {
+    if (subDistrict) {
+      const rowsMap = new Map();
+
+      subDistrict.result.forEach((item) => {
+        const key = item.tb_en;
+        const hour = item.th_time.toString().slice(0, 2).padStart(2, '0');
+        const minute = item.th_time.toString().slice(2, 4).padStart(2, '0');
+        const formattedTime = `${hour}:${minute}`;
+        if (rowsMap.has(key)) {
+          rowsMap.get(key).hotspot++;
+        } else {
+          rowsMap.set(
+            key,
+            createDataSubDistrict(
+              item.tb_idn,
+              `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
+              1,
+              formattedTime,
+              date.format('DD-MM-YY')
+            )
+          );
+        }
+      });
+
+      const tempCol = [
+        columnsData,
+        [
+          {
+            width: 120,
+            label: t('subDistrict'),
+            dataKey: 'subDistrict',
+            align: 'left',
+          },
+          {
+            width: 130,
+            label: t('hotspot'),
+            dataKey: 'hotspot',
+          },
+          {
+            width: 110,
+            label: t('time'),
+            dataKey: 'time',
+          },
+        ],
+      ];
+      setColumnsData(tempCol);
+
+      const tempRow = [rowData, Array.from(rowsMap.values())];
+      setRowData(tempRow);
+
+      setColDisabled([colDisabled, '']);
+    }
+  }, [subDistrict]);
+
+  const handleClick = (row) => {
+    setDate(dayjs(row.date, 'DD-MM-YY'));
+    if (!district) {
+      fetchData({
+        query: `data=thai_coord&select=lat,long&where=ch_id='${row.id}'`,
+        setData: setCoordinates,
+      });
+
+      fetchData({
+        query: `data=hotspot_2023${date.format(
+          'MM'
+        )}&select=latitude,longitude,lu_hp,ap_tn,tb_tn,ap_en,tb_en,pv_idn,ap_idn,th_time&where=acq_date='${
+          row.date
+        }'AND pv_idn='${row.id}'`,
+        setData: setDistrict,
+      });
+    } else {
+      fetchData({
+        query: `data=thai_coord&select=lat,long&where=am_id='${row.id}'`,
+        setData: setCoordinates,
+      });
+
+      fetchData({
+        query: `data=hotspot_2023${date.format(
+          'MM'
+        )}&select=latitude,longitude,lu_hp,tb_tn,tb_en,pv_idn,th_time&where=acq_date='${
+          row.date
+        }'AND ap_idn='${row.id}'`,
+
+        setData: setSubDistrict,
+      });
+    }
   };
 
   function fixedHeaderContent() {
-    if (!columns) return null;
+    if (!columnsData.slice(-1)[0]) return null;
 
     const requestSort = (key) => {
-      if (colSortDisabled.includes(key.dataKey)) {
+      if (colDisabled.slice(-1)[0].includes(key.dataKey)) {
         return;
       }
 
@@ -181,7 +315,6 @@ export default function Tablesort({
       }
       setSortConfig({ key, direction });
     };
-
     return (
       <TableRow>
         <TableCell
@@ -195,26 +328,28 @@ export default function Tablesort({
             {t('rank')}
           </Typography>
         </TableCell>
-        {columns.map((column, columnIndex) => (
+        {columnsData.slice(-1)[0].map((column, columnIndex) => (
           <TableCell
             key={column.dataKey}
             variant='head'
             align={column.align || 'center'}
             style={{ width: column.width }}
             className={`bg-[#f7eff2] dark:bg-[#2c2c2c] cursor-${
-              colSortDisabled.includes(column.dataKey) ? 'default' : 'pointer'
+              colDisabled.slice(-1)[0].includes(column.dataKey)
+                ? 'default'
+                : 'pointer'
             } ${
-              !colSortDisabled.includes(column.dataKey)
+              !colDisabled.slice(-1)[0].includes(column.dataKey)
                 ? 'hover:bg-[#f7e8ec] dark:hover:bg-[#4b3b40]'
                 : ''
             } ${
-              colSortDisabled.includes(column.dataKey)
+              colDisabled.slice(-1)[0].includes(column.dataKey)
                 ? 'pointer-events-none'
                 : 'pointer-events-auto'
             }`}
             onClick={() => requestSort(column.dataKey)}
           >
-            {!colSortDisabled.includes(column.dataKey) ? (
+            {!colDisabled.slice(-1)[0].includes(column.dataKey) ? (
               <TableSortLabel
                 active={sortConfig.key === column.dataKey}
                 direction={
@@ -257,15 +392,15 @@ export default function Tablesort({
         <TableCell align='center' className={rowClasses}>
           <Typography variant='body1'>{runningNumber}</Typography>
         </TableCell>
-        {columns.map((column, columnIndex) => (
+        {columnsData.slice(-1)[0].map((column, columnIndex) => (
           <TableCell
             key={column.dataKey}
             align={column.align || 'center'}
             className={rowClasses}
           >
             {column.renderButton ? (
-              <IconButton size='small' onClick={() => handlePvClick(row)}>
-                <FormatListNumberedIcon />
+              <IconButton size='small' onClick={() => handleClick(row)}>
+                <ManageSearchIcon />
               </IconButton>
             ) : (
               row[column.dataKey]
@@ -277,8 +412,8 @@ export default function Tablesort({
   }
 
   const sortedRows =
-    rowData &&
-    rowData.sort((a, b) => {
+    rowData.slice(-1)[0] &&
+    rowData.slice(-1)[0].sort((a, b) => {
       if (sortConfig.direction === 'asc')
         return a[sortConfig.key] > b[sortConfig.key] ? 1 : -1;
       if (sortConfig.direction === 'desc')
@@ -286,17 +421,47 @@ export default function Tablesort({
       return 0;
     });
 
-  const dat = sortConfig.key ? sortedRows : rowData;
+  const dat = sortConfig.key ? sortedRows : rowData.slice(-1)[0];
   return (
-    <Paper style={{ height, width: '100%' }}>
-      <ThemeProvider theme={tableTheme}>
+    <ThemeProvider theme={tableTheme}>
+      <Paper
+        style={{
+          height: district || subDistrict ? 'calc(100% - 40px)' : '100%',
+          width: '100%',
+        }}
+      >
         <TableVirtuoso
           data={dat}
           components={VirtuosoTableComponents}
           fixedHeaderContent={fixedHeaderContent}
           itemContent={rowContent}
         />
-      </ThemeProvider>
-    </Paper>
+      </Paper>
+      {district || subDistrict ? (
+        <div className='mt-[14px]'>
+          <Button
+            variant='contained'
+            startIcon={<ArrowBackIosIcon />}
+            onClick={() => {
+              if (district && subDistrict) setSubDistrict();
+              else if (district) setDistrict();
+              else setSubDistrict();
+              columnsData.pop();
+              rowData.pop();
+              colDisabled.pop();
+              zoom.pop();
+              setColumnsData(columnsData.slice(-1)[0]);
+              setRowData(rowData.slice(-1)[0]);
+              setColDisabled(colDisabled.slice(-1)[0]);
+              map.bound(zoom.slice(-1)[0]);
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
+      ) : (
+        ''
+      )}
+    </ThemeProvider>
   );
 }

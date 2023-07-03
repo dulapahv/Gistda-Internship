@@ -12,8 +12,10 @@ import Checkbox from '@mui/material/Checkbox';
 import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
+import BorderAllIcon from '@mui/icons-material/BorderAll';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import BorderClearIcon from '@mui/icons-material/BorderClear';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -168,7 +170,7 @@ export default function DetailHotspot() {
       date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
     const dateCrop = date.format('YYYY-MM') + '-' + lastDate;
 
-    const hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_time&where=acq_date='${date.format(
+    const hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,pv_en,ap_en,pv_idn,th_time&where=acq_date='${date.format(
       'DD-MM-YY'
     )}'`;
     // const cropQuery = `data=${crop}_2023${month}${lastDate}&select=p_name,rai,yield&where=data_date='${dateCrop}'`;
@@ -371,6 +373,7 @@ export default function DetailHotspot() {
           <Button
             variant='contained'
             className='h-full w-full min-h-50 !capitalize'
+            startIcon={boundary ? <BorderClearIcon /> : <BorderAllIcon />}
             onClick={() => setBoundary(!boundary)}
             color={boundary ? 'secondary' : 'primary'}
           >

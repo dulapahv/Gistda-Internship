@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import VrpanoIcon from '@mui/icons-material/Vrpano';
 import ToggleButton from '@mui/material/ToggleButton';
 import LinearProgress from '@mui/material/LinearProgress';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -79,6 +81,13 @@ export default function Visual() {
   }, 3000);
 
   if (isMapLoaded) {
+    // sphere.Bound = {
+    //   minLon: 97.345,
+    //   minLat: 5.612,
+    //   maxLon: 105.819,
+    //   maxLat: 20.464,
+    // };
+    // map.bound(sphere.Bound);
     if (!window.sphereDrawLoaded) {
       window.sphereDrawLoaded = true;
       window.sphere.Util.loadStyle(
@@ -106,7 +115,7 @@ export default function Visual() {
   }
 
   return (
-    <div className='px-5 h-fit xl:h-screen xl:mb-44'>
+    <div className='px-5 h-fit xl:h-screen xl:mb-44 min-h-[820px]'>
       <Header
         text={page === 'overviewPage' ? 'overviewTitle' : 'analysisTitle'}
       />
@@ -121,9 +130,11 @@ export default function Visual() {
                 onChange={handleAlignment}
               >
                 <ToggleButton value='overviewPage' className='!capitalize'>
+                  <VrpanoIcon className='mr-2' />
                   {t('map_type.overall')}
                 </ToggleButton>
                 <ToggleButton value='analysisPage' className='!capitalize'>
+                  <QueryStatsIcon className='mr-2' />
                   {t('map_type.analysis')}
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -143,7 +154,10 @@ export default function Visual() {
               <Map mapStyle='h-full w-full' />
             </div>
           </div>
-          <div id='overviewPage' className='xl:w-2/5 p-4 order-2 xl:order-1'>
+          <div
+            id='overviewPage'
+            className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'
+          >
             <Overview />
           </div>
           <div
