@@ -476,7 +476,7 @@ export default function Tablesort({
               startIcon={<ArrowBackIosIcon />}
               onClick={goBack}
             >
-              Go Back
+              {t('back')}
             </Button>
           </div>
           <div>
@@ -485,24 +485,44 @@ export default function Tablesort({
               aria-label='breadcrumb'
             >
               <Link
-                underline='none'
-                key='1'
+                underline='hover'
                 color='inherit'
-                // onClick={() => {}}
-                // className='cursor-pointer'
+                onClick={() => {
+                  setDistrict();
+                  setSubDistrict();
+                  setZoom([
+                    {
+                      minLon: 97.345,
+                      minLat: 5.612,
+                      maxLon: 105.819,
+                      maxLat: 20.464,
+                    },
+                  ]);
+                  setRowData([rows]);
+                  setColumnsData([columns]);
+                  setSortConfig({
+                    key: colSortDefault,
+                    direction: 'desc',
+                  });
+                  setColDisabled(colSortDisabled);
+                  map.bound(zoom[0]);
+                }}
+                className='cursor-pointer'
               >
-                ไทย
+                {t('thailand')}
               </Link>
               {district ? (
                 <Link
-                  // underline={subDistrict ? 'hover' : 'none'}
-                  underline='none'
-                  key='2'
+                  underline={subDistrict ? 'hover' : 'none'}
                   color={subDistrict ? 'inherit' : 'text.primary'}
-                  // onClick={subDistrict ? goBack : null}
-                  // className={subDistrict ? 'cursor-pointer' : ''}
+                  onClick={subDistrict ? goBack : null}
+                  className={subDistrict ? 'cursor-pointer' : ''}
                 >
-                  {district ? district.result[0].pv_tn : ''}
+                  {district
+                    ? i18n.language === 'th'
+                      ? district.result[0].pv_tn
+                      : district.result[0].pv_en
+                    : ''}
                 </Link>
               ) : (
                 ''
@@ -510,12 +530,13 @@ export default function Tablesort({
               {subDistrict ? (
                 <Link
                   underline='none'
-                  key='3'
                   color={subDistrict ? 'text.primary' : 'inherit'}
-                  // onClick={handleClick2}
-                  // className='cursor-pointer'
                 >
-                  {subDistrict ? subDistrict.result[0].ap_tn : ''}
+                  {subDistrict
+                    ? i18n.language === 'th'
+                      ? subDistrict.result[0].ap_tn
+                      : subDistrict.result[0].ap_en
+                    : ''}
                 </Link>
               ) : (
                 ''
