@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import VrpanoIcon from '@mui/icons-material/Vrpano';
+import PublicIcon from '@mui/icons-material/Public';
 import ToggleButton from '@mui/material/ToggleButton';
 import LinearProgress from '@mui/material/LinearProgress';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Analysis, Overview } from '.';
@@ -130,11 +130,11 @@ export default function Visual() {
                 onChange={handleAlignment}
               >
                 <ToggleButton value='overviewPage' className='!capitalize'>
-                  <VrpanoIcon className='mr-2' />
+                  <PublicIcon className='mr-2' />
                   {t('map_type.overall')}
                 </ToggleButton>
                 <ToggleButton value='analysisPage' className='!capitalize'>
-                  <QueryStatsIcon className='mr-2' />
+                  <TravelExploreIcon className='mr-2' />
                   {t('map_type.analysis')}
                 </ToggleButton>
               </ToggleButtonGroup>

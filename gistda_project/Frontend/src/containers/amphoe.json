@@ -1,0 +1,4647 @@
+[
+  {
+    "am_id": 1001,
+    "amphoe_t": "เขต พระนคร",
+    "amphoe_e": "Phra Nakhon"
+  },
+  {
+    "am_id": 1002,
+    "amphoe_t": "เขต ดุสิต",
+    "amphoe_e": "Dusit"
+  },
+  {
+    "am_id": 1003,
+    "amphoe_t": "เขต หนองจอก",
+    "amphoe_e": "Nong Chok"
+  },
+  {
+    "am_id": 1004,
+    "amphoe_t": "เขต บางรัก",
+    "amphoe_e": "Bang Rak"
+  },
+  {
+    "am_id": 1005,
+    "amphoe_t": "เขต บางเขน",
+    "amphoe_e": "Bang Khen"
+  },
+  {
+    "am_id": 1006,
+    "amphoe_t": "เขต บางกะปิ",
+    "amphoe_e": "Bang Kapi"
+  },
+  {
+    "am_id": 1007,
+    "amphoe_t": "เขต ปทุมวัน",
+    "amphoe_e": "Pathum Wan"
+  },
+  {
+    "am_id": 1008,
+    "amphoe_t": "เขต ป้อมปราบศัตรูพ่าย",
+    "amphoe_e": "Pom Prap Sattruphai"
+  },
+  {
+    "am_id": 1009,
+    "amphoe_t": "เขต พระโขนง",
+    "amphoe_e": "Phra Khanong"
+  },
+  {
+    "am_id": 1010,
+    "amphoe_t": "เขต มีนบุรี",
+    "amphoe_e": "Min Buri"
+  },
+  {
+    "am_id": 1011,
+    "amphoe_t": "เขต ลาดกระบัง",
+    "amphoe_e": "Lat Krabang"
+  },
+  {
+    "am_id": 1012,
+    "amphoe_t": "เขต ยานนาวา",
+    "amphoe_e": "Yannawa"
+  },
+  {
+    "am_id": 1013,
+    "amphoe_t": "เขต สัมพันธวงศ์",
+    "amphoe_e": "Samphanthawong"
+  },
+  {
+    "am_id": 1014,
+    "amphoe_t": "เขต พญาไท",
+    "amphoe_e": "Phaya Thai"
+  },
+  {
+    "am_id": 1015,
+    "amphoe_t": "เขต ธนบุรี",
+    "amphoe_e": "Thon Buri"
+  },
+  {
+    "am_id": 1016,
+    "amphoe_t": "เขต บางกอกใหญ่",
+    "amphoe_e": "Bangkok Yai"
+  },
+  {
+    "am_id": 1017,
+    "amphoe_t": "เขต ห้วยขวาง",
+    "amphoe_e": "Huai Khwang"
+  },
+  {
+    "am_id": 1018,
+    "amphoe_t": "เขต คลองสาน",
+    "amphoe_e": "Khlong San"
+  },
+  {
+    "am_id": 1019,
+    "amphoe_t": "เขต ตลิ่งชัน",
+    "amphoe_e": "Taling Chan"
+  },
+  {
+    "am_id": 1020,
+    "amphoe_t": "เขต บางกอกน้อย",
+    "amphoe_e": "Bangkok Noi"
+  },
+  {
+    "am_id": 1021,
+    "amphoe_t": "เขต บางขุนเทียน",
+    "amphoe_e": "Bang Khun Thian"
+  },
+  {
+    "am_id": 1022,
+    "amphoe_t": "เขต ภาษีเจริญ",
+    "amphoe_e": "Phasi Charoen"
+  },
+  {
+    "am_id": 1023,
+    "amphoe_t": "เขต หนองแขม",
+    "amphoe_e": "Nong Khaem"
+  },
+  {
+    "am_id": 1024,
+    "amphoe_t": "เขต ราษฎร์บูรณะ",
+    "amphoe_e": "Rat Burana"
+  },
+  {
+    "am_id": 1025,
+    "amphoe_t": "เขต บางพลัด",
+    "amphoe_e": "Bang Phlat"
+  },
+  {
+    "am_id": 1026,
+    "amphoe_t": "เขต ดินแดง",
+    "amphoe_e": "Din Daeng"
+  },
+  {
+    "am_id": 1027,
+    "amphoe_t": "เขต บึงกุ่ม",
+    "amphoe_e": "Bung Kum"
+  },
+  {
+    "am_id": 1028,
+    "amphoe_t": "เขต สาทร",
+    "amphoe_e": "Sa Thon"
+  },
+  {
+    "am_id": 1029,
+    "amphoe_t": "เขต บางซื่อ",
+    "amphoe_e": "Bang Su"
+  },
+  {
+    "am_id": 1030,
+    "amphoe_t": "เขต จตุจักร",
+    "amphoe_e": "Chatuchak"
+  },
+  {
+    "am_id": 1031,
+    "amphoe_t": "เขต บางคอแหลม",
+    "amphoe_e": "Bang Kho Laem"
+  },
+  {
+    "am_id": 1032,
+    "amphoe_t": "เขต ประเวศ",
+    "amphoe_e": "Prawet"
+  },
+  {
+    "am_id": 1033,
+    "amphoe_t": "เขต คลองเตย",
+    "amphoe_e": "Khlong Toei"
+  },
+  {
+    "am_id": 1034,
+    "amphoe_t": "เขต สวนหลวง",
+    "amphoe_e": "Suan Luang"
+  },
+  {
+    "am_id": 1035,
+    "amphoe_t": "เขต จอมทอง",
+    "amphoe_e": "Chom Thong"
+  },
+  {
+    "am_id": 1036,
+    "amphoe_t": "เขต ดอนเมือง",
+    "amphoe_e": "Don Mueang"
+  },
+  {
+    "am_id": 1037,
+    "amphoe_t": "เขต ราชเทวี",
+    "amphoe_e": "Rat Thewi"
+  },
+  {
+    "am_id": 1038,
+    "amphoe_t": "เขต ลาดพร้าว",
+    "amphoe_e": "Lat Phrao"
+  },
+  {
+    "am_id": 1039,
+    "amphoe_t": "เขต วัฒนา",
+    "amphoe_e": "Watthana"
+  },
+  {
+    "am_id": 1040,
+    "amphoe_t": "เขต บางแค",
+    "amphoe_e": "Bang Khae"
+  },
+  {
+    "am_id": 1041,
+    "amphoe_t": "เขต หลักสี่",
+    "amphoe_e": "Lak Si"
+  },
+  {
+    "am_id": 1042,
+    "amphoe_t": "เขต สายไหม",
+    "amphoe_e": "Sai Mai"
+  },
+  {
+    "am_id": 1043,
+    "amphoe_t": "เขต คันนายาว",
+    "amphoe_e": "Khanna Yao"
+  },
+  {
+    "am_id": 1044,
+    "amphoe_t": "เขต สะพานสูง",
+    "amphoe_e": "Saphan Sung"
+  },
+  {
+    "am_id": 1045,
+    "amphoe_t": "เขต วังทองหลาง",
+    "amphoe_e": "Wang Thong Lang"
+  },
+  {
+    "am_id": 1046,
+    "amphoe_t": "เขต คลองสามวา",
+    "amphoe_e": "Khlong Sam Wa"
+  },
+  {
+    "am_id": 1047,
+    "amphoe_t": "เขต บางนา",
+    "amphoe_e": "Bang Na"
+  },
+  {
+    "am_id": 1048,
+    "amphoe_t": "เขต ทวีวัฒนา",
+    "amphoe_e": "Thawi Watthana"
+  },
+  {
+    "am_id": 1049,
+    "amphoe_t": "เขต ทุ่งครุ",
+    "amphoe_e": "Thung Khu"
+  },
+  {
+    "am_id": 1050,
+    "amphoe_t": "เขต บางบอน",
+    "amphoe_e": "Bang Bon"
+  },
+  {
+    "am_id": 1101,
+    "amphoe_t": "อ. เมืองสมุทรปราการ",
+    "amphoe_e": "Mueang Samut Prakan"
+  },
+  {
+    "am_id": 1102,
+    "amphoe_t": "อ. บางบ่อ",
+    "amphoe_e": "Bang Bo"
+  },
+  {
+    "am_id": 1103,
+    "amphoe_t": "อ. บางพลี",
+    "amphoe_e": "Bang Phli"
+  },
+  {
+    "am_id": 1104,
+    "amphoe_t": "อ. พระประแดง",
+    "amphoe_e": "Phra Pradaeng"
+  },
+  {
+    "am_id": 1105,
+    "amphoe_t": "อ. พระสมุทรเจดีย์",
+    "amphoe_e": "Phra Samut Chedi"
+  },
+  {
+    "am_id": 1106,
+    "amphoe_t": "อ. บางเสาธง",
+    "amphoe_e": "Bang Sao Thong"
+  },
+  {
+    "am_id": 1201,
+    "amphoe_t": "อ. เมืองนนทบุรี",
+    "amphoe_e": "Mueang Nonthaburi"
+  },
+  {
+    "am_id": 1202,
+    "amphoe_t": "อ. บางกรวย",
+    "amphoe_e": "Bang Kruai"
+  },
+  {
+    "am_id": 1203,
+    "amphoe_t": "อ. บางใหญ่",
+    "amphoe_e": "Bang Yai"
+  },
+  {
+    "am_id": 1204,
+    "amphoe_t": "อ. บางบัวทอง",
+    "amphoe_e": "Bang Bua Thong"
+  },
+  {
+    "am_id": 1205,
+    "amphoe_t": "อ. ไทรน้อย",
+    "amphoe_e": "Sai Noi"
+  },
+  {
+    "am_id": 1206,
+    "amphoe_t": "อ. ปากเกร็ด",
+    "amphoe_e": "Pak Kret"
+  },
+  {
+    "am_id": 1301,
+    "amphoe_t": "อ. เมืองปทุมธานี",
+    "amphoe_e": "Mueang Pathum Thani"
+  },
+  {
+    "am_id": 1302,
+    "amphoe_t": "อ. คลองหลวง",
+    "amphoe_e": "khlong Luang"
+  },
+  {
+    "am_id": 1303,
+    "amphoe_t": "อ. ธัญบุรี",
+    "amphoe_e": "Thanyaburi"
+  },
+  {
+    "am_id": 1304,
+    "amphoe_t": "อ. หนองเสือ",
+    "amphoe_e": "Nong Suea"
+  },
+  {
+    "am_id": 1305,
+    "amphoe_t": "อ. ลาดหลุมแก้ว",
+    "amphoe_e": "Lat Lum Kaeo"
+  },
+  {
+    "am_id": 1306,
+    "amphoe_t": "อ. ลำลูกกา",
+    "amphoe_e": "Lam Luk Ka"
+  },
+  {
+    "am_id": 1307,
+    "amphoe_t": "อ. สามโคก",
+    "amphoe_e": "Sam Khok"
+  },
+  {
+    "am_id": 1401,
+    "amphoe_t": "อ. พระนครศรีอยุธยา",
+    "amphoe_e": "Phra Nakhon Si Ayutthaya"
+  },
+  {
+    "am_id": 1402,
+    "amphoe_t": "อ. ท่าเรือ",
+    "amphoe_e": "Tha Ruea"
+  },
+  {
+    "am_id": 1403,
+    "amphoe_t": "อ. นครหลวง",
+    "amphoe_e": "Nakhon Luang"
+  },
+  {
+    "am_id": 1404,
+    "amphoe_t": "อ. บางไทร",
+    "amphoe_e": "Bang Sai"
+  },
+  {
+    "am_id": 1405,
+    "amphoe_t": "อ. บางบาล",
+    "amphoe_e": "Bang Ban"
+  },
+  {
+    "am_id": 1406,
+    "amphoe_t": "อ. บางปะอิน",
+    "amphoe_e": "Bang Pa-in"
+  },
+  {
+    "am_id": 1407,
+    "amphoe_t": "อ. บางปะหัน",
+    "amphoe_e": "Bang Pahan"
+  },
+  {
+    "am_id": 1408,
+    "amphoe_t": "อ. ผักไห่",
+    "amphoe_e": "Phak Hai"
+  },
+  {
+    "am_id": 1409,
+    "amphoe_t": "อ. ภาชี",
+    "amphoe_e": "Phachi"
+  },
+  {
+    "am_id": 1410,
+    "amphoe_t": "อ. ลาดบัวหลวง",
+    "amphoe_e": "Lat Bua Luang"
+  },
+  {
+    "am_id": 1411,
+    "amphoe_t": "อ. วังน้อย",
+    "amphoe_e": "Wang Noi"
+  },
+  {
+    "am_id": 1412,
+    "amphoe_t": "อ. เสนา",
+    "amphoe_e": "Sena"
+  },
+  {
+    "am_id": 1413,
+    "amphoe_t": "อ. บางซ้าย",
+    "amphoe_e": "Bang Sai"
+  },
+  {
+    "am_id": 1414,
+    "amphoe_t": "อ. อุทัย",
+    "amphoe_e": "Uthai"
+  },
+  {
+    "am_id": 1415,
+    "amphoe_t": "อ. มหาราช",
+    "amphoe_e": "Maha Rat"
+  },
+  {
+    "am_id": 1416,
+    "amphoe_t": "อ. บ้านแพรก",
+    "amphoe_e": "Ban Phraek"
+  },
+  {
+    "am_id": 1501,
+    "amphoe_t": "อ. เมืองอ่างทอง",
+    "amphoe_e": "Mueang Ang Thong"
+  },
+  {
+    "am_id": 1502,
+    "amphoe_t": "อ. ไชโย",
+    "amphoe_e": "Chaiyo"
+  },
+  {
+    "am_id": 1503,
+    "amphoe_t": "อ. ป่าโมก",
+    "amphoe_e": "Pa Mok"
+  },
+  {
+    "am_id": 1504,
+    "amphoe_t": "อ. โพธิ์ทอง",
+    "amphoe_e": "Pho Thong"
+  },
+  {
+    "am_id": 1505,
+    "amphoe_t": "อ. แสวงหา",
+    "amphoe_e": "Sawaeng Ha"
+  },
+  {
+    "am_id": 1506,
+    "amphoe_t": "อ. วิเศษชัยชาญ",
+    "amphoe_e": "Wiset Chai Chan"
+  },
+  {
+    "am_id": 1507,
+    "amphoe_t": "อ. สามโก้",
+    "amphoe_e": "Samko"
+  },
+  {
+    "am_id": 1601,
+    "amphoe_t": "อ. เมืองลพบุรี",
+    "amphoe_e": "Mueang Lop Buri"
+  },
+  {
+    "am_id": 1602,
+    "amphoe_t": "อ. พัฒนานิคม",
+    "amphoe_e": "Phatthana Nikhom"
+  },
+  {
+    "am_id": 1603,
+    "amphoe_t": "อ. โคกสำโรง",
+    "amphoe_e": "Khok Samrong"
+  },
+  {
+    "am_id": 1604,
+    "amphoe_t": "อ. ชัยบาดาล",
+    "amphoe_e": "Chai Badan"
+  },
+  {
+    "am_id": 1605,
+    "amphoe_t": "อ. ท่าวุ้ง",
+    "amphoe_e": "Tha Wung"
+  },
+  {
+    "am_id": 1606,
+    "amphoe_t": "อ. บ้านหมี่",
+    "amphoe_e": "Ban Mi"
+  },
+  {
+    "am_id": 1607,
+    "amphoe_t": "อ. ท่าหลวง",
+    "amphoe_e": "Tha Luang"
+  },
+  {
+    "am_id": 1608,
+    "amphoe_t": "อ. สระโบสถ์",
+    "amphoe_e": "Sa Bot"
+  },
+  {
+    "am_id": 1609,
+    "amphoe_t": "อ. โคกเจริญ",
+    "amphoe_e": "Khok Charoen"
+  },
+  {
+    "am_id": 1610,
+    "amphoe_t": "อ. ลำสนธิ",
+    "amphoe_e": "Lam Sonthi"
+  },
+  {
+    "am_id": 1611,
+    "amphoe_t": "อ. หนองม่วง",
+    "amphoe_e": "Nong Muang"
+  },
+  {
+    "am_id": 1701,
+    "amphoe_t": "อ. เมืองสิงห์บุรี",
+    "amphoe_e": "Mueang Sing Buri"
+  },
+  {
+    "am_id": 1702,
+    "amphoe_t": "อ. บางระจัน",
+    "amphoe_e": "Bang Rachan"
+  },
+  {
+    "am_id": 1703,
+    "amphoe_t": "อ. ค่ายบางระจัน",
+    "amphoe_e": "Khai Bang Rachan"
+  },
+  {
+    "am_id": 1704,
+    "amphoe_t": "อ. พรหมบุรี",
+    "amphoe_e": "Phrom Buri"
+  },
+  {
+    "am_id": 1705,
+    "amphoe_t": "อ. ท่าช้าง",
+    "amphoe_e": "Tha Chang"
+  },
+  {
+    "am_id": 1706,
+    "amphoe_t": "อ. อินทร์บุรี",
+    "amphoe_e": "In Buri"
+  },
+  {
+    "am_id": 1801,
+    "amphoe_t": "อ. เมืองชัยนาท",
+    "amphoe_e": "Mueang Chai Nat"
+  },
+  {
+    "am_id": 1802,
+    "amphoe_t": "อ. มโนรมย์",
+    "amphoe_e": "Manorom"
+  },
+  {
+    "am_id": 1803,
+    "amphoe_t": "อ. วัดสิงห์",
+    "amphoe_e": "Wat Sing"
+  },
+  {
+    "am_id": 1804,
+    "amphoe_t": "อ. สรรพยา",
+    "amphoe_e": "Sapphaya"
+  },
+  {
+    "am_id": 1805,
+    "amphoe_t": "อ. สรรคบุรี",
+    "amphoe_e": "Sankhaburi"
+  },
+  {
+    "am_id": 1806,
+    "amphoe_t": "อ. หันคา",
+    "amphoe_e": "Hankha"
+  },
+  {
+    "am_id": 1807,
+    "amphoe_t": "อ. หนองมะโมง",
+    "amphoe_e": "Nong Mamong"
+  },
+  {
+    "am_id": 1808,
+    "amphoe_t": "อ. เนินขาม",
+    "amphoe_e": "Noen Kham"
+  },
+  {
+    "am_id": 1901,
+    "amphoe_t": "อ. เมืองสระบุรี",
+    "amphoe_e": "Mueang Saraburi"
+  },
+  {
+    "am_id": 1902,
+    "amphoe_t": "อ. แก่งคอย",
+    "amphoe_e": "Kaeng Khoi"
+  },
+  {
+    "am_id": 1903,
+    "amphoe_t": "อ. หนองแค",
+    "amphoe_e": "Nong Khae"
+  },
+  {
+    "am_id": 1904,
+    "amphoe_t": "อ. วิหารแดง",
+    "amphoe_e": "Wihan Daeng"
+  },
+  {
+    "am_id": 1905,
+    "amphoe_t": "อ. หนองแซง",
+    "amphoe_e": "Nong Saeng"
+  },
+  {
+    "am_id": 1906,
+    "amphoe_t": "อ. บ้านหมอ",
+    "amphoe_e": "Ban Mo"
+  },
+  {
+    "am_id": 1907,
+    "amphoe_t": "อ. ดอนพุด",
+    "amphoe_e": "Don Phut"
+  },
+  {
+    "am_id": 1908,
+    "amphoe_t": "อ. หนองโดน",
+    "amphoe_e": "Nong Don"
+  },
+  {
+    "am_id": 1909,
+    "amphoe_t": "อ. พระพุทธบาท",
+    "amphoe_e": "Phra Phutthabat"
+  },
+  {
+    "am_id": 1910,
+    "amphoe_t": "อ. เสาไห้",
+    "amphoe_e": "Sao Hai"
+  },
+  {
+    "am_id": 1911,
+    "amphoe_t": "อ. มวกเหล็ก",
+    "amphoe_e": "Muak Lek"
+  },
+  {
+    "am_id": 1912,
+    "amphoe_t": "อ. วังม่วง",
+    "amphoe_e": "Wang Muang"
+  },
+  {
+    "am_id": 1913,
+    "amphoe_t": "อ. เฉลิมพระเกียรติ",
+    "amphoe_e": "Chaloem Phra Kiet"
+  },
+  {
+    "am_id": 2001,
+    "amphoe_t": "อ. เมืองชลบุรี",
+    "amphoe_e": "Mueang Chon Buri"
+  },
+  {
+    "am_id": 2002,
+    "amphoe_t": "อ. บ้านบึง",
+    "amphoe_e": "Ban Bueng"
+  },
+  {
+    "am_id": 2003,
+    "amphoe_t": "อ. หนองใหญ่",
+    "amphoe_e": "Nong Yai"
+  },
+  {
+    "am_id": 2004,
+    "amphoe_t": "อ. บางละมุง",
+    "amphoe_e": "Bang Lamung"
+  },
+  {
+    "am_id": 2005,
+    "amphoe_t": "อ. พานทอง",
+    "amphoe_e": "Phan Thong"
+  },
+  {
+    "am_id": 2006,
+    "amphoe_t": "อ. พนัสนิคม",
+    "amphoe_e": "Phanat Nikhom"
+  },
+  {
+    "am_id": 2007,
+    "amphoe_t": "อ. ศรีราชา",
+    "amphoe_e": "Si Racha"
+  },
+  {
+    "am_id": 2008,
+    "amphoe_t": "อ. เกาะสีชัง",
+    "amphoe_e": "Ko Sichang"
+  },
+  {
+    "am_id": 2009,
+    "amphoe_t": "อ. สัตหีบ",
+    "amphoe_e": "Sattahip"
+  },
+  {
+    "am_id": 2010,
+    "amphoe_t": "อ. บ่อทอง",
+    "amphoe_e": "Bo Thong"
+  },
+  {
+    "am_id": 2011,
+    "amphoe_t": "อ. เกาะจันทร์",
+    "amphoe_e": "Ko Chan"
+  },
+  {
+    "am_id": 2101,
+    "amphoe_t": "อ. เมืองระยอง",
+    "amphoe_e": "Mueang Rayong"
+  },
+  {
+    "am_id": 2102,
+    "amphoe_t": "อ. บ้านฉาง",
+    "amphoe_e": "Ban Chang"
+  },
+  {
+    "am_id": 2103,
+    "amphoe_t": "อ. แกลง",
+    "amphoe_e": "Klaeng"
+  },
+  {
+    "am_id": 2104,
+    "amphoe_t": "อ. วังจันทร์",
+    "amphoe_e": "Wang Chan"
+  },
+  {
+    "am_id": 2105,
+    "amphoe_t": "อ. บ้านค่าย",
+    "amphoe_e": "Ban Khai"
+  },
+  {
+    "am_id": 2106,
+    "amphoe_t": "อ. ปลวกแดง",
+    "amphoe_e": "Pluak Daeng"
+  },
+  {
+    "am_id": 2107,
+    "amphoe_t": "อ. เขาชะเมา",
+    "amphoe_e": "Khao Chamao"
+  },
+  {
+    "am_id": 2108,
+    "amphoe_t": "อ. นิคมพัฒนา",
+    "amphoe_e": "Nikhom Phatthana"
+  },
+  {
+    "am_id": 2201,
+    "amphoe_t": "อ. เมืองจันทบุรี",
+    "amphoe_e": "Mueang Chanthaburi"
+  },
+  {
+    "am_id": 2202,
+    "amphoe_t": "อ. ขลุง",
+    "amphoe_e": "Khlung"
+  },
+  {
+    "am_id": 2203,
+    "amphoe_t": "อ. ท่าใหม่",
+    "amphoe_e": "Tha Mai"
+  },
+  {
+    "am_id": 2204,
+    "amphoe_t": "อ. โป่งน้ำร้อน",
+    "amphoe_e": "Pong Nam Ron"
+  },
+  {
+    "am_id": 2205,
+    "amphoe_t": "อ. มะขาม",
+    "amphoe_e": "Makham"
+  },
+  {
+    "am_id": 2206,
+    "amphoe_t": "อ. แหลมสิงห์",
+    "amphoe_e": "Laem Sing"
+  },
+  {
+    "am_id": 2207,
+    "amphoe_t": "อ. สอยดาว",
+    "amphoe_e": "Soi Dao"
+  },
+  {
+    "am_id": 2208,
+    "amphoe_t": "อ. แก่งหางแมว",
+    "amphoe_e": "Kaeng Hang Maeo"
+  },
+  {
+    "am_id": 2209,
+    "amphoe_t": "อ. นายายอาม",
+    "amphoe_e": "Na Yai Am"
+  },
+  {
+    "am_id": 2210,
+    "amphoe_t": "อ. เขาคิชฌกูฏ",
+    "amphoe_e": "Khao Khitchakut"
+  },
+  {
+    "am_id": 2301,
+    "amphoe_t": "อ. เมืองตราด",
+    "amphoe_e": "Mueang Trat"
+  },
+  {
+    "am_id": 2302,
+    "amphoe_t": "อ. คลองใหญ่",
+    "amphoe_e": "Khlong Yai"
+  },
+  {
+    "am_id": 2303,
+    "amphoe_t": "อ. เขาสมิง",
+    "amphoe_e": "Khao Saming"
+  },
+  {
+    "am_id": 2304,
+    "amphoe_t": "อ. บ่อไร่",
+    "amphoe_e": "Bo Rai"
+  },
+  {
+    "am_id": 2305,
+    "amphoe_t": "อ. แหลมงอบ",
+    "amphoe_e": "Laem Ngop"
+  },
+  {
+    "am_id": 2306,
+    "amphoe_t": "อ. เกาะกูด",
+    "amphoe_e": "Ko Kut"
+  },
+  {
+    "am_id": 2307,
+    "amphoe_t": "อ. เกาะช้าง",
+    "amphoe_e": "Ko Chang"
+  },
+  {
+    "am_id": 2401,
+    "amphoe_t": "อ. เมืองฉะเชิงเทรา",
+    "amphoe_e": "Mueang Chachoengsao"
+  },
+  {
+    "am_id": 2402,
+    "amphoe_t": "อ. บางคล้า",
+    "amphoe_e": "Bang Khla"
+  },
+  {
+    "am_id": 2403,
+    "amphoe_t": "อ. บางน้ำเปรี้ยว",
+    "amphoe_e": "Bang Nam Priao"
+  },
+  {
+    "am_id": 2404,
+    "amphoe_t": "อ. บางปะกง",
+    "amphoe_e": "Bang Pakong"
+  },
+  {
+    "am_id": 2405,
+    "amphoe_t": "อ. บ้านโพธิ์",
+    "amphoe_e": "Ban Pho"
+  },
+  {
+    "am_id": 2406,
+    "amphoe_t": "อ. พนมสารคาม",
+    "amphoe_e": "Phanom Sarakham"
+  },
+  {
+    "am_id": 2407,
+    "amphoe_t": "อ. ราชสาส์น",
+    "amphoe_e": "Ratchasan"
+  },
+  {
+    "am_id": 2408,
+    "amphoe_t": "อ. สนามชัยเขต",
+    "amphoe_e": "Sanam Chai Khet"
+  },
+  {
+    "am_id": 2409,
+    "amphoe_t": "อ. แปลงยาว",
+    "amphoe_e": "Pleang Yao"
+  },
+  {
+    "am_id": 2410,
+    "amphoe_t": "อ. ท่าตะเกียบ",
+    "amphoe_e": "Tha Takiap"
+  },
+  {
+    "am_id": 2411,
+    "amphoe_t": "อ. คลองเขื่อน",
+    "amphoe_e": "Khlong Khuean"
+  },
+  {
+    "am_id": 2501,
+    "amphoe_t": "อ. เมืองปราจีนบุรี",
+    "amphoe_e": "Mueang Prachin Buri"
+  },
+  {
+    "am_id": 2502,
+    "amphoe_t": "อ. กบินทร์บุรี",
+    "amphoe_e": "Kabin Buri"
+  },
+  {
+    "am_id": 2503,
+    "amphoe_t": "อ. นาดี",
+    "amphoe_e": "Na Di"
+  },
+  {
+    "am_id": 2506,
+    "amphoe_t": "อ. บ้านสร้าง",
+    "amphoe_e": "Ban Sang"
+  },
+  {
+    "am_id": 2507,
+    "amphoe_t": "อ. ประจันตคาม",
+    "amphoe_e": "Prachantakham"
+  },
+  {
+    "am_id": 2508,
+    "amphoe_t": "อ. ศรีมหาโพธิ",
+    "amphoe_e": "Si Maha Phot"
+  },
+  {
+    "am_id": 2509,
+    "amphoe_t": "อ. ศรีมโหสถ",
+    "amphoe_e": "Si Mahosot"
+  },
+  {
+    "am_id": 2601,
+    "amphoe_t": "อ. เมืองนครนายก",
+    "amphoe_e": "Mueang Nakhon Nayok"
+  },
+  {
+    "am_id": 2602,
+    "amphoe_t": "อ. ปากพลี",
+    "amphoe_e": "Pak Phli"
+  },
+  {
+    "am_id": 2603,
+    "amphoe_t": "อ. บ้านนา",
+    "amphoe_e": "Ban Na"
+  },
+  {
+    "am_id": 2604,
+    "amphoe_t": "อ. องครักษ์",
+    "amphoe_e": "Ongkharak"
+  },
+  {
+    "am_id": 2701,
+    "amphoe_t": "อ. เมืองสระแก้ว",
+    "amphoe_e": "Mueang Sa Kaeo"
+  },
+  {
+    "am_id": 2702,
+    "amphoe_t": "อ. คลองหาด",
+    "amphoe_e": "Khlong Hat"
+  },
+  {
+    "am_id": 2703,
+    "amphoe_t": "อ. ตาพระยา",
+    "amphoe_e": "Ta Phraya"
+  },
+  {
+    "am_id": 2704,
+    "amphoe_t": "อ. วังน้ำเย็น",
+    "amphoe_e": "Wang Nam Yen"
+  },
+  {
+    "am_id": 2705,
+    "amphoe_t": "อ. วัฒนานคร",
+    "amphoe_e": "Watthana Nakhon"
+  },
+  {
+    "am_id": 2706,
+    "amphoe_t": "อ. อรัญประเทศ",
+    "amphoe_e": "Aranyaprathet"
+  },
+  {
+    "am_id": 2707,
+    "amphoe_t": "อ. เขาฉกรรจ์",
+    "amphoe_e": "Khao Chakan"
+  },
+  {
+    "am_id": 2708,
+    "amphoe_t": "อ. โคกสูง",
+    "amphoe_e": "Khok Sung"
+  },
+  {
+    "am_id": 2709,
+    "amphoe_t": "อ. วังสมบูรณ์",
+    "amphoe_e": "Wang Sombun"
+  },
+  {
+    "am_id": 3001,
+    "amphoe_t": "อ. เมืองนครราชสีมา",
+    "amphoe_e": "Mueang Nakhon Ratchasima"
+  },
+  {
+    "am_id": 3002,
+    "amphoe_t": "อ. ครบุรี",
+    "amphoe_e": "Khon Buri"
+  },
+  {
+    "am_id": 3003,
+    "amphoe_t": "อ. เสิงสาง",
+    "amphoe_e": "Soeng Sang"
+  },
+  {
+    "am_id": 3004,
+    "amphoe_t": "อ. คง",
+    "amphoe_e": "Khong"
+  },
+  {
+    "am_id": 3005,
+    "amphoe_t": "อ. บ้านเหลื่อม",
+    "amphoe_e": "Ban Lueam"
+  },
+  {
+    "am_id": 3006,
+    "amphoe_t": "อ. จักราช",
+    "amphoe_e": "Chakkarat"
+  },
+  {
+    "am_id": 3007,
+    "amphoe_t": "อ. โชคชัย",
+    "amphoe_e": "Chok Chai"
+  },
+  {
+    "am_id": 3008,
+    "amphoe_t": "อ. ด่านขุนทด",
+    "amphoe_e": "Dan Khun Thot"
+  },
+  {
+    "am_id": 3009,
+    "amphoe_t": "อ. โนนไทย",
+    "amphoe_e": "Non Thai"
+  },
+  {
+    "am_id": 3010,
+    "amphoe_t": "อ. โนนสูง",
+    "amphoe_e": "Non Sung"
+  },
+  {
+    "am_id": 3011,
+    "amphoe_t": "อ. ขามสะแกแสง",
+    "amphoe_e": "Kham Sakaesaeng"
+  },
+  {
+    "am_id": 3012,
+    "amphoe_t": "อ. บัวใหญ่",
+    "amphoe_e": "Bua Yai"
+  },
+  {
+    "am_id": 3013,
+    "amphoe_t": "อ. ประทาย",
+    "amphoe_e": "Prathai"
+  },
+  {
+    "am_id": 3014,
+    "amphoe_t": "อ. ปักธงชัย",
+    "amphoe_e": "Pak Thong Chai"
+  },
+  {
+    "am_id": 3015,
+    "amphoe_t": "อ. พิมาย",
+    "amphoe_e": "Phimai"
+  },
+  {
+    "am_id": 3016,
+    "amphoe_t": "อ. ห้วยแถลง",
+    "amphoe_e": "Huai Thalaeng"
+  },
+  {
+    "am_id": 3017,
+    "amphoe_t": "อ. ชุมพวง",
+    "amphoe_e": "Chum Phuang"
+  },
+  {
+    "am_id": 3018,
+    "amphoe_t": "อ. สูงเนิน",
+    "amphoe_e": "Sung Noen"
+  },
+  {
+    "am_id": 3019,
+    "amphoe_t": "อ. ขามทะเลสอ",
+    "amphoe_e": "Kham Thale So"
+  },
+  {
+    "am_id": 3020,
+    "amphoe_t": "อ. สีคิ้ว",
+    "amphoe_e": "Si Khio"
+  },
+  {
+    "am_id": 3021,
+    "amphoe_t": "อ. ปากช่อง",
+    "amphoe_e": "Pak Chong"
+  },
+  {
+    "am_id": 3022,
+    "amphoe_t": "อ. หนองบุญมาก",
+    "amphoe_e": "Nong Bunmak"
+  },
+  {
+    "am_id": 3023,
+    "amphoe_t": "อ. แก้งสนามนาง",
+    "amphoe_e": "Kaeng Sanam Nang"
+  },
+  {
+    "am_id": 3024,
+    "amphoe_t": "อ. โนนแดง",
+    "amphoe_e": "Non Daeng"
+  },
+  {
+    "am_id": 3025,
+    "amphoe_t": "อ. วังน้ำเขียว",
+    "amphoe_e": "Wang Nam Khiao"
+  },
+  {
+    "am_id": 3026,
+    "amphoe_t": "อ. เทพารักษ์",
+    "amphoe_e": "Thepharak"
+  },
+  {
+    "am_id": 3027,
+    "amphoe_t": "อ. เมืองยาง",
+    "amphoe_e": "Mueang Yang"
+  },
+  {
+    "am_id": 3028,
+    "amphoe_t": "อ. พระทองคำ",
+    "amphoe_e": "Phra Thong Kham"
+  },
+  {
+    "am_id": 3029,
+    "amphoe_t": "อ. ลำทะเมนชัย",
+    "amphoe_e": "Lamtaman Chai"
+  },
+  {
+    "am_id": 3030,
+    "amphoe_t": "อ. บัวลาย",
+    "amphoe_e": "Bua Lai"
+  },
+  {
+    "am_id": 3031,
+    "amphoe_t": "อ. สีดา",
+    "amphoe_e": "Sida"
+  },
+  {
+    "am_id": 3032,
+    "amphoe_t": "อ. เฉลิมพระเกียรติ",
+    "amphoe_e": "Chaloem Phra Kiet"
+  },
+  {
+    "am_id": 3101,
+    "amphoe_t": "อ. เมืองบุรีรัมย์",
+    "amphoe_e": "Mueang Buri Ram"
+  },
+  {
+    "am_id": 3102,
+    "amphoe_t": "อ. คูเมือง",
+    "amphoe_e": "Khu Mueang"
+  },
+  {
+    "am_id": 3103,
+    "amphoe_t": "อ. กระสัง",
+    "amphoe_e": "Krasang"
+  },
+  {
+    "am_id": 3104,
+    "amphoe_t": "อ. นางรอง",
+    "amphoe_e": "Nang Rong"
+  },
+  {
+    "am_id": 3105,
+    "amphoe_t": "อ. หนองกี่",
+    "amphoe_e": "Nong Ki"
+  },
+  {
+    "am_id": 3106,
+    "amphoe_t": "อ. ละหานทราย",
+    "amphoe_e": "Lahan Sai"
+  },
+  {
+    "am_id": 3107,
+    "amphoe_t": "อ. ประโคนชัย",
+    "amphoe_e": "Prakhon Chai"
+  },
+  {
+    "am_id": 3108,
+    "amphoe_t": "อ. บ้านกรวด",
+    "amphoe_e": "Ban Kruat"
+  },
+  {
+    "am_id": 3109,
+    "amphoe_t": "อ. พุทไธสง",
+    "amphoe_e": "Phutthaisong"
+  },
+  {
+    "am_id": 3110,
+    "amphoe_t": "อ. ลำปลายมาศ",
+    "amphoe_e": "Lam Plai Mat"
+  },
+  {
+    "am_id": 3111,
+    "amphoe_t": "อ. สตึก",
+    "amphoe_e": "Satuek"
+  },
+  {
+    "am_id": 3112,
+    "amphoe_t": "อ. ปะคำ",
+    "amphoe_e": "Pakham"
+  },
+  {
+    "am_id": 3113,
+    "amphoe_t": "อ. นาโพธิ์",
+    "amphoe_e": "Na Pho"
+  },
+  {
+    "am_id": 3114,
+    "amphoe_t": "อ. หนองหงส์",
+    "amphoe_e": "Nong Hong"
+  },
+  {
+    "am_id": 3115,
+    "amphoe_t": "อ. พลับพลาชัย",
+    "amphoe_e": "Phlapphla Chai"
+  },
+  {
+    "am_id": 3116,
+    "amphoe_t": "อ. ห้วยราช",
+    "amphoe_e": "Huai Rat"
+  },
+  {
+    "am_id": 3117,
+    "amphoe_t": "อ. โนนสุวรรณ",
+    "amphoe_e": "Non Din Daeng"
+  },
+  {
+    "am_id": 3118,
+    "amphoe_t": "อ. ชำนิ",
+    "amphoe_e": "Chamni"
+  },
+  {
+    "am_id": 3119,
+    "amphoe_t": "อ. บ้านใหม่ไชยพจน์",
+    "amphoe_e": "Ban Mai Chaiyaphot"
+  },
+  {
+    "am_id": 3120,
+    "amphoe_t": "อ. โนนดินแดง",
+    "amphoe_e": "Non Din Daeng"
+  },
+  {
+    "am_id": 3121,
+    "amphoe_t": "อ. บ้านด่าน",
+    "amphoe_e": "Ban Dan"
+  },
+  {
+    "am_id": 3122,
+    "amphoe_t": "อ. แคนดง",
+    "amphoe_e": "Khaen Dong"
+  },
+  {
+    "am_id": 3123,
+    "amphoe_t": "อ. เฉลิมพระเกียรติ",
+    "amphoe_e": "Chaloem Phra Kiet"
+  },
+  {
+    "am_id": 3201,
+    "amphoe_t": "อ. เมืองสุรินทร์",
+    "amphoe_e": "Mueang Surin"
+  },
+  {
+    "am_id": 3202,
+    "amphoe_t": "อ. ชุมพลบุรี",
+    "amphoe_e": "Chumphon Buri"
+  },
+  {
+    "am_id": 3203,
+    "amphoe_t": "อ. ท่าตูม",
+    "amphoe_e": "Tha Tum"
+  },
+  {
+    "am_id": 3204,
+    "amphoe_t": "อ. จอมพระ",
+    "amphoe_e": "Chom Phra"
+  },
+  {
+    "am_id": 3205,
+    "amphoe_t": "อ. ปราสาท",
+    "amphoe_e": "Prasat"
+  },
+  {
+    "am_id": 3206,
+    "amphoe_t": "อ. กาบเชิง",
+    "amphoe_e": "Kap Choeng"
+  },
+  {
+    "am_id": 3207,
+    "amphoe_t": "อ. รัตนบุรี",
+    "amphoe_e": "Rattanaburi"
+  },
+  {
+    "am_id": 3208,
+    "amphoe_t": "อ. สนม",
+    "amphoe_e": "Sanom"
+  },
+  {
+    "am_id": 3209,
+    "amphoe_t": "อ. ศีขรภูมิ",
+    "amphoe_e": "Sikhoraphum"
+  },
+  {
+    "am_id": 3210,
+    "amphoe_t": "อ. สังขะ",
+    "amphoe_e": "Sangkha"
+  },
+  {
+    "am_id": 3211,
+    "amphoe_t": "อ. ลำดวน",
+    "amphoe_e": "Lamduan"
+  },
+  {
+    "am_id": 3212,
+    "amphoe_t": "อ. สำโรงทาบ",
+    "amphoe_e": "Samrong Thap"
+  },
+  {
+    "am_id": 3213,
+    "amphoe_t": "อ. บัวเชด",
+    "amphoe_e": "Buachet"
+  },
+  {
+    "am_id": 3214,
+    "amphoe_t": "อ. พนมดงรัก",
+    "amphoe_e": "Phanom Dong Rak"
+  },
+  {
+    "am_id": 3215,
+    "amphoe_t": "อ. ศรีณรงค์",
+    "amphoe_e": "Si Narong"
+  },
+  {
+    "am_id": 3216,
+    "amphoe_t": "อ. เขวาสินรินทร์",
+    "amphoe_e": "Khwao Sinarin"
+  },
+  {
+    "am_id": 3217,
+    "amphoe_t": "อ. โนนนารายณ์",
+    "amphoe_e": "Non Narai"
+  },
+  {
+    "am_id": 3301,
+    "amphoe_t": "อ. เมืองศรีสะเกษ",
+    "amphoe_e": "Mueang Si Sa Ket"
+  },
+  {
+    "am_id": 3302,
+    "amphoe_t": "อ. ยางชุมน้อย",
+    "amphoe_e": "Yang Chum Noi"
+  },
+  {
+    "am_id": 3303,
+    "amphoe_t": "อ. กันทรารมย์",
+    "amphoe_e": "Kanthararom"
+  },
+  {
+    "am_id": 3304,
+    "amphoe_t": "อ. กันทรลักษ์",
+    "amphoe_e": "Kantharalak"
+  },
+  {
+    "am_id": 3305,
+    "amphoe_t": "อ. ขุขันธ์",
+    "amphoe_e": "Khukhan"
+  },
+  {
+    "am_id": 3306,
+    "amphoe_t": "อ. ไพรบึง",
+    "amphoe_e": "Phrai Bueng"
+  },
+  {
+    "am_id": 3307,
+    "amphoe_t": "อ. ปรางค์กู่",
+    "amphoe_e": "Prang Ku"
+  },
+  {
+    "am_id": 3308,
+    "amphoe_t": "อ. ขุนหาญ",
+    "amphoe_e": "Khun Han"
+  },
+  {
+    "am_id": 3309,
+    "amphoe_t": "อ. ราษีไศล",
+    "amphoe_e": "Rasi Salai"
+  },
+  {
+    "am_id": 3310,
+    "amphoe_t": "อ. อุทุมพรพิสัย",
+    "amphoe_e": "Uthumphon Phisai"
+  },
+  {
+    "am_id": 3311,
+    "amphoe_t": "อ. บึงบูรพ์",
+    "amphoe_e": "Bueng Bun"
+  },
+  {
+    "am_id": 3312,
+    "amphoe_t": "อ. ห้วยทับทัน",
+    "amphoe_e": "Huai Thap Than"
+  },
+  {
+    "am_id": 3313,
+    "amphoe_t": "อ. โนนคูณ",
+    "amphoe_e": "Non Khun"
+  },
+  {
+    "am_id": 3314,
+    "amphoe_t": "อ. ศรีรัตนะ",
+    "amphoe_e": "Si Rattana"
+  },
+  {
+    "am_id": 3315,
+    "amphoe_t": "อ. น้ำเกลี้ยง",
+    "amphoe_e": "Nam Kliang"
+  },
+  {
+    "am_id": 3316,
+    "amphoe_t": "อ. วังหิน",
+    "amphoe_e": "Wang Hin"
+  },
+  {
+    "am_id": 3317,
+    "amphoe_t": "อ. ภูสิงห์",
+    "amphoe_e": "Phu Sing"
+  },
+  {
+    "am_id": 3318,
+    "amphoe_t": "อ. เมืองจันทร์",
+    "amphoe_e": "Mueang Chan"
+  },
+  {
+    "am_id": 3319,
+    "amphoe_t": "อ. เบญจลักษ์",
+    "amphoe_e": "Benchalak"
+  },
+  {
+    "am_id": 3320,
+    "amphoe_t": "อ. พยุห์",
+    "amphoe_e": "Phayu"
+  },
+  {
+    "am_id": 3321,
+    "amphoe_t": "อ. โพธิ์ศรีสุวรรณ",
+    "amphoe_e": "Pho Si Suwan"
+  },
+  {
+    "am_id": 3322,
+    "amphoe_t": "อ. ศิลาลาด",
+    "amphoe_e": "Sila Lat"
+  },
+  {
+    "am_id": 3401,
+    "amphoe_t": "อ. เมืองอุบลราชธานี",
+    "amphoe_e": "Mueang Ubon Ratchathani"
+  },
+  {
+    "am_id": 3402,
+    "amphoe_t": "อ. ศรีเมืองใหม่",
+    "amphoe_e": "Si Mueang Mai"
+  },
+  {
+    "am_id": 3403,
+    "amphoe_t": "อ. โขงเจียม",
+    "amphoe_e": "Khong Chiam"
+  },
+  {
+    "am_id": 3404,
+    "amphoe_t": "อ. เขื่องใน",
+    "amphoe_e": "Khueang Nai"
+  },
+  {
+    "am_id": 3405,
+    "amphoe_t": "อ. เขมราฐ",
+    "amphoe_e": "Khemarat"
+  },
+  {
+    "am_id": 3407,
+    "amphoe_t": "อ. เดชอุดม",
+    "amphoe_e": "Det Udom"
+  },
+  {
+    "am_id": 3408,
+    "amphoe_t": "อ. นาจะหลวย",
+    "amphoe_e": "Na Chaluai"
+  },
+  {
+    "am_id": 3409,
+    "amphoe_t": "อ. น้ำยืน",
+    "amphoe_e": "Nam Yuen"
+  },
+  {
+    "am_id": 3410,
+    "amphoe_t": "อ. บุณฑริก",
+    "amphoe_e": "Boontharik"
+  },
+  {
+    "am_id": 3411,
+    "amphoe_t": "อ. ตระการพืชผล",
+    "amphoe_e": "Trakan Phuet Phon"
+  },
+  {
+    "am_id": 3412,
+    "amphoe_t": "อ. กุดข้าวปุ้น",
+    "amphoe_e": "Kut Khaopun"
+  },
+  {
+    "am_id": 3414,
+    "amphoe_t": "อ. ม่วงสามสิบ",
+    "amphoe_e": "Muang Sam Sip"
+  },
+  {
+    "am_id": 3415,
+    "amphoe_t": "อ. วารินชำราบ",
+    "amphoe_e": "Warin Chamrap"
+  },
+  {
+    "am_id": 3419,
+    "amphoe_t": "อ. พิบูลมังสาหาร",
+    "amphoe_e": "Phibun Mangsahan"
+  },
+  {
+    "am_id": 3420,
+    "amphoe_t": "อ. ตาลสุม",
+    "amphoe_e": "Tan Sum"
+  },
+  {
+    "am_id": 3421,
+    "amphoe_t": "อ. โพธิ์ไทร",
+    "amphoe_e": "Pho Sai"
+  },
+  {
+    "am_id": 3422,
+    "amphoe_t": "อ. สำโรง",
+    "amphoe_e": "Samrong"
+  },
+  {
+    "am_id": 3424,
+    "amphoe_t": "อ. ดอนมดแดง",
+    "amphoe_e": "Don Mot Daeng"
+  },
+  {
+    "am_id": 3425,
+    "amphoe_t": "อ. สิรินธร",
+    "amphoe_e": "Sirindhorn"
+  },
+  {
+    "am_id": 3426,
+    "amphoe_t": "อ. ทุ่งศรีอุดม",
+    "amphoe_e": "Thung Si Udom"
+  },
+  {
+    "am_id": 3429,
+    "amphoe_t": "อ. นาเยีย",
+    "amphoe_e": "Na Yia"
+  },
+  {
+    "am_id": 3430,
+    "amphoe_t": "อ. นาตาล",
+    "amphoe_e": "Na Tan"
+  },
+  {
+    "am_id": 3431,
+    "amphoe_t": "อ. เหล่าเสือโก้ก",
+    "amphoe_e": "Lao Suea Kok"
+  },
+  {
+    "am_id": 3432,
+    "amphoe_t": "อ. สว่างวีระวงศ์",
+    "amphoe_e": "Sawang Wirawong"
+  },
+  {
+    "am_id": 3433,
+    "amphoe_t": "อ. น้ำขุ่น",
+    "amphoe_e": "Nam Khun"
+  },
+  {
+    "am_id": 3501,
+    "amphoe_t": "อ. เมืองยโสธร",
+    "amphoe_e": "Mueang Yasothon"
+  },
+  {
+    "am_id": 3502,
+    "amphoe_t": "อ. ทรายมูล",
+    "amphoe_e": "Sai Mun"
+  },
+  {
+    "am_id": 3503,
+    "amphoe_t": "อ. กุดชุม",
+    "amphoe_e": "Kut Chum"
+  },
+  {
+    "am_id": 3504,
+    "amphoe_t": "อ. คำเขื่อนแก้ว",
+    "amphoe_e": "Kham Khuean Kaeo"
+  },
+  {
+    "am_id": 3505,
+    "amphoe_t": "อ. ป่าติ้ว",
+    "amphoe_e": "Pa Tio"
+  },
+  {
+    "am_id": 3506,
+    "amphoe_t": "อ. มหาชนะชัย",
+    "amphoe_e": "Maha Chana Chai"
+  },
+  {
+    "am_id": 3507,
+    "amphoe_t": "อ. ค้อวัง",
+    "amphoe_e": "Kho Wang"
+  },
+  {
+    "am_id": 3508,
+    "amphoe_t": "อ. เลิงนกทา",
+    "amphoe_e": "Loeng Nok Tha"
+  },
+  {
+    "am_id": 3509,
+    "amphoe_t": "อ. ไทยเจริญ",
+    "amphoe_e": "Thai Charoen"
+  },
+  {
+    "am_id": 3601,
+    "amphoe_t": "อ. เมืองชัยภูมิ",
+    "amphoe_e": "Mueang Chaiyaphum"
+  },
+  {
+    "am_id": 3602,
+    "amphoe_t": "อ. บ้านเขว้า",
+    "amphoe_e": "Ban Khwao"
+  },
+  {
+    "am_id": 3603,
+    "amphoe_t": "อ. คอนสวรรค์",
+    "amphoe_e": "Khon Sawan"
+  },
+  {
+    "am_id": 3604,
+    "amphoe_t": "อ. เกษตรสมบูรณ์",
+    "amphoe_e": "Kaset Sombun"
+  },
+  {
+    "am_id": 3605,
+    "amphoe_t": "อ. หนองบัวแดง",
+    "amphoe_e": "Nong Bua Daeng"
+  },
+  {
+    "am_id": 3606,
+    "amphoe_t": "อ. จัตุรัส",
+    "amphoe_e": "Chatturat"
+  },
+  {
+    "am_id": 3607,
+    "amphoe_t": "อ. บำเหน็จณรงค์",
+    "amphoe_e": "Bamnet Narong"
+  },
+  {
+    "am_id": 3608,
+    "amphoe_t": "อ. หนองบัวระเหว",
+    "amphoe_e": "Nong Bua Rawe"
+  },
+  {
+    "am_id": 3609,
+    "amphoe_t": "อ. เทพสถิต",
+    "amphoe_e": "Thep Sathit"
+  },
+  {
+    "am_id": 3610,
+    "amphoe_t": "อ. ภูเขียว",
+    "amphoe_e": "Phu Khiao"
+  },
+  {
+    "am_id": 3611,
+    "amphoe_t": "อ. บ้านแท่น",
+    "amphoe_e": "Ban Thaen"
+  },
+  {
+    "am_id": 3612,
+    "amphoe_t": "อ. แก้งคร้อ",
+    "amphoe_e": "Kaeng Khro"
+  },
+  {
+    "am_id": 3613,
+    "amphoe_t": "อ. คอนสาร",
+    "amphoe_e": "Khon San"
+  },
+  {
+    "am_id": 3614,
+    "amphoe_t": "อ. ภักดีชุมพล",
+    "amphoe_e": "Phakdi Chumphon"
+  },
+  {
+    "am_id": 3615,
+    "amphoe_t": "อ. เนินสง่า",
+    "amphoe_e": "Noen Sa-nga"
+  },
+  {
+    "am_id": 3616,
+    "amphoe_t": "อ. ซับใหญ่",
+    "amphoe_e": "Sap Yai"
+  },
+  {
+    "am_id": 3701,
+    "amphoe_t": "อ. เมืองอำนาจเจริญ",
+    "amphoe_e": "Mueang Amnat Charoen"
+  },
+  {
+    "am_id": 3702,
+    "amphoe_t": "อ. ชานุมาน",
+    "amphoe_e": "Chanuman"
+  },
+  {
+    "am_id": 3703,
+    "amphoe_t": "อ. ปทุมราชวงศา",
+    "amphoe_e": "Pathum Ratchawongsa"
+  },
+  {
+    "am_id": 3704,
+    "amphoe_t": "อ. พนา",
+    "amphoe_e": "Phana"
+  },
+  {
+    "am_id": 3705,
+    "amphoe_t": "อ. เสนางคนิคม",
+    "amphoe_e": "Senangkhanikhom"
+  },
+  {
+    "am_id": 3706,
+    "amphoe_t": "อ. หัวตะพาน",
+    "amphoe_e": "Hua Taphan"
+  },
+  {
+    "am_id": 3707,
+    "amphoe_t": "อ. ลืออำนาจ",
+    "amphoe_e": "Lue Amnat"
+  },
+  {
+    "am_id": 3801,
+    "amphoe_t": "อ. บึงกาฬ",
+    "amphoe_e": "Bueng Kan"
+  },
+  {
+    "am_id": 3802,
+    "amphoe_t": "อ. พรเจริญ",
+    "amphoe_e": "Phon Charoen"
+  },
+  {
+    "am_id": 3803,
+    "amphoe_t": "อ. โซ่พิสัย",
+    "amphoe_e": "So Phisai"
+  },
+  {
+    "am_id": 3804,
+    "amphoe_t": "อ. เซกา",
+    "amphoe_e": "Seka"
+  },
+  {
+    "am_id": 3805,
+    "amphoe_t": "อ. ปากคาด",
+    "amphoe_e": "Pak Khat"
+  },
+  {
+    "am_id": 3806,
+    "amphoe_t": "อ. บึงโขงหลง",
+    "amphoe_e": "Bueng Khong Long"
+  },
+  {
+    "am_id": 3807,
+    "amphoe_t": "อ. ศรีวิไล",
+    "amphoe_e": "Si Wilai"
+  },
+  {
+    "am_id": 3808,
+    "amphoe_t": "อ. บุ่งคล้า",
+    "amphoe_e": "Bung Khla"
+  },
+  {
+    "am_id": 3901,
+    "amphoe_t": "อ. เมืองหนองบัวลำภู",
+    "amphoe_e": "Mueang Nong Bua Lam Phu"
+  },
+  {
+    "am_id": 3902,
+    "amphoe_t": "อ. นากลาง",
+    "amphoe_e": "Na Klang"
+  },
+  {
+    "am_id": 3903,
+    "amphoe_t": "อ. โนนสัง",
+    "amphoe_e": "Non Sang"
+  },
+  {
+    "am_id": 3904,
+    "amphoe_t": "อ. ศรีบุญเรือง",
+    "amphoe_e": "Si Bun Rueang"
+  },
+  {
+    "am_id": 3905,
+    "amphoe_t": "อ. สุวรรณคูหา",
+    "amphoe_e": "Suwannakhuha"
+  },
+  {
+    "am_id": 3906,
+    "amphoe_t": "อ. นาวัง",
+    "amphoe_e": "Na Wang"
+  },
+  {
+    "am_id": 4001,
+    "amphoe_t": "อ. เมืองขอนแก่น",
+    "amphoe_e": "Mueang Khon Kaen"
+  },
+  {
+    "am_id": 4002,
+    "amphoe_t": "อ. บ้านฝาง",
+    "amphoe_e": "Ban Fang"
+  },
+  {
+    "am_id": 4003,
+    "amphoe_t": "อ. พระยืน",
+    "amphoe_e": "Phra Yuen"
+  },
+  {
+    "am_id": 4004,
+    "amphoe_t": "อ. หนองเรือ",
+    "amphoe_e": "Nong Ruea"
+  },
+  {
+    "am_id": 4005,
+    "amphoe_t": "อ. ชุมแพ",
+    "amphoe_e": "Chum Phae"
+  },
+  {
+    "am_id": 4006,
+    "amphoe_t": "อ. สีชมพู",
+    "amphoe_e": "Si Chomphu"
+  },
+  {
+    "am_id": 4007,
+    "amphoe_t": "อ. น้ำพอง",
+    "amphoe_e": "Nam Phong"
+  },
+  {
+    "am_id": 4008,
+    "amphoe_t": "อ. อุบลรัตน์",
+    "amphoe_e": "Ubolratana"
+  },
+  {
+    "am_id": 4009,
+    "amphoe_t": "อ. กระนวน",
+    "amphoe_e": "Kranuan"
+  },
+  {
+    "am_id": 4010,
+    "amphoe_t": "อ. บ้านไผ่",
+    "amphoe_e": "Ban Phai"
+  },
+  {
+    "am_id": 4011,
+    "amphoe_t": "อ. เปือยน้อย",
+    "amphoe_e": "Pueai Noi"
+  },
+  {
+    "am_id": 4012,
+    "amphoe_t": "อ. พล",
+    "amphoe_e": "Phon"
+  },
+  {
+    "am_id": 4013,
+    "amphoe_t": "อ. แวงใหญ่",
+    "amphoe_e": "Waeng Yai"
+  },
+  {
+    "am_id": 4014,
+    "amphoe_t": "อ. แวงน้อย",
+    "amphoe_e": "Waeng Noi"
+  },
+  {
+    "am_id": 4015,
+    "amphoe_t": "อ. หนองสองห้อง",
+    "amphoe_e": "Nong Song Hong"
+  },
+  {
+    "am_id": 4016,
+    "amphoe_t": "อ. ภูเวียง",
+    "amphoe_e": "Phu Wiang"
+  },
+  {
+    "am_id": 4017,
+    "amphoe_t": "อ. มัญจาคีรี",
+    "amphoe_e": "Mancha Khiri"
+  },
+  {
+    "am_id": 4018,
+    "amphoe_t": "อ. ชนบท",
+    "amphoe_e": "Chonnabot"
+  },
+  {
+    "am_id": 4019,
+    "amphoe_t": "อ. เขาสวนกวาง",
+    "amphoe_e": "Khao Suan Kwang"
+  },
+  {
+    "am_id": 4020,
+    "amphoe_t": "อ. ภูผาม่าน",
+    "amphoe_e": "Phu Phaman"
+  },
+  {
+    "am_id": 4021,
+    "amphoe_t": "อ. ซำสูง",
+    "amphoe_e": "Sam Sung"
+  },
+  {
+    "am_id": 4022,
+    "amphoe_t": "อ. โคกโพธิ์ไชย",
+    "amphoe_e": "Khok Pho Chai"
+  },
+  {
+    "am_id": 4023,
+    "amphoe_t": "อ. หนองนาคำ",
+    "amphoe_e": "Nong Na Kham"
+  },
+  {
+    "am_id": 4024,
+    "amphoe_t": "อ. บ้านแฮด",
+    "amphoe_e": "Ban Haet"
+  },
+  {
+    "am_id": 4025,
+    "amphoe_t": "อ. โนนศิลา",
+    "amphoe_e": "Non Sila"
+  },
+  {
+    "am_id": 4026,
+    "amphoe_t": "อ. เวียงเก่า",
+    "amphoe_e": "Wiang Kao"
+  },
+  {
+    "am_id": 4101,
+    "amphoe_t": "อ. เมืองอุดรธานี",
+    "amphoe_e": "Mueang Udon Thani"
+  },
+  {
+    "am_id": 4102,
+    "amphoe_t": "อ. กุดจับ",
+    "amphoe_e": "Kut Chap"
+  },
+  {
+    "am_id": 4103,
+    "amphoe_t": "อ. หนองวัวซอ",
+    "amphoe_e": "Nong Wua So"
+  },
+  {
+    "am_id": 4104,
+    "amphoe_t": "อ. กุมภวาปี",
+    "amphoe_e": "Kumphawapi"
+  },
+  {
+    "am_id": 4105,
+    "amphoe_t": "อ. โนนสะอาด",
+    "amphoe_e": "Non Sa-at"
+  },
+  {
+    "am_id": 4106,
+    "amphoe_t": "อ. หนองหาน",
+    "amphoe_e": "Nong Saeng"
+  },
+  {
+    "am_id": 4107,
+    "amphoe_t": "อ. ทุ่งฝน",
+    "amphoe_e": "Thung Fon"
+  },
+  {
+    "am_id": 4108,
+    "amphoe_t": "อ. ไชยวาน",
+    "amphoe_e": "Chai Wan"
+  },
+  {
+    "am_id": 4109,
+    "amphoe_t": "อ. ศรีธาตุ",
+    "amphoe_e": "Si That"
+  },
+  {
+    "am_id": 4110,
+    "amphoe_t": "อ. วังสามหมอ",
+    "amphoe_e": "Wang Sam Mo"
+  },
+  {
+    "am_id": 4111,
+    "amphoe_t": "อ. บ้านดุง",
+    "amphoe_e": "Ban Dung"
+  },
+  {
+    "am_id": 4117,
+    "amphoe_t": "อ. บ้านผือ",
+    "amphoe_e": "Ban Phue"
+  },
+  {
+    "am_id": 4118,
+    "amphoe_t": "อ. น้ำโสม",
+    "amphoe_e": "Nam Som"
+  },
+  {
+    "am_id": 4119,
+    "amphoe_t": "อ. เพ็ญ",
+    "amphoe_e": "Phen"
+  },
+  {
+    "am_id": 4120,
+    "amphoe_t": "อ. สร้างคอม",
+    "amphoe_e": "Sang Khom"
+  },
+  {
+    "am_id": 4121,
+    "amphoe_t": "อ. หนองแสง",
+    "amphoe_e": "Nong Saeng"
+  },
+  {
+    "am_id": 4122,
+    "amphoe_t": "อ. นายูง",
+    "amphoe_e": "Na Yung"
+  },
+  {
+    "am_id": 4123,
+    "amphoe_t": "อ. พิบูลย์รักษ์",
+    "amphoe_e": "Phibun Rak"
+  },
+  {
+    "am_id": 4124,
+    "amphoe_t": "อ. กู่แก้ว",
+    "amphoe_e": "Ku Kaeo"
+  },
+  {
+    "am_id": 4125,
+    "amphoe_t": "อ. ประจักษ์ศิลปาคม",
+    "amphoe_e": "Prachaksinlapakhom"
+  },
+  {
+    "am_id": 4201,
+    "amphoe_t": "อ. เมืองเลย",
+    "amphoe_e": "Mueang Loei"
+  },
+  {
+    "am_id": 4202,
+    "amphoe_t": "อ. นาด้วง",
+    "amphoe_e": "Na Duang"
+  },
+  {
+    "am_id": 4203,
+    "amphoe_t": "อ. เชียงคาน",
+    "amphoe_e": "Chiang Khan"
+  },
+  {
+    "am_id": 4204,
+    "amphoe_t": "อ. ปากชม",
+    "amphoe_e": "Pak Chom"
+  },
+  {
+    "am_id": 4205,
+    "amphoe_t": "อ. ด่านซ้าย",
+    "amphoe_e": "Dan Sai"
+  },
+  {
+    "am_id": 4206,
+    "amphoe_t": "อ. นาแห้ว",
+    "amphoe_e": "Na Haeo"
+  },
+  {
+    "am_id": 4207,
+    "amphoe_t": "อ. ภูเรือ",
+    "amphoe_e": "Phu Ruea"
+  },
+  {
+    "am_id": 4208,
+    "amphoe_t": "อ. ท่าลี่",
+    "amphoe_e": "Tha Li"
+  },
+  {
+    "am_id": 4209,
+    "amphoe_t": "อ. วังสะพุง",
+    "amphoe_e": "Wang Saphung"
+  },
+  {
+    "am_id": 4210,
+    "amphoe_t": "อ. ภูกระดึง",
+    "amphoe_e": "Phu Kradueng"
+  },
+  {
+    "am_id": 4211,
+    "amphoe_t": "อ. ภูหลวง",
+    "amphoe_e": "Phu Luang"
+  },
+  {
+    "am_id": 4212,
+    "amphoe_t": "อ. ผาขาว",
+    "amphoe_e": "Pha  Khao"
+  },
+  {
+    "am_id": 4213,
+    "amphoe_t": "อ. เอราวัณ",
+    "amphoe_e": "Erawan"
+  },
+  {
+    "am_id": 4214,
+    "amphoe_t": "อ. หนองหิน",
+    "amphoe_e": "Nong Hin"
+  },
+  {
+    "am_id": 4301,
+    "amphoe_t": "อ. เมืองหนองคาย",
+    "amphoe_e": "Mueang Nong Khai"
+  },
+  {
+    "am_id": 4302,
+    "amphoe_t": "อ. ท่าบ่อ",
+    "amphoe_e": "Tha Bo"
+  },
+  {
+    "am_id": 4305,
+    "amphoe_t": "อ. โพนพิสัย",
+    "amphoe_e": "Phon Phisai"
+  },
+  {
+    "am_id": 4307,
+    "amphoe_t": "อ. ศรีเชียงใหม่",
+    "amphoe_e": "Si Chiang Mai"
+  },
+  {
+    "am_id": 4308,
+    "amphoe_t": "อ. สังคม",
+    "amphoe_e": "Sangkhom"
+  },
+  {
+    "am_id": 4314,
+    "amphoe_t": "อ. สระใคร",
+    "amphoe_e": "Sakhrai"
+  },
+  {
+    "am_id": 4315,
+    "amphoe_t": "อ. เฝ้าไร่",
+    "amphoe_e": "Fao Rai"
+  },
+  {
+    "am_id": 4316,
+    "amphoe_t": "อ. รัตนวาปี",
+    "amphoe_e": "Rattanawapi"
+  },
+  {
+    "am_id": 4317,
+    "amphoe_t": "อ. โพธิ์ตาก",
+    "amphoe_e": "Pho Tak"
+  },
+  {
+    "am_id": 4401,
+    "amphoe_t": "อ. เมืองมหาสารคาม",
+    "amphoe_e": "Mueang Maha Sarakham"
+  },
+  {
+    "am_id": 4402,
+    "amphoe_t": "อ. แกดำ",
+    "amphoe_e": "Kae Dam"
+  },
+  {
+    "am_id": 4403,
+    "amphoe_t": "อ. โกสุมพิสัย",
+    "amphoe_e": "Kosum Phisai"
+  },
+  {
+    "am_id": 4404,
+    "amphoe_t": "อ. กันทรวิชัย",
+    "amphoe_e": "Kantharawichai"
+  },
+  {
+    "am_id": 4405,
+    "amphoe_t": "อ. เชียงยืน",
+    "amphoe_e": "Chiang Yuen"
+  },
+  {
+    "am_id": 4406,
+    "amphoe_t": "อ. บรบือ",
+    "amphoe_e": "Borabue"
+  },
+  {
+    "am_id": 4407,
+    "amphoe_t": "อ. นาเชือก",
+    "amphoe_e": "Na Chueak"
+  },
+  {
+    "am_id": 4408,
+    "amphoe_t": "อ. พยัคฆภูมิพิสัย",
+    "amphoe_e": "Phayakkhaphum Phisai"
+  },
+  {
+    "am_id": 4409,
+    "amphoe_t": "อ. วาปีปทุม",
+    "amphoe_e": "Wapi Pathum"
+  },
+  {
+    "am_id": 4410,
+    "amphoe_t": "อ. นาดูน",
+    "amphoe_e": "Na Dun"
+  },
+  {
+    "am_id": 4411,
+    "amphoe_t": "อ. ยางสีสุราช",
+    "amphoe_e": "Yang Sisurat"
+  },
+  {
+    "am_id": 4412,
+    "amphoe_t": "อ. กุดรัง",
+    "amphoe_e": "Kut Rang"
+  },
+  {
+    "am_id": 4413,
+    "amphoe_t": "อ. ชื่นชม",
+    "amphoe_e": "Chuen Chom"
+  },
+  {
+    "am_id": 4501,
+    "amphoe_t": "อ. เมืองร้อยเอ็ด",
+    "amphoe_e": "Mueang Roi Et"
+  },
+  {
+    "am_id": 4502,
+    "amphoe_t": "อ. เกษตรวิสัย",
+    "amphoe_e": "Kaset Wisai"
+  },
+  {
+    "am_id": 4503,
+    "amphoe_t": "อ. ปทุมรัตต์",
+    "amphoe_e": "Pathum Rat"
+  },
+  {
+    "am_id": 4504,
+    "amphoe_t": "อ. จตุรพักตรพิมาน",
+    "amphoe_e": "Chaturaphak Phiman"
+  },
+  {
+    "am_id": 4505,
+    "amphoe_t": "อ. ธวัชบุรี",
+    "amphoe_e": "Thawat Buri"
+  },
+  {
+    "am_id": 4506,
+    "amphoe_t": "อ. พนมไพร",
+    "amphoe_e": "Phanom Phrai"
+  },
+  {
+    "am_id": 4507,
+    "amphoe_t": "อ. โพนทอง",
+    "amphoe_e": "Phon Thong"
+  },
+  {
+    "am_id": 4508,
+    "amphoe_t": "อ. โพธิ์ชัย",
+    "amphoe_e": "Pho Chai"
+  },
+  {
+    "am_id": 4509,
+    "amphoe_t": "อ. หนองพอก",
+    "amphoe_e": "Nong Phok"
+  },
+  {
+    "am_id": 4510,
+    "amphoe_t": "อ. เสลภูมิ",
+    "amphoe_e": "Selaphum"
+  },
+  {
+    "am_id": 4511,
+    "amphoe_t": "อ. สุวรรณภูมิ",
+    "amphoe_e": "Suwannaphum"
+  },
+  {
+    "am_id": 4512,
+    "amphoe_t": "อ. เมืองสรวง",
+    "amphoe_e": "Mueang Suang"
+  },
+  {
+    "am_id": 4513,
+    "amphoe_t": "อ. โพนทราย",
+    "amphoe_e": "Phon Sai"
+  },
+  {
+    "am_id": 4514,
+    "amphoe_t": "อ. อาจสามารถ",
+    "amphoe_e": "At Samat"
+  },
+  {
+    "am_id": 4515,
+    "amphoe_t": "อ. เมยวดี",
+    "amphoe_e": "Moei Wadi"
+  },
+  {
+    "am_id": 4516,
+    "amphoe_t": "อ. ศรีสมเด็จ",
+    "amphoe_e": "Si Somdet"
+  },
+  {
+    "am_id": 4517,
+    "amphoe_t": "อ. จังหาร",
+    "amphoe_e": "Changhan"
+  },
+  {
+    "am_id": 4518,
+    "amphoe_t": "อ. เชียงขวัญ",
+    "amphoe_e": "Chiang Khwan"
+  },
+  {
+    "am_id": 4519,
+    "amphoe_t": "อ. หนองฮี",
+    "amphoe_e": "Nong Hi"
+  },
+  {
+    "am_id": 4520,
+    "amphoe_t": "อ. ทุ่งเขาหลวง",
+    "amphoe_e": "Thung Khao Luang"
+  },
+  {
+    "am_id": 4601,
+    "amphoe_t": "อ. เมืองกาฬสินธุ์",
+    "amphoe_e": "Mueang Kalasin"
+  },
+  {
+    "am_id": 4602,
+    "amphoe_t": "อ. นามน",
+    "amphoe_e": "Na Mon"
+  },
+  {
+    "am_id": 4603,
+    "amphoe_t": "อ. กมลาไสย",
+    "amphoe_e": "Kamalasai"
+  },
+  {
+    "am_id": 4604,
+    "amphoe_t": "อ. ร่องคำ",
+    "amphoe_e": "Rong Kham"
+  },
+  {
+    "am_id": 4605,
+    "amphoe_t": "อ. กุฉินารายณ์",
+    "amphoe_e": "Kuchinarai"
+  },
+  {
+    "am_id": 4606,
+    "amphoe_t": "อ. เขาวง",
+    "amphoe_e": "Khao Wong"
+  },
+  {
+    "am_id": 4607,
+    "amphoe_t": "อ. ยางตลาด",
+    "amphoe_e": "Yang Talat"
+  },
+  {
+    "am_id": 4608,
+    "amphoe_t": "อ. ห้วยเม็ก",
+    "amphoe_e": "Huai Mek"
+  },
+  {
+    "am_id": 4609,
+    "amphoe_t": "อ. สหัสขันธ์",
+    "amphoe_e": "Sahatsakhan"
+  },
+  {
+    "am_id": 4610,
+    "amphoe_t": "อ. คำม่วง",
+    "amphoe_e": "Kham Muang"
+  },
+  {
+    "am_id": 4611,
+    "amphoe_t": "อ. ท่าคันโท",
+    "amphoe_e": "Tha Khantho"
+  },
+  {
+    "am_id": 4612,
+    "amphoe_t": "อ. หนองกุงศรี",
+    "amphoe_e": "Nong Kung Si"
+  },
+  {
+    "am_id": 4613,
+    "amphoe_t": "อ. สมเด็จ",
+    "amphoe_e": "Somdet"
+  },
+  {
+    "am_id": 4614,
+    "amphoe_t": "อ. ห้วยผึ้ง",
+    "amphoe_e": "Huai Phueng"
+  },
+  {
+    "am_id": 4615,
+    "amphoe_t": "อ. สามชัย",
+    "amphoe_e": "Sam Chai"
+  },
+  {
+    "am_id": 4616,
+    "amphoe_t": "อ. นาคู",
+    "amphoe_e": "Na Khu"
+  },
+  {
+    "am_id": 4617,
+    "amphoe_t": "อ. ดอนจาน",
+    "amphoe_e": "Don Chan"
+  },
+  {
+    "am_id": 4618,
+    "amphoe_t": "อ. ฆ้องชัย",
+    "amphoe_e": "Khong Chai"
+  },
+  {
+    "am_id": 4701,
+    "amphoe_t": "อ. เมืองสกลนคร",
+    "amphoe_e": "Mueang Sakon Nakhon"
+  },
+  {
+    "am_id": 4702,
+    "amphoe_t": "อ. กุสุมาลย์",
+    "amphoe_e": "Kusuman"
+  },
+  {
+    "am_id": 4703,
+    "amphoe_t": "อ. กุดบาก",
+    "amphoe_e": "Kut Bak"
+  },
+  {
+    "am_id": 4704,
+    "amphoe_t": "อ. พรรณานิคม",
+    "amphoe_e": "Phanna Nikhom"
+  },
+  {
+    "am_id": 4705,
+    "amphoe_t": "อ. พังโคน",
+    "amphoe_e": "Phanh khon"
+  },
+  {
+    "am_id": 4706,
+    "amphoe_t": "อ. วาริชภูมิ",
+    "amphoe_e": "Waritchaphum"
+  },
+  {
+    "am_id": 4707,
+    "amphoe_t": "อ. นิคมน้ำอูน",
+    "amphoe_e": "Nikhom Nam un"
+  },
+  {
+    "am_id": 4708,
+    "amphoe_t": "อ. วานรนิวาส",
+    "amphoe_e": "Wanon Niwat"
+  },
+  {
+    "am_id": 4709,
+    "amphoe_t": "อ. คำตากล้า",
+    "amphoe_e": "Kham Ta Kla"
+  },
+  {
+    "am_id": 4710,
+    "amphoe_t": "อ. บ้านม่วง",
+    "amphoe_e": "Ban Muang"
+  },
+  {
+    "am_id": 4711,
+    "amphoe_t": "อ. อากาศอำนวย",
+    "amphoe_e": "Akat Amnuai"
+  },
+  {
+    "am_id": 4712,
+    "amphoe_t": "อ. สว่างแดนดิน",
+    "amphoe_e": "Sawang Daen Din"
+  },
+  {
+    "am_id": 4713,
+    "amphoe_t": "อ. ส่องดาว",
+    "amphoe_e": "Song Dao"
+  },
+  {
+    "am_id": 4714,
+    "amphoe_t": "อ. เต่างอย",
+    "amphoe_e": "Tao Ngoi"
+  },
+  {
+    "am_id": 4715,
+    "amphoe_t": "อ. โคกศรีสุพรรณ",
+    "amphoe_e": "Khok Si Suphan"
+  },
+  {
+    "am_id": 4716,
+    "amphoe_t": "อ. เจริญศิลป์",
+    "amphoe_e": "Charoen Sin"
+  },
+  {
+    "am_id": 4717,
+    "amphoe_t": "อ. โพนนาแก้ว",
+    "amphoe_e": "Phon Na Kaeo"
+  },
+  {
+    "am_id": 4718,
+    "amphoe_t": "อ. ภูพาน",
+    "amphoe_e": "Phu Phan"
+  },
+  {
+    "am_id": 4801,
+    "amphoe_t": "อ. เมืองนครพนม",
+    "amphoe_e": "Mueang Nakhon Phanom"
+  },
+  {
+    "am_id": 4802,
+    "amphoe_t": "อ. ปลาปาก",
+    "amphoe_e": "Pla Pak"
+  },
+  {
+    "am_id": 4803,
+    "amphoe_t": "อ. ท่าอุเทน",
+    "amphoe_e": "Tha Uthen"
+  },
+  {
+    "am_id": 4804,
+    "amphoe_t": "อ. บ้านแพง",
+    "amphoe_e": "Ban Phaeng"
+  },
+  {
+    "am_id": 4805,
+    "amphoe_t": "อ. ธาตุพนม",
+    "amphoe_e": "That Phanom"
+  },
+  {
+    "am_id": 4806,
+    "amphoe_t": "อ. เรณูนคร",
+    "amphoe_e": "Renu Nakhon"
+  },
+  {
+    "am_id": 4807,
+    "amphoe_t": "อ. นาแก",
+    "amphoe_e": "Na Kae"
+  },
+  {
+    "am_id": 4808,
+    "amphoe_t": "อ. ศรีสงคราม",
+    "amphoe_e": "Si Songkhram"
+  },
+  {
+    "am_id": 4809,
+    "amphoe_t": "อ. นาหว้า",
+    "amphoe_e": "Na Wa"
+  },
+  {
+    "am_id": 4810,
+    "amphoe_t": "อ. โพนสวรรค์",
+    "amphoe_e": "Phon Sawan"
+  },
+  {
+    "am_id": 4811,
+    "amphoe_t": "อ. นาทม",
+    "amphoe_e": "Na Thom"
+  },
+  {
+    "am_id": 4812,
+    "amphoe_t": "อ. วังยาง",
+    "amphoe_e": "Wang Yang"
+  },
+  {
+    "am_id": 4901,
+    "amphoe_t": "อ. เมืองมุกดาหาร",
+    "amphoe_e": "Mueang Mukdahan"
+  },
+  {
+    "am_id": 4902,
+    "amphoe_t": "อ. นิคมคำสร้อย",
+    "amphoe_e": "Nikhom Kham Soi"
+  },
+  {
+    "am_id": 4903,
+    "amphoe_t": "อ. ดอนตาล",
+    "amphoe_e": "Don Tan"
+  },
+  {
+    "am_id": 4904,
+    "amphoe_t": "อ. ดงหลวง",
+    "amphoe_e": "Don Tan"
+  },
+  {
+    "am_id": 4905,
+    "amphoe_t": "อ. คำชะอี",
+    "amphoe_e": "Khamcha-i"
+  },
+  {
+    "am_id": 4906,
+    "amphoe_t": "อ. ว่านใหญ่",
+    "amphoe_e": "Wan Yai"
+  },
+  {
+    "am_id": 4907,
+    "amphoe_t": "อ. หนองสูง",
+    "amphoe_e": "Nong Sung"
+  },
+  {
+    "am_id": 5001,
+    "amphoe_t": "อ. เมืองเชียงใหม่",
+    "amphoe_e": "Mueang Chiang Mai"
+  },
+  {
+    "am_id": 5002,
+    "amphoe_t": "อ. จอมทอง",
+    "amphoe_e": "Chom Thong"
+  },
+  {
+    "am_id": 5003,
+    "amphoe_t": "อ. แม่แจ่ม",
+    "amphoe_e": "Mae Chaem"
+  },
+  {
+    "am_id": 5004,
+    "amphoe_t": "อ. เชียงดาว",
+    "amphoe_e": "Chiang Dao"
+  },
+  {
+    "am_id": 5005,
+    "amphoe_t": "อ. ดอยสะเก็ด",
+    "amphoe_e": "Doi Saket"
+  },
+  {
+    "am_id": 5006,
+    "amphoe_t": "อ. แม่แตง",
+    "amphoe_e": "Mae Taeng"
+  },
+  {
+    "am_id": 5007,
+    "amphoe_t": "อ. แม่ริม",
+    "amphoe_e": "Mae Rim"
+  },
+  {
+    "am_id": 5008,
+    "amphoe_t": "อ. สะเมิง",
+    "amphoe_e": "Samoeng"
+  },
+  {
+    "am_id": 5009,
+    "amphoe_t": "อ. ฝาง",
+    "amphoe_e": "Fang"
+  },
+  {
+    "am_id": 5010,
+    "amphoe_t": "อ. แม่อาย",
+    "amphoe_e": "Mae Ai"
+  },
+  {
+    "am_id": 5011,
+    "amphoe_t": "อ. พร้าว",
+    "amphoe_e": "Phrao"
+  },
+  {
+    "am_id": 5012,
+    "amphoe_t": "อ. สันป่าตอง",
+    "amphoe_e": "San Pa Tong"
+  },
+  {
+    "am_id": 5013,
+    "amphoe_t": "อ. สันกำแพง",
+    "amphoe_e": "San Kamphaeng"
+  },
+  {
+    "am_id": 5014,
+    "amphoe_t": "อ. สันทราย",
+    "amphoe_e": "San Sai"
+  },
+  {
+    "am_id": 5015,
+    "amphoe_t": "อ. หางดง",
+    "amphoe_e": "Hang Dong"
+  },
+  {
+    "am_id": 5016,
+    "amphoe_t": "อ. ฮอด",
+    "amphoe_e": "Hot"
+  },
+  {
+    "am_id": 5017,
+    "amphoe_t": "อ. ดอยเต่า",
+    "amphoe_e": "Doi Tao"
+  },
+  {
+    "am_id": 5018,
+    "amphoe_t": "อ. อมก๋อย",
+    "amphoe_e": "Omkoi"
+  },
+  {
+    "am_id": 5019,
+    "amphoe_t": "อ. สารภี",
+    "amphoe_e": "Saraphi"
+  },
+  {
+    "am_id": 5020,
+    "amphoe_t": "อ. เวียงแหง",
+    "amphoe_e": "Wiang Haeng"
+  },
+  {
+    "am_id": 5021,
+    "amphoe_t": "อ. ไชยปราการ",
+    "amphoe_e": "Chai Prakan"
+  },
+  {
+    "am_id": 5022,
+    "amphoe_t": "อ. แม่วาง",
+    "amphoe_e": "Mae Wang"
+  },
+  {
+    "am_id": 5023,
+    "amphoe_t": "อ. แม่ออน",
+    "amphoe_e": "Mae On"
+  },
+  {
+    "am_id": 5024,
+    "amphoe_t": "อ. ดอยหล่อ",
+    "amphoe_e": "Doi Lo"
+  },
+  {
+    "am_id": 5025,
+    "amphoe_t": "อ. กัลยาณิวัฒนา",
+    "amphoe_e": "Kanlayaniwatthana"
+  },
+  {
+    "am_id": 5101,
+    "amphoe_t": "อ. เมืองลำพูน",
+    "amphoe_e": "Mueang Lamphun"
+  },
+  {
+    "am_id": 5102,
+    "amphoe_t": "อ. แม่ทา",
+    "amphoe_e": "Mae Tha"
+  },
+  {
+    "am_id": 5103,
+    "amphoe_t": "อ. บ้านโฮ่ง",
+    "amphoe_e": "Ban Hong"
+  },
+  {
+    "am_id": 5104,
+    "amphoe_t": "อ. ลี้",
+    "amphoe_e": "Li"
+  },
+  {
+    "am_id": 5105,
+    "amphoe_t": "อ. ทุ่งหัวช้าง",
+    "amphoe_e": "Thung Hua Chang"
+  },
+  {
+    "am_id": 5106,
+    "amphoe_t": "อ. ป่าซาง",
+    "amphoe_e": "Pa Sang"
+  },
+  {
+    "am_id": 5107,
+    "amphoe_t": "อ. บ้านธิ",
+    "amphoe_e": "Ban Thi"
+  },
+  {
+    "am_id": 5108,
+    "amphoe_t": "อ. เวียงหนองล่อง",
+    "amphoe_e": "Wiang Nong Long"
+  },
+  {
+    "am_id": 5201,
+    "amphoe_t": "อ. เมืองลำปาง",
+    "amphoe_e": "Mueang Lampang"
+  },
+  {
+    "am_id": 5202,
+    "amphoe_t": "อ. แม่เมาะ",
+    "amphoe_e": "Mae Mo"
+  },
+  {
+    "am_id": 5203,
+    "amphoe_t": "อ. เกาะคา",
+    "amphoe_e": "Ko kha"
+  },
+  {
+    "am_id": 5204,
+    "amphoe_t": "อ. เสริมงาม",
+    "amphoe_e": "Soem Ngam"
+  },
+  {
+    "am_id": 5205,
+    "amphoe_t": "อ. งาว",
+    "amphoe_e": "Ngao"
+  },
+  {
+    "am_id": 5206,
+    "amphoe_t": "อ. แจ้ห่ม",
+    "amphoe_e": "Chae Hom"
+  },
+  {
+    "am_id": 5207,
+    "amphoe_t": "อ. วังเหนือ",
+    "amphoe_e": "Wang Nuea"
+  },
+  {
+    "am_id": 5208,
+    "amphoe_t": "อ. เถิน",
+    "amphoe_e": "Thoen"
+  },
+  {
+    "am_id": 5209,
+    "amphoe_t": "อ. แม่พริก",
+    "amphoe_e": "Mae Phrik"
+  },
+  {
+    "am_id": 5210,
+    "amphoe_t": "อ. แม่ทะ",
+    "amphoe_e": "Mae Tha"
+  },
+  {
+    "am_id": 5211,
+    "amphoe_t": "อ. สบปราบ",
+    "amphoe_e": "Sop Prap"
+  },
+  {
+    "am_id": 5212,
+    "amphoe_t": "อ. ห้างฉัตร",
+    "amphoe_e": "Hang Chat"
+  },
+  {
+    "am_id": 5213,
+    "amphoe_t": "อ. เมืองปาน",
+    "amphoe_e": "Mueang Pan"
+  },
+  {
+    "am_id": 5301,
+    "amphoe_t": "อ. เมืองอุตรดิตถ์",
+    "amphoe_e": "Mueang Uttaradit"
+  },
+  {
+    "am_id": 5302,
+    "amphoe_t": "อ. ตรอน",
+    "amphoe_e": "Tron"
+  },
+  {
+    "am_id": 5303,
+    "amphoe_t": "อ. ท่าปลา",
+    "amphoe_e": "Tha Pla"
+  },
+  {
+    "am_id": 5304,
+    "amphoe_t": "อ. น้ำปาด",
+    "amphoe_e": "Nam Pat"
+  },
+  {
+    "am_id": 5305,
+    "amphoe_t": "อ. ฟากท่า",
+    "amphoe_e": "Fak Tha"
+  },
+  {
+    "am_id": 5306,
+    "amphoe_t": "อ. บ้านโคก",
+    "amphoe_e": "Ban Khok"
+  },
+  {
+    "am_id": 5307,
+    "amphoe_t": "อ. พิชัย",
+    "amphoe_e": "Phichai"
+  },
+  {
+    "am_id": 5308,
+    "amphoe_t": "อ. ลับแล",
+    "amphoe_e": "Laplae"
+  },
+  {
+    "am_id": 5309,
+    "amphoe_t": "อ. ทองแสนขัน",
+    "amphoe_e": "Thong Saen Khan"
+  },
+  {
+    "am_id": 5401,
+    "amphoe_t": "อ. เมืองแพร่",
+    "amphoe_e": "Mueang Phrae"
+  },
+  {
+    "am_id": 5402,
+    "amphoe_t": "อ. ร้องกวาง",
+    "amphoe_e": "Mueang Phrae"
+  },
+  {
+    "am_id": 5403,
+    "amphoe_t": "อ. ลอง",
+    "amphoe_e": "Long"
+  },
+  {
+    "am_id": 5404,
+    "amphoe_t": "อ. สูงเม่น",
+    "amphoe_e": "Sung Men"
+  },
+  {
+    "am_id": 5405,
+    "amphoe_t": "อ. เด่นชัย",
+    "amphoe_e": "Den Chai"
+  },
+  {
+    "am_id": 5406,
+    "amphoe_t": "อ. สอง",
+    "amphoe_e": "Song"
+  },
+  {
+    "am_id": 5407,
+    "amphoe_t": "อ. วังชิ้น",
+    "amphoe_e": "Wang Chin"
+  },
+  {
+    "am_id": 5408,
+    "amphoe_t": "อ. หนองม่วงไข่",
+    "amphoe_e": "Nong Muang Khai"
+  },
+  {
+    "am_id": 5501,
+    "amphoe_t": "อ. เมืองน่าน",
+    "amphoe_e": "Mueang Nan"
+  },
+  {
+    "am_id": 5502,
+    "amphoe_t": "อ. แม่จริม",
+    "amphoe_e": "Mae Charim"
+  },
+  {
+    "am_id": 5503,
+    "amphoe_t": "อ. บ้านหลวง",
+    "amphoe_e": "Ban Luang"
+  },
+  {
+    "am_id": 5504,
+    "amphoe_t": "อ. นาน้อย",
+    "amphoe_e": "Na Noi"
+  },
+  {
+    "am_id": 5505,
+    "amphoe_t": "อ. ปัว",
+    "amphoe_e": "Pua"
+  },
+  {
+    "am_id": 5506,
+    "amphoe_t": "อ. ท่าวังผา",
+    "amphoe_e": "Tha Wang Pha"
+  },
+  {
+    "am_id": 5507,
+    "amphoe_t": "อ. เวียงสา",
+    "amphoe_e": "Wiang Sa"
+  },
+  {
+    "am_id": 5508,
+    "amphoe_t": "อ. ทุ่งช้าง",
+    "amphoe_e": "Thung Chang"
+  },
+  {
+    "am_id": 5509,
+    "amphoe_t": "อ. เชียงกลาง",
+    "amphoe_e": "Chiang Klang"
+  },
+  {
+    "am_id": 5510,
+    "amphoe_t": "อ. นาหมื่น",
+    "amphoe_e": "Na Muen"
+  },
+  {
+    "am_id": 5511,
+    "amphoe_t": "อ. สันติสุข",
+    "amphoe_e": "Santi Suk"
+  },
+  {
+    "am_id": 5512,
+    "amphoe_t": "อ. บ่อเกลือ",
+    "amphoe_e": "Bo Kluea"
+  },
+  {
+    "am_id": 5513,
+    "amphoe_t": "อ. สองแคว",
+    "amphoe_e": "Song Khwae"
+  },
+  {
+    "am_id": 5514,
+    "amphoe_t": "อ. ภูเพียง",
+    "amphoe_e": "Phu Phiang"
+  },
+  {
+    "am_id": 5515,
+    "amphoe_t": "อ. เฉลิมพระเกียรติ",
+    "amphoe_e": "Chaloem Phra Kiet"
+  },
+  {
+    "am_id": 5601,
+    "amphoe_t": "อ. เมืองพะเยา",
+    "amphoe_e": "Mueang Phayao"
+  },
+  {
+    "am_id": 5602,
+    "amphoe_t": "อ. จุน",
+    "amphoe_e": "Chun"
+  },
+  {
+    "am_id": 5603,
+    "amphoe_t": "อ. เชียงคำ",
+    "amphoe_e": "Chiang Kham"
+  },
+  {
+    "am_id": 5604,
+    "amphoe_t": "อ. เชียงม่วน",
+    "amphoe_e": "Chiang Muan"
+  },
+  {
+    "am_id": 5605,
+    "amphoe_t": "อ. ดอกคำใต้",
+    "amphoe_e": "Dok Khamtai"
+  },
+  {
+    "am_id": 5606,
+    "amphoe_t": "อ. ปง",
+    "amphoe_e": "Pong"
+  },
+  {
+    "am_id": 5607,
+    "amphoe_t": "อ. แม่ใจ",
+    "amphoe_e": "Mae Chai "
+  },
+  {
+    "am_id": 5608,
+    "amphoe_t": "อ. ภูซาง",
+    "amphoe_e": "Phu Sang"
+  },
+  {
+    "am_id": 5609,
+    "amphoe_t": "อ. ภูกามยาว",
+    "amphoe_e": "Phu Kamyao"
+  },
+  {
+    "am_id": 5701,
+    "amphoe_t": "อ. เมืองเชียงราย",
+    "amphoe_e": "Mueang Chiang Rai"
+  },
+  {
+    "am_id": 5702,
+    "amphoe_t": "อ. เวียงชัย",
+    "amphoe_e": "Wiang Chai"
+  },
+  {
+    "am_id": 5703,
+    "amphoe_t": "อ. เชียงของ",
+    "amphoe_e": "Chiang Khong"
+  },
+  {
+    "am_id": 5704,
+    "amphoe_t": "อ. เทิง",
+    "amphoe_e": "Thoeng"
+  },
+  {
+    "am_id": 5705,
+    "amphoe_t": "อ. พาน",
+    "amphoe_e": "Phan"
+  },
+  {
+    "am_id": 5706,
+    "amphoe_t": "อ. ป่าแดด",
+    "amphoe_e": "Pa Daet"
+  },
+  {
+    "am_id": 5707,
+    "amphoe_t": "อ. แม่จัน",
+    "amphoe_e": "Mae Chan"
+  },
+  {
+    "am_id": 5708,
+    "amphoe_t": "อ. เชียงแสน",
+    "amphoe_e": "Chiang Saen"
+  },
+  {
+    "am_id": 5709,
+    "amphoe_t": "อ. แม่สาย",
+    "amphoe_e": "Mae Sai"
+  },
+  {
+    "am_id": 5710,
+    "amphoe_t": "อ. แม่สรวย",
+    "amphoe_e": "Mae Suai"
+  },
+  {
+    "am_id": 5711,
+    "amphoe_t": "อ. เวียงป่าเป้า",
+    "amphoe_e": "Wiang Pa Pao"
+  },
+  {
+    "am_id": 5712,
+    "amphoe_t": "อ. พญาเม็งราย",
+    "amphoe_e": "Phaya Mengrai"
+  },
+  {
+    "am_id": 5713,
+    "amphoe_t": "อ. เวียงแก่น",
+    "amphoe_e": "Wiang Kaen"
+  },
+  {
+    "am_id": 5714,
+    "amphoe_t": "อ. ขุนตาล",
+    "amphoe_e": "Khun Tan"
+  },
+  {
+    "am_id": 5715,
+    "amphoe_t": "อ. แม่ฟ้าหลวง",
+    "amphoe_e": "Mae Fa Luang"
+  },
+  {
+    "am_id": 5716,
+    "amphoe_t": "อ. แม่ลาว",
+    "amphoe_e": "Mae Lao"
+  },
+  {
+    "am_id": 5717,
+    "amphoe_t": "อ. เวียงเชียงรุ้ง",
+    "amphoe_e": "Wiang Chiang Rung"
+  },
+  {
+    "am_id": 5718,
+    "amphoe_t": "อ. ดอยหลวง",
+    "amphoe_e": "Doi Luang"
+  },
+  {
+    "am_id": 5801,
+    "amphoe_t": "อ. เมืองแม่ฮ่องสอน",
+    "amphoe_e": "Mueang Mae Hong Son"
+  },
+  {
+    "am_id": 5802,
+    "amphoe_t": "อ. ขุนยวม",
+    "amphoe_e": "Khun Yuam"
+  },
+  {
+    "am_id": 5803,
+    "amphoe_t": "อ. ปาย",
+    "amphoe_e": "Pai"
+  },
+  {
+    "am_id": 5804,
+    "amphoe_t": "อ. แม่สะเรียง",
+    "amphoe_e": "Mae Sariang"
+  },
+  {
+    "am_id": 5805,
+    "amphoe_t": "อ. แม่ลาน้อย",
+    "amphoe_e": "Mae La Noi"
+  },
+  {
+    "am_id": 5806,
+    "amphoe_t": "อ. สบเมย",
+    "amphoe_e": "Sop Moei"
+  },
+  {
+    "am_id": 5807,
+    "amphoe_t": "อ. ปางมะผ้า",
+    "amphoe_e": "Pang Mapha"
+  },
+  {
+    "am_id": 6001,
+    "amphoe_t": "อ. เมืองนครสวรรค์",
+    "amphoe_e": "Mueang Nakhon Sawan"
+  },
+  {
+    "am_id": 6002,
+    "amphoe_t": "อ. โกรกพระ",
+    "amphoe_e": "Krok Phra"
+  },
+  {
+    "am_id": 6003,
+    "amphoe_t": "อ. ชุมแสง",
+    "amphoe_e": "Chum Saeng"
+  },
+  {
+    "am_id": 6004,
+    "amphoe_t": "อ. หนองบัว",
+    "amphoe_e": "Nong Bua"
+  },
+  {
+    "am_id": 6005,
+    "amphoe_t": "อ. บรรพตพิสัย",
+    "amphoe_e": "Banphot Phisai"
+  },
+  {
+    "am_id": 6006,
+    "amphoe_t": "อ. เก้าเลี้ยว",
+    "amphoe_e": "Kao Liao"
+  },
+  {
+    "am_id": 6007,
+    "amphoe_t": "อ. ตาคลี",
+    "amphoe_e": "Takhli"
+  },
+  {
+    "am_id": 6008,
+    "amphoe_t": "อ. ท่าตะโก",
+    "amphoe_e": "Tha Tako"
+  },
+  {
+    "am_id": 6009,
+    "amphoe_t": "อ. ไพศาลี",
+    "amphoe_e": "Phaisali"
+  },
+  {
+    "am_id": 6010,
+    "amphoe_t": "อ. พยุหะคีรี",
+    "amphoe_e": "Phayuha Hkiri"
+  },
+  {
+    "am_id": 6011,
+    "amphoe_t": "อ. ลาดยาว",
+    "amphoe_e": "Lat Yao"
+  },
+  {
+    "am_id": 6012,
+    "amphoe_t": "อ. ตากฟ้า",
+    "amphoe_e": "Tak Fa"
+  },
+  {
+    "am_id": 6013,
+    "amphoe_t": "อ. แม่วงก์",
+    "amphoe_e": "Mae Wong"
+  },
+  {
+    "am_id": 6014,
+    "amphoe_t": "อ. แม่เปิน",
+    "amphoe_e": "Mae Pern"
+  },
+  {
+    "am_id": 6015,
+    "amphoe_t": "อ. ชุมตาบง",
+    "amphoe_e": "Chum Ta Bong"
+  },
+  {
+    "am_id": 6101,
+    "amphoe_t": "อ. เมืองอุทัยธานี",
+    "amphoe_e": "Mueang Uthai Thani"
+  },
+  {
+    "am_id": 6102,
+    "amphoe_t": "อ. ทัพทัน",
+    "amphoe_e": "Thap Than"
+  },
+  {
+    "am_id": 6103,
+    "amphoe_t": "อ. สว่างอารมณ์",
+    "amphoe_e": "Sawang Arom"
+  },
+  {
+    "am_id": 6104,
+    "amphoe_t": "อ. หนองฉาง",
+    "amphoe_e": "Nong Chang"
+  },
+  {
+    "am_id": 6105,
+    "amphoe_t": "อ. หนองขาหย่าง",
+    "amphoe_e": "Nong Khayang"
+  },
+  {
+    "am_id": 6106,
+    "amphoe_t": "อ. บ้านไร่",
+    "amphoe_e": "Ban Rai"
+  },
+  {
+    "am_id": 6107,
+    "amphoe_t": "อ. ลานสัก",
+    "amphoe_e": "Lan Sak"
+  },
+  {
+    "am_id": 6108,
+    "amphoe_t": "อ. ห้วยคต",
+    "amphoe_e": "Huai Khot"
+  },
+  {
+    "am_id": 6201,
+    "amphoe_t": "อ. เมืองกำแพงเพชร",
+    "amphoe_e": "Mueang Kamphaeng Phet"
+  },
+  {
+    "am_id": 6202,
+    "amphoe_t": "อ. ไทรงาม",
+    "amphoe_e": "Sai Ngam"
+  },
+  {
+    "am_id": 6203,
+    "amphoe_t": "อ. คลองลาน",
+    "amphoe_e": "Khlong Lan"
+  },
+  {
+    "am_id": 6204,
+    "amphoe_t": "อ. ขาณุวรลักษบุรี",
+    "amphoe_e": "Khanu Woralaksaburi"
+  },
+  {
+    "am_id": 6205,
+    "amphoe_t": "อ. คลองขลุง",
+    "amphoe_e": "Khlong Khlung"
+  },
+  {
+    "am_id": 6206,
+    "amphoe_t": "อ. พรานกระต่าย",
+    "amphoe_e": "Phran Kratai"
+  },
+  {
+    "am_id": 6207,
+    "amphoe_t": "อ. ลานกระบือ",
+    "amphoe_e": "Lan Krabue"
+  },
+  {
+    "am_id": 6208,
+    "amphoe_t": "อ. ทรายทองวัฒนา",
+    "amphoe_e": "Sai Thong Watthana"
+  },
+  {
+    "am_id": 6209,
+    "amphoe_t": "อ. ปางศิลาทอง",
+    "amphoe_e": "Pang Sila Thong"
+  },
+  {
+    "am_id": 6210,
+    "amphoe_t": "อ. บึงสามัคคี",
+    "amphoe_e": "Bueng Samakkhi"
+  },
+  {
+    "am_id": 6211,
+    "amphoe_t": "อ. โกสัมพีนคร",
+    "amphoe_e": "Kosamphi Nakhon"
+  },
+  {
+    "am_id": 6301,
+    "amphoe_t": "อ. เมืองตาก",
+    "amphoe_e": "Mueang Tak"
+  },
+  {
+    "am_id": 6302,
+    "amphoe_t": "อ. บ้านตาก",
+    "amphoe_e": "Ban Tak"
+  },
+  {
+    "am_id": 6303,
+    "amphoe_t": "อ. สามเงา",
+    "amphoe_e": "Sam Ngao"
+  },
+  {
+    "am_id": 6304,
+    "amphoe_t": "อ. แม่ระมาด",
+    "amphoe_e": "Mae Ramat"
+  },
+  {
+    "am_id": 6305,
+    "amphoe_t": "อ. ท่าสองยาง",
+    "amphoe_e": "Tha Song Yang"
+  },
+  {
+    "am_id": 6306,
+    "amphoe_t": "อ. แม่สอด",
+    "amphoe_e": "Mae Sot"
+  },
+  {
+    "am_id": 6307,
+    "amphoe_t": "อ. พบพระ",
+    "amphoe_e": "Phop Phra"
+  },
+  {
+    "am_id": 6308,
+    "amphoe_t": "อ. อุ้มผาง",
+    "amphoe_e": "Um Phang"
+  },
+  {
+    "am_id": 6309,
+    "amphoe_t": "อ. วังเจ้า",
+    "amphoe_e": "Wang Chao"
+  },
+  {
+    "am_id": 6401,
+    "amphoe_t": "อ. เมืองสุโขทัย",
+    "amphoe_e": "Mueang Sukhothai"
+  },
+  {
+    "am_id": 6402,
+    "amphoe_t": "อ. บ้านด่านลานหอย",
+    "amphoe_e": "Ban Dan Lan Hoi"
+  },
+  {
+    "am_id": 6403,
+    "amphoe_t": "อ. คีรีมาศ",
+    "amphoe_e": "Khiri Mat"
+  },
+  {
+    "am_id": 6404,
+    "amphoe_t": "อ. กงไกรลาศ",
+    "amphoe_e": "Kong Krailat"
+  },
+  {
+    "am_id": 6405,
+    "amphoe_t": "อ. ศรีสัชนาลัย",
+    "amphoe_e": "Si Satchanalai"
+  },
+  {
+    "am_id": 6406,
+    "amphoe_t": "อ. ศรีสำโรง",
+    "amphoe_e": "Si Samrong"
+  },
+  {
+    "am_id": 6407,
+    "amphoe_t": "อ. สวรรคโลก",
+    "amphoe_e": "Sawankhalok"
+  },
+  {
+    "am_id": 6408,
+    "amphoe_t": "อ. ศรีนคร",
+    "amphoe_e": "Si Nakhon"
+  },
+  {
+    "am_id": 6409,
+    "amphoe_t": "อ. ทุ่งเสลี่ยม",
+    "amphoe_e": "Thung Saliam"
+  },
+  {
+    "am_id": 6501,
+    "amphoe_t": "อ. เมืองพิษณุโลก",
+    "amphoe_e": "Mueang Phitsanulok"
+  },
+  {
+    "am_id": 6502,
+    "amphoe_t": "อ. นครไทย",
+    "amphoe_e": "Nakhon Thai"
+  },
+  {
+    "am_id": 6503,
+    "amphoe_t": "อ. ชาติตระการ",
+    "amphoe_e": "Chat Trakan"
+  },
+  {
+    "am_id": 6504,
+    "amphoe_t": "อ. บางระกำ",
+    "amphoe_e": "Bang Rakam"
+  },
+  {
+    "am_id": 6505,
+    "amphoe_t": "อ. บางกระทุ่ม",
+    "amphoe_e": "Bang Krathum"
+  },
+  {
+    "am_id": 6506,
+    "amphoe_t": "อ. พรหมพิราม",
+    "amphoe_e": "Phrom Phiram"
+  },
+  {
+    "am_id": 6507,
+    "amphoe_t": "อ. วัดโบสถ์",
+    "amphoe_e": "Wat Bot"
+  },
+  {
+    "am_id": 6508,
+    "amphoe_t": "อ. วังทอง",
+    "amphoe_e": "Wang Thong"
+  },
+  {
+    "am_id": 6509,
+    "amphoe_t": "อ. เนินมะปราง",
+    "amphoe_e": "Noen Maprang"
+  },
+  {
+    "am_id": 6601,
+    "amphoe_t": "อ. เมืองพิจิตร",
+    "amphoe_e": "Mueang Phichit"
+  },
+  {
+    "am_id": 6602,
+    "amphoe_t": "อ. วังทรายพูน",
+    "amphoe_e": "Wang Sai Phun"
+  },
+  {
+    "am_id": 6603,
+    "amphoe_t": "อ. โพธิ์ประทับช้าง",
+    "amphoe_e": "Pho Prathap Chang"
+  },
+  {
+    "am_id": 6604,
+    "amphoe_t": "อ. ตะพานหิน",
+    "amphoe_e": "Taphan Hin"
+  },
+  {
+    "am_id": 6605,
+    "amphoe_t": "อ. บางมูลนาก",
+    "amphoe_e": "Bang Mun Nak"
+  },
+  {
+    "am_id": 6606,
+    "amphoe_t": "อ. โพทะเล",
+    "amphoe_e": "Pho Thale"
+  },
+  {
+    "am_id": 6607,
+    "amphoe_t": "อ. สามง่าม",
+    "amphoe_e": "Sam Ngam"
+  },
+  {
+    "am_id": 6608,
+    "amphoe_t": "อ. ทับคล้อ",
+    "amphoe_e": "Tap Khlo"
+  },
+  {
+    "am_id": 6609,
+    "amphoe_t": "อ. สากเหล็ก",
+    "amphoe_e": "Sak Lek"
+  },
+  {
+    "am_id": 6610,
+    "amphoe_t": "อ. บึงนาราง",
+    "amphoe_e": "Bueng Na Rang"
+  },
+  {
+    "am_id": 6611,
+    "amphoe_t": "อ. ดงเจริญ",
+    "amphoe_e": "Dong Charoen"
+  },
+  {
+    "am_id": 6612,
+    "amphoe_t": "อ. วชิรบารมี",
+    "amphoe_e": "Wachirabarami"
+  },
+  {
+    "am_id": 6701,
+    "amphoe_t": "อ. เมืองเพชรบูรณ์",
+    "amphoe_e": "Mueang Phetchabun"
+  },
+  {
+    "am_id": 6702,
+    "amphoe_t": "อ. ชนแดน",
+    "amphoe_e": "Chon Daen"
+  },
+  {
+    "am_id": 6703,
+    "amphoe_t": "อ. หล่มสัก",
+    "amphoe_e": "Lom Sak"
+  },
+  {
+    "am_id": 6704,
+    "amphoe_t": "อ. หล่มเก่า",
+    "amphoe_e": "Lom Kao"
+  },
+  {
+    "am_id": 6705,
+    "amphoe_t": "อ. วิเชียรบุรี",
+    "amphoe_e": "Wichian Buri"
+  },
+  {
+    "am_id": 6706,
+    "amphoe_t": "อ. ศรีเทพ",
+    "amphoe_e": "Si Thep"
+  },
+  {
+    "am_id": 6707,
+    "amphoe_t": "อ. หนองไผ่",
+    "amphoe_e": "Nong Phai"
+  },
+  {
+    "am_id": 6708,
+    "amphoe_t": "อ. บึงสามพัน",
+    "amphoe_e": "Bueng Sam Phan"
+  },
+  {
+    "am_id": 6709,
+    "amphoe_t": "อ. น้ำหนาว",
+    "amphoe_e": "Nam Nao"
+  },
+  {
+    "am_id": 6710,
+    "amphoe_t": "อ. วังโป่ง",
+    "amphoe_e": "Wang Pong"
+  },
+  {
+    "am_id": 6711,
+    "amphoe_t": "อ. เขาค้อ",
+    "amphoe_e": "Khao kho"
+  },
+  {
+    "am_id": 7001,
+    "amphoe_t": "อ. เมืองราชบุรี",
+    "amphoe_e": "Mueang Ratchaburi"
+  },
+  {
+    "am_id": 7002,
+    "amphoe_t": "อ. จอมบึง",
+    "amphoe_e": "Chom Bueng"
+  },
+  {
+    "am_id": 7003,
+    "amphoe_t": "อ. สวนผึ้ง",
+    "amphoe_e": "Suan Phueng"
+  },
+  {
+    "am_id": 7004,
+    "amphoe_t": "อ. ดำเนินสะดวก",
+    "amphoe_e": "Damnoen Saduak"
+  },
+  {
+    "am_id": 7005,
+    "amphoe_t": "อ. บ้านโป่ง",
+    "amphoe_e": "Ban Pong"
+  },
+  {
+    "am_id": 7006,
+    "amphoe_t": "อ. บางแพ",
+    "amphoe_e": "Bang Phae"
+  },
+  {
+    "am_id": 7007,
+    "amphoe_t": "อ. โพธาราม",
+    "amphoe_e": "Photharam"
+  },
+  {
+    "am_id": 7008,
+    "amphoe_t": "อ. ปากท่อ",
+    "amphoe_e": "Pak Tho"
+  },
+  {
+    "am_id": 7009,
+    "amphoe_t": "อ. วัดเพลง",
+    "amphoe_e": "Wat Phleng"
+  },
+  {
+    "am_id": 7010,
+    "amphoe_t": "อ. บ้านคา",
+    "amphoe_e": "Ban Kha"
+  },
+  {
+    "am_id": 7101,
+    "amphoe_t": "อ. เมืองกาญจนบุรี",
+    "amphoe_e": "Mueang Kanchanaburi"
+  },
+  {
+    "am_id": 7102,
+    "amphoe_t": "อ. ไทรโยค",
+    "amphoe_e": "Sai Yok"
+  },
+  {
+    "am_id": 7103,
+    "amphoe_t": "อ. บ่อพลอย",
+    "amphoe_e": "Bo Phloi"
+  },
+  {
+    "am_id": 7104,
+    "amphoe_t": "อ. ศรีสวัสดิ์",
+    "amphoe_e": "Si Sawat"
+  },
+  {
+    "am_id": 7105,
+    "amphoe_t": "อ. ท่ามะกา",
+    "amphoe_e": "Tha Maka"
+  },
+  {
+    "am_id": 7106,
+    "amphoe_t": "อ. ท่าม่วง",
+    "amphoe_e": "Tha Muang"
+  },
+  {
+    "am_id": 7107,
+    "amphoe_t": "อ. ทองผาภูมิ",
+    "amphoe_e": "Thong Pha Phum"
+  },
+  {
+    "am_id": 7108,
+    "amphoe_t": "อ. สังขละบุรี",
+    "amphoe_e": "Sangkhla Buri"
+  },
+  {
+    "am_id": 7109,
+    "amphoe_t": "อ. พนมทวน",
+    "amphoe_e": "Phanom Thuan"
+  },
+  {
+    "am_id": 7110,
+    "amphoe_t": "อ. เลาขวัญ",
+    "amphoe_e": "Lao Khwan"
+  },
+  {
+    "am_id": 7111,
+    "amphoe_t": "อ. ด่านมะขามเตี้ย",
+    "amphoe_e": "Dan Makham Tia"
+  },
+  {
+    "am_id": 7112,
+    "amphoe_t": "อ. หนองปรือ",
+    "amphoe_e": "Nong Prue"
+  },
+  {
+    "am_id": 7113,
+    "amphoe_t": "อ. ห้วยกระเจา",
+    "amphoe_e": "Huai Krachao"
+  },
+  {
+    "am_id": 7201,
+    "amphoe_t": "อ. เมืองสุพรรณบุรี",
+    "amphoe_e": "Mueang Saphan Buri"
+  },
+  {
+    "am_id": 7202,
+    "amphoe_t": "อ. เดิมบางนางบวช",
+    "amphoe_e": "Doem Bang Nang Buat"
+  },
+  {
+    "am_id": 7203,
+    "amphoe_t": "อ. ด่านช้าง",
+    "amphoe_e": "Dan Chang"
+  },
+  {
+    "am_id": 7204,
+    "amphoe_t": "อ. บางปลาม้า",
+    "amphoe_e": "Bang Pla Ma"
+  },
+  {
+    "am_id": 7205,
+    "amphoe_t": "อ. ศรีประจันต์",
+    "amphoe_e": "Si Prachan"
+  },
+  {
+    "am_id": 7206,
+    "amphoe_t": "อ. ดอนเจดีย์",
+    "amphoe_e": "Don Chedi"
+  },
+  {
+    "am_id": 7207,
+    "amphoe_t": "อ. สองพี่น้อง",
+    "amphoe_e": "Song Phi Nong"
+  },
+  {
+    "am_id": 7208,
+    "amphoe_t": "อ. สามชุก",
+    "amphoe_e": "Sam Chuk"
+  },
+  {
+    "am_id": 7209,
+    "amphoe_t": "อ. อู่ทอง",
+    "amphoe_e": "U Thong"
+  },
+  {
+    "am_id": 7210,
+    "amphoe_t": "อ. หนองหญ้าไซ",
+    "amphoe_e": "Nong Ya Sai"
+  },
+  {
+    "am_id": 7301,
+    "amphoe_t": "อ. เมืองนครปฐม",
+    "amphoe_e": "mueang Nakhon Pathom"
+  },
+  {
+    "am_id": 7302,
+    "amphoe_t": "อ. กำแพงแสน",
+    "amphoe_e": "Kamphaeng Saen"
+  },
+  {
+    "am_id": 7303,
+    "amphoe_t": "อ. นครชัยศรี",
+    "amphoe_e": "Nakhon Chai Si"
+  },
+  {
+    "am_id": 7304,
+    "amphoe_t": "อ. ดอนตูม",
+    "amphoe_e": "Don Tum"
+  },
+  {
+    "am_id": 7305,
+    "amphoe_t": "อ. บางเลน",
+    "amphoe_e": "Bang Len"
+  },
+  {
+    "am_id": 7306,
+    "amphoe_t": "อ. สามพราน",
+    "amphoe_e": "Sam Phran"
+  },
+  {
+    "am_id": 7307,
+    "amphoe_t": "อ. พุทธมณฑล",
+    "amphoe_e": "Phutthamonthon"
+  },
+  {
+    "am_id": 7401,
+    "amphoe_t": "อ. เมืองสมุทรสาคร",
+    "amphoe_e": "Mueang Samut Sakhon"
+  },
+  {
+    "am_id": 7402,
+    "amphoe_t": "อ. กระทุ่มแบน",
+    "amphoe_e": "Krathum Baen"
+  },
+  {
+    "am_id": 7403,
+    "amphoe_t": "อ. บ้านแพ้ว",
+    "amphoe_e": "Ban Phaeo"
+  },
+  {
+    "am_id": 7501,
+    "amphoe_t": "อ. เมืองสมุทรสงคราม",
+    "amphoe_e": "Mueang Samut Songkhram"
+  },
+  {
+    "am_id": 7502,
+    "amphoe_t": "อ. บางคนที",
+    "amphoe_e": "Bang Khonthi"
+  },
+  {
+    "am_id": 7503,
+    "amphoe_t": "อ. อัมพวา",
+    "amphoe_e": "Amphawa"
+  },
+  {
+    "am_id": 7601,
+    "amphoe_t": "อ. เมืองเพชรบุรี",
+    "amphoe_e": "Mueang Phetchaburi"
+  },
+  {
+    "am_id": 7602,
+    "amphoe_t": "อ. เขาย้อย",
+    "amphoe_e": "Khao Yoi"
+  },
+  {
+    "am_id": 7603,
+    "amphoe_t": "อ. หนองหญ้าปล้อง",
+    "amphoe_e": "Nong Ya Plong"
+  },
+  {
+    "am_id": 7604,
+    "amphoe_t": "อ. ชะอำ",
+    "amphoe_e": "Cha-am"
+  },
+  {
+    "am_id": 7605,
+    "amphoe_t": "อ. ท่ายาง",
+    "amphoe_e": "Tha Yang"
+  },
+  {
+    "am_id": 7606,
+    "amphoe_t": "อ. บ้านลาด",
+    "amphoe_e": "Ban Lat"
+  },
+  {
+    "am_id": 7607,
+    "amphoe_t": "อ. บ้านแหลม",
+    "amphoe_e": "Ban Laem"
+  },
+  {
+    "am_id": 7608,
+    "amphoe_t": "อ. แก่งกระจาน",
+    "amphoe_e": "Kaeng Krachan"
+  },
+  {
+    "am_id": 7701,
+    "amphoe_t": "อ. เมืองประจวบคีรีขันธ์",
+    "amphoe_e": "Mueang Prachuap Khiri Khan"
+  },
+  {
+    "am_id": 7702,
+    "amphoe_t": "อ. กุยบุรี",
+    "amphoe_e": "Kui Buri"
+  },
+  {
+    "am_id": 7703,
+    "amphoe_t": "อ. ทับสะแก",
+    "amphoe_e": "Thap Sakae"
+  },
+  {
+    "am_id": 7704,
+    "amphoe_t": "อ. บางสะพาน",
+    "amphoe_e": "Bang Saphan"
+  },
+  {
+    "am_id": 7705,
+    "amphoe_t": "อ. บางสะพานน้อย",
+    "amphoe_e": "Bang Saphan Noi"
+  },
+  {
+    "am_id": 7706,
+    "amphoe_t": "อ. ปราณบุรี",
+    "amphoe_e": "Pran Buri"
+  },
+  {
+    "am_id": 7707,
+    "amphoe_t": "อ. หัวหิน",
+    "amphoe_e": "Hua Hin"
+  },
+  {
+    "am_id": 7708,
+    "amphoe_t": "อ. สามร้อยยอด",
+    "amphoe_e": "Sam Roi Yot"
+  },
+  {
+    "am_id": 8001,
+    "amphoe_t": "อ. เมืองนครศรีธรรมราช",
+    "amphoe_e": "Mueang Nakhon Si Thammarat"
+  },
+  {
+    "am_id": 8002,
+    "amphoe_t": "อ. พรหมคีรี",
+    "amphoe_e": "Phrom Khiri"
+  },
+  {
+    "am_id": 8003,
+    "amphoe_t": "อ. ลานสกา",
+    "amphoe_e": "Lan Saka"
+  },
+  {
+    "am_id": 8004,
+    "amphoe_t": "อ. ฉวาง",
+    "amphoe_e": "Chawang"
+  },
+  {
+    "am_id": 8005,
+    "amphoe_t": "อ. พิปูน",
+    "amphoe_e": "Phipun"
+  },
+  {
+    "am_id": 8006,
+    "amphoe_t": "อ. เชียรใหญ่",
+    "amphoe_e": "Chian Yai"
+  },
+  {
+    "am_id": 8007,
+    "amphoe_t": "อ. ชะอวด",
+    "amphoe_e": "Cha-uat"
+  },
+  {
+    "am_id": 8008,
+    "amphoe_t": "อ. ท่าศาลา",
+    "amphoe_e": "Tha Sala"
+  },
+  {
+    "am_id": 8009,
+    "amphoe_t": "อ. ทุ่งสง",
+    "amphoe_e": "Thung Song"
+  },
+  {
+    "am_id": 8010,
+    "amphoe_t": "อ. นาบอน",
+    "amphoe_e": "Na Bon"
+  },
+  {
+    "am_id": 8011,
+    "amphoe_t": "อ. ทุ่งใหญ่",
+    "amphoe_e": "Thung Yai"
+  },
+  {
+    "am_id": 8012,
+    "amphoe_t": "อ. ปากพนัง",
+    "amphoe_e": "Pak Phanang"
+  },
+  {
+    "am_id": 8013,
+    "amphoe_t": "อ. ร่อนพิบูลย์",
+    "amphoe_e": "Ron Phibun"
+  },
+  {
+    "am_id": 8014,
+    "amphoe_t": "อ. สิชล",
+    "amphoe_e": "Sichon"
+  },
+  {
+    "am_id": 8015,
+    "amphoe_t": "อ. ขนอม",
+    "amphoe_e": "Khanom"
+  },
+  {
+    "am_id": 8016,
+    "amphoe_t": "อ. หัวไทร",
+    "amphoe_e": "Hua Sai"
+  },
+  {
+    "am_id": 8017,
+    "amphoe_t": "อ. บางขัน",
+    "amphoe_e": "Bang Khan"
+  },
+  {
+    "am_id": 8018,
+    "amphoe_t": "อ. ถ้ำพรรณรา",
+    "amphoe_e": "Tham Phannara"
+  },
+  {
+    "am_id": 8019,
+    "amphoe_t": "อ. จุฬาภรณ์",
+    "amphoe_e": "Chulabhorn"
+  },
+  {
+    "am_id": 8020,
+    "amphoe_t": "อ. พระพรหม",
+    "amphoe_e": "Phra Phrom"
+  },
+  {
+    "am_id": 8021,
+    "amphoe_t": "อ. นบพิตำ",
+    "amphoe_e": "Nopphitam"
+  },
+  {
+    "am_id": 8022,
+    "amphoe_t": "อ. ช้างกลาง",
+    "amphoe_e": "Chang Klang"
+  },
+  {
+    "am_id": 8023,
+    "amphoe_t": "อ. เฉลิมพระเกียรติ",
+    "amphoe_e": "Chaloem Phra Kiet"
+  },
+  {
+    "am_id": 8101,
+    "amphoe_t": "อ. เมืองกระบี่",
+    "amphoe_e": "Mueang Krabi"
+  },
+  {
+    "am_id": 8102,
+    "amphoe_t": "อ. เขาพนม",
+    "amphoe_e": "Khao Phanom"
+  },
+  {
+    "am_id": 8103,
+    "amphoe_t": "อ. เกาะลันตา",
+    "amphoe_e": "Ko Lanta"
+  },
+  {
+    "am_id": 8104,
+    "amphoe_t": "อ. คลองท่อม",
+    "amphoe_e": "Khlong Thom"
+  },
+  {
+    "am_id": 8105,
+    "amphoe_t": "อ. อ่าวลึก",
+    "amphoe_e": "Ao Luek"
+  },
+  {
+    "am_id": 8106,
+    "amphoe_t": "อ. ปลายพระยา",
+    "amphoe_e": "Plai Phraya"
+  },
+  {
+    "am_id": 8107,
+    "amphoe_t": "อ. ลำทับ",
+    "amphoe_e": "Lam Thap"
+  },
+  {
+    "am_id": 8108,
+    "amphoe_t": "อ. เหนือคลอง",
+    "amphoe_e": "Nuea Khlong"
+  },
+  {
+    "am_id": 8201,
+    "amphoe_t": "อ. เมืองพังงา",
+    "amphoe_e": "Mueang Phang-nga"
+  },
+  {
+    "am_id": 8202,
+    "amphoe_t": "อ. เกาะยาว",
+    "amphoe_e": "Ko Yao"
+  },
+  {
+    "am_id": 8203,
+    "amphoe_t": "อ. กะปง",
+    "amphoe_e": "Kapong"
+  },
+  {
+    "am_id": 8204,
+    "amphoe_t": "อ. ตะกั่วทุ่ง",
+    "amphoe_e": "Takua Thung"
+  },
+  {
+    "am_id": 8205,
+    "amphoe_t": "อ. ตะกั่วป่า",
+    "amphoe_e": "Takua Pa"
+  },
+  {
+    "am_id": 8206,
+    "amphoe_t": "อ. คุระบุรี",
+    "amphoe_e": "Khura Buri"
+  },
+  {
+    "am_id": 8207,
+    "amphoe_t": "อ. ทับปุด",
+    "amphoe_e": "Thap Put"
+  },
+  {
+    "am_id": 8208,
+    "amphoe_t": "อ. ท้ายเหมือง",
+    "amphoe_e": "Thai Mueang"
+  },
+  {
+    "am_id": 8301,
+    "amphoe_t": "อ. เมืองภูเก็ต",
+    "amphoe_e": "Mueang Phuket"
+  },
+  {
+    "am_id": 8302,
+    "amphoe_t": "อ. กะทู้",
+    "amphoe_e": "Kathu"
+  },
+  {
+    "am_id": 8303,
+    "amphoe_t": "อ. ถลาง",
+    "amphoe_e": "Thalang"
+  },
+  {
+    "am_id": 8401,
+    "amphoe_t": "อ. เมืองสุราษฎร์ธานี",
+    "amphoe_e": "Mueang Surat Thani"
+  },
+  {
+    "am_id": 8402,
+    "amphoe_t": "อ. กาญจนดิษฐ์",
+    "amphoe_e": "Kanchanadit"
+  },
+  {
+    "am_id": 8403,
+    "amphoe_t": "อ. ดอนสัก",
+    "amphoe_e": "Don Sak"
+  },
+  {
+    "am_id": 8404,
+    "amphoe_t": "อ. เกาะสมุย",
+    "amphoe_e": "Ko Samui"
+  },
+  {
+    "am_id": 8405,
+    "amphoe_t": "อ. เกาะพะงัน",
+    "amphoe_e": "Ko Pha-ngan"
+  },
+  {
+    "am_id": 8406,
+    "amphoe_t": "อ. ไชยา",
+    "amphoe_e": "Chaiya"
+  },
+  {
+    "am_id": 8407,
+    "amphoe_t": "อ. ท่าชนะ",
+    "amphoe_e": "Tha Chana"
+  },
+  {
+    "am_id": 8408,
+    "amphoe_t": "อ. คีรีรัฐนิคม",
+    "amphoe_e": "Khiri Rat Nikhom"
+  },
+  {
+    "am_id": 8409,
+    "amphoe_t": "อ. บ้านตาขุน",
+    "amphoe_e": "Ban Ta Khun"
+  },
+  {
+    "am_id": 8410,
+    "amphoe_t": "อ. พนม",
+    "amphoe_e": "Phanom"
+  },
+  {
+    "am_id": 8411,
+    "amphoe_t": "อ. ท่าฉาง",
+    "amphoe_e": "Tha Chang"
+  },
+  {
+    "am_id": 8412,
+    "amphoe_t": "อ. บ้านนาสาร",
+    "amphoe_e": "Ban Na San"
+  },
+  {
+    "am_id": 8413,
+    "amphoe_t": "อ. บ้านนาเดิม",
+    "amphoe_e": "Ban Na Doem"
+  },
+  {
+    "am_id": 8414,
+    "amphoe_t": "อ. เคียนซา",
+    "amphoe_e": "Khian Sa"
+  },
+  {
+    "am_id": 8415,
+    "amphoe_t": "อ. เวียงสระ",
+    "amphoe_e": "Wiang Sa"
+  },
+  {
+    "am_id": 8416,
+    "amphoe_t": "อ. พระแสง",
+    "amphoe_e": "Phrasaeng"
+  },
+  {
+    "am_id": 8417,
+    "amphoe_t": "อ. พุนพิน",
+    "amphoe_e": "Phunphin"
+  },
+  {
+    "am_id": 8418,
+    "amphoe_t": "อ. ชัยบุรี",
+    "amphoe_e": "Chai Buri"
+  },
+  {
+    "am_id": 8419,
+    "amphoe_t": "อ. วิภาวดี",
+    "amphoe_e": "Chai Buri"
+  },
+  {
+    "am_id": 8501,
+    "amphoe_t": "อ. เมืองระนอง",
+    "amphoe_e": "Mueang Ranong"
+  },
+  {
+    "am_id": 8502,
+    "amphoe_t": "อ. ละอุ่น",
+    "amphoe_e": "La-un"
+  },
+  {
+    "am_id": 8503,
+    "amphoe_t": "อ. กะเปอร์",
+    "amphoe_e": "Papoe"
+  },
+  {
+    "am_id": 8504,
+    "amphoe_t": "อ. กระบุรี",
+    "amphoe_e": "Kra Buri"
+  },
+  {
+    "am_id": 8505,
+    "amphoe_t": "อ. สุขสำราญ",
+    "amphoe_e": "Suk Samran"
+  },
+  {
+    "am_id": 8601,
+    "amphoe_t": "อ. เมืองชุมพร",
+    "amphoe_e": "Mueang Chumphon"
+  },
+  {
+    "am_id": 8602,
+    "amphoe_t": "อ. ท่าแซะ",
+    "amphoe_e": "Tha Sae"
+  },
+  {
+    "am_id": 8603,
+    "amphoe_t": "อ. ปะทิว",
+    "amphoe_e": "Pathio"
+  },
+  {
+    "am_id": 8604,
+    "amphoe_t": "อ. หลังสวน",
+    "amphoe_e": "Lang Suan"
+  },
+  {
+    "am_id": 8605,
+    "amphoe_t": "อ. ละแม",
+    "amphoe_e": "Lamae"
+  },
+  {
+    "am_id": 8606,
+    "amphoe_t": "อ. พะโต๊ะ",
+    "amphoe_e": "Phato"
+  },
+  {
+    "am_id": 8607,
+    "amphoe_t": "อ. สวี",
+    "amphoe_e": "Sawi"
+  },
+  {
+    "am_id": 8608,
+    "amphoe_t": "อ. ทุ่งตะโก",
+    "amphoe_e": "Thung Tako"
+  },
+  {
+    "am_id": 9001,
+    "amphoe_t": "อ. เมืองสงขลา",
+    "amphoe_e": "Muaeng Songkhla"
+  },
+  {
+    "am_id": 9002,
+    "amphoe_t": "อ. สทิงพระ",
+    "amphoe_e": "Sathing Phra"
+  },
+  {
+    "am_id": 9003,
+    "amphoe_t": "อ. จะนะ",
+    "amphoe_e": "Chana"
+  },
+  {
+    "am_id": 9004,
+    "amphoe_t": "อ. นาทวี",
+    "amphoe_e": "Na Thawi"
+  },
+  {
+    "am_id": 9005,
+    "amphoe_t": "อ. เทพา",
+    "amphoe_e": "Thepha"
+  },
+  {
+    "am_id": 9006,
+    "amphoe_t": "อ. สะบ้าย้อย",
+    "amphoe_e": "Saba Yoi"
+  },
+  {
+    "am_id": 9007,
+    "amphoe_t": "อ. ระโนด",
+    "amphoe_e": "Ranot"
+  },
+  {
+    "am_id": 9008,
+    "amphoe_t": "อ. กระแสสินธุ์",
+    "amphoe_e": "Krasae Sin"
+  },
+  {
+    "am_id": 9009,
+    "amphoe_t": "อ. รัตภูมิ",
+    "amphoe_e": "Rattaphum"
+  },
+  {
+    "am_id": 9010,
+    "amphoe_t": "อ. สะเดา",
+    "amphoe_e": "Sadao"
+  },
+  {
+    "am_id": 9011,
+    "amphoe_t": "อ. หาดใหญ่",
+    "amphoe_e": "Hat Yai"
+  },
+  {
+    "am_id": 9012,
+    "amphoe_t": "อ. นาหม่อม",
+    "amphoe_e": "Na Mom"
+  },
+  {
+    "am_id": 9013,
+    "amphoe_t": "อ. ควนเนียง",
+    "amphoe_e": "Khuan Niang"
+  },
+  {
+    "am_id": 9014,
+    "amphoe_t": "อ. บางกล่ำ",
+    "amphoe_e": "Bang Klam"
+  },
+  {
+    "am_id": 9015,
+    "amphoe_t": "อ. สิงหนคร",
+    "amphoe_e": "Singhanakhon"
+  },
+  {
+    "am_id": 9016,
+    "amphoe_t": "อ. คลองหอยโข่ง",
+    "amphoe_e": "Khlong Hoi Khong"
+  },
+  {
+    "am_id": 9101,
+    "amphoe_t": "อ. เมืองสตูล",
+    "amphoe_e": "Mueang Satun"
+  },
+  {
+    "am_id": 9101,
+    "amphoe_t": null,
+    "amphoe_e": "Mueang Satun"
+  },
+  {
+    "am_id": 9102,
+    "amphoe_t": "อ. ควนโดน",
+    "amphoe_e": "Khuan Don"
+  },
+  {
+    "am_id": 9103,
+    "amphoe_t": "อ. ควนกาหลง",
+    "amphoe_e": "Khuan Kalong"
+  },
+  {
+    "am_id": 9104,
+    "amphoe_t": "อ. ท่าแพ",
+    "amphoe_e": "Tha Phae"
+  },
+  {
+    "am_id": 9105,
+    "amphoe_t": "อ. ละงู",
+    "amphoe_e": "La-ngu"
+  },
+  {
+    "am_id": 9106,
+    "amphoe_t": "อ. ทุ่งหว้า",
+    "amphoe_e": "Thung  Wa"
+  },
+  {
+    "am_id": 9107,
+    "amphoe_t": "อ. มะนัง",
+    "amphoe_e": "Manang"
+  },
+  {
+    "am_id": 9201,
+    "amphoe_t": "อ. เมืองตรัง",
+    "amphoe_e": "Mueang Trang"
+  },
+  {
+    "am_id": 9202,
+    "amphoe_t": "อ. กันตัง",
+    "amphoe_e": "Kantang"
+  },
+  {
+    "am_id": 9203,
+    "amphoe_t": "อ. ย่านตาขาว",
+    "amphoe_e": "Yan Ta Khao"
+  },
+  {
+    "am_id": 9204,
+    "amphoe_t": "อ. ปะเหลียน",
+    "amphoe_e": "Palian"
+  },
+  {
+    "am_id": 9205,
+    "amphoe_t": "อ. สิเกา",
+    "amphoe_e": "Sikao"
+  },
+  {
+    "am_id": 9206,
+    "amphoe_t": "อ. ห้วยยอด",
+    "amphoe_e": "Huai Yot"
+  },
+  {
+    "am_id": 9207,
+    "amphoe_t": "อ. วังวิเศษ",
+    "amphoe_e": "Wang Wiset"
+  },
+  {
+    "am_id": 9208,
+    "amphoe_t": "อ. นาโยง",
+    "amphoe_e": "Na Yong"
+  },
+  {
+    "am_id": 9209,
+    "amphoe_t": "อ. รัษฎา",
+    "amphoe_e": "Ratsada"
+  },
+  {
+    "am_id": 9210,
+    "amphoe_t": "อ. หาดสำราญ",
+    "amphoe_e": "Hat Samran"
+  },
+  {
+    "am_id": 9301,
+    "amphoe_t": "อ. เมืองพัทลุง",
+    "amphoe_e": "Mueang Phatthalung"
+  },
+  {
+    "am_id": 9302,
+    "amphoe_t": "อ. กงหรา",
+    "amphoe_e": "Kong Ra"
+  },
+  {
+    "am_id": 9303,
+    "amphoe_t": "อ. เขาชัยสน",
+    "amphoe_e": "Khao Chaison"
+  },
+  {
+    "am_id": 9304,
+    "amphoe_t": "อ. ตะโหมด",
+    "amphoe_e": "Tamot"
+  },
+  {
+    "am_id": 9305,
+    "amphoe_t": "อ. ควนขนุน",
+    "amphoe_e": "Khuan Khanun"
+  },
+  {
+    "am_id": 9306,
+    "amphoe_t": "อ. ปากพะยูน",
+    "amphoe_e": "Pak Phayun"
+  },
+  {
+    "am_id": 9307,
+    "amphoe_t": "อ. ศรีบรรพต",
+    "amphoe_e": "Si Banphot"
+  },
+  {
+    "am_id": 9308,
+    "amphoe_t": "อ. ป่าบอน",
+    "amphoe_e": "Pa Bon"
+  },
+  {
+    "am_id": 9309,
+    "amphoe_t": "อ. บางแก้ว",
+    "amphoe_e": "Bang Kaeo"
+  },
+  {
+    "am_id": 9310,
+    "amphoe_t": "อ. ป่าพยอม",
+    "amphoe_e": "Pa Phayom"
+  },
+  {
+    "am_id": 9311,
+    "amphoe_t": "อ. ศรีนครินทร์",
+    "amphoe_e": "Srinagarindra"
+  },
+  {
+    "am_id": 9401,
+    "amphoe_t": "อ. เมืองปัตตานี",
+    "amphoe_e": "Mueang Pattani"
+  },
+  {
+    "am_id": 9402,
+    "amphoe_t": "อ. โคกโพธิ์",
+    "amphoe_e": "Khok Pho"
+  },
+  {
+    "am_id": 9403,
+    "amphoe_t": "อ. หนองจิก",
+    "amphoe_e": "Nong Chik"
+  },
+  {
+    "am_id": 9404,
+    "amphoe_t": "อ. ปะนาเระ",
+    "amphoe_e": "Panare"
+  },
+  {
+    "am_id": 9405,
+    "amphoe_t": "อ. มายอ",
+    "amphoe_e": "Mayo"
+  },
+  {
+    "am_id": 9406,
+    "amphoe_t": "อ. ทุ่งยางแดง",
+    "amphoe_e": "Thung Yang Daeng"
+  },
+  {
+    "am_id": 9407,
+    "amphoe_t": "อ. สายบุรี",
+    "amphoe_e": "Sai Buri"
+  },
+  {
+    "am_id": 9408,
+    "amphoe_t": "อ. ไม้แก่น",
+    "amphoe_e": "Mai Kaen"
+  },
+  {
+    "am_id": 9409,
+    "amphoe_t": "อ. ยะหริ่ง",
+    "amphoe_e": "Yaring"
+  },
+  {
+    "am_id": 9410,
+    "amphoe_t": "อ. ยะรัง",
+    "amphoe_e": "Yarang"
+  },
+  {
+    "am_id": 9411,
+    "amphoe_t": "อ. กะพ้อ",
+    "amphoe_e": "Kapho"
+  },
+  {
+    "am_id": 9412,
+    "amphoe_t": "อ. แม่ลาน",
+    "amphoe_e": "Mae Lan"
+  },
+  {
+    "am_id": 9501,
+    "amphoe_t": "อ. เมืองยะลา",
+    "amphoe_e": "Mueang Yala"
+  },
+  {
+    "am_id": 9502,
+    "amphoe_t": "อ. เบตง",
+    "amphoe_e": "Betong"
+  },
+  {
+    "am_id": 9503,
+    "amphoe_t": "อ. บันนังสตา",
+    "amphoe_e": "Bannang Sata"
+  },
+  {
+    "am_id": 9504,
+    "amphoe_t": "อ. ธารโต",
+    "amphoe_e": "Than To"
+  },
+  {
+    "am_id": 9505,
+    "amphoe_t": "อ. ยะหา",
+    "amphoe_e": "Yaha"
+  },
+  {
+    "am_id": 9506,
+    "amphoe_t": "อ. รามัน",
+    "amphoe_e": "Raman"
+  },
+  {
+    "am_id": 9507,
+    "amphoe_t": "อ. กาบัง",
+    "amphoe_e": "Kabang"
+  },
+  {
+    "am_id": 9508,
+    "amphoe_t": "อ. กรงปีนัง",
+    "amphoe_e": "Krong Pinang"
+  },
+  {
+    "am_id": 9601,
+    "amphoe_t": "อ. เมืองนราธิวาส",
+    "amphoe_e": "Mueang Narathiwat"
+  },
+  {
+    "am_id": 9602,
+    "amphoe_t": "อ. ตากใบ",
+    "amphoe_e": "Tak Bai"
+  },
+  {
+    "am_id": 9603,
+    "amphoe_t": "อ. บาเจาะ",
+    "amphoe_e": "Tak Bai"
+  },
+  {
+    "am_id": 9604,
+    "amphoe_t": "อ. ยี่งอ",
+    "amphoe_e": "Yi-ngo"
+  },
+  {
+    "am_id": 9605,
+    "amphoe_t": "อ. ระแงะ",
+    "amphoe_e": "Ra-ngae"
+  },
+  {
+    "am_id": 9606,
+    "amphoe_t": "อ. รือเสาะ",
+    "amphoe_e": "Rueso"
+  },
+  {
+    "am_id": 9607,
+    "amphoe_t": "อ. ศรีสาคร",
+    "amphoe_e": "Si Sakhon"
+  },
+  {
+    "am_id": 9608,
+    "amphoe_t": "อ. แว้ง",
+    "amphoe_e": "Waeng"
+  },
+  {
+    "am_id": 9609,
+    "amphoe_t": "อ. สุคิริน",
+    "amphoe_e": "Sukhirin"
+  },
+  {
+    "am_id": 9610,
+    "amphoe_t": "อ. สุไหงโก-ลก",
+    "amphoe_e": "Su-ngai Kolok"
+  },
+  {
+    "am_id": 9611,
+    "amphoe_t": "อ. สุไหงปาดี",
+    "amphoe_e": "Su-ngai Padi"
+  },
+  {
+    "am_id": 9612,
+    "amphoe_t": "อ. จะแนะ",
+    "amphoe_e": "Chanae"
+  },
+  {
+    "am_id": 9613,
+    "amphoe_t": "อ. เจาะไอร้อง",
+    "amphoe_e": "Cho-airong"
+  }
+]

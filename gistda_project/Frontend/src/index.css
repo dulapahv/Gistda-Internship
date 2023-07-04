@@ -57,9 +57,6 @@
 #sphere-map .mapbox-gl-draw_ctrl-draw-btn:last-child {
   border-radius: 0px 0px 3px 3px;
 }
-#sphere-map .mapbox-gl-draw_line {
-  background-image: url('https://www.svgrepo.com/show/309501/data-line.svg');
-}
 #sphere-map .mapbox-gl-draw_polygon {
   background-image: url('https://www.svgrepo.com/show/399227/polygon-pt.svg');
 }

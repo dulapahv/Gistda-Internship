@@ -1,0 +1,387 @@
+[
+  {
+    "ch_id": 10,
+    "changwat_t": "กรุงเทพมหานคร",
+    "changwat_e": "Bangkok"
+  },
+  {
+    "ch_id": 11,
+    "changwat_t": "จ. สมุทรปราการ",
+    "changwat_e": "Samut Prakarn"
+  },
+  {
+    "ch_id": 12,
+    "changwat_t": "จ. นนทบุรี",
+    "changwat_e": "Nonthaburi"
+  },
+  {
+    "ch_id": 13,
+    "changwat_t": "จ. ปทุมธานี",
+    "changwat_e": "Pathum Thani"
+  },
+  {
+    "ch_id": 14,
+    "changwat_t": "จ. พระนครศรีอยุธยา",
+    "changwat_e": "Phra Nakhon Si Ayutthaya"
+  },
+  {
+    "ch_id": 15,
+    "changwat_t": "จ. อ่างทอง",
+    "changwat_e": "Ang Thong"
+  },
+  {
+    "ch_id": 16,
+    "changwat_t": "จ. ลพบุรี",
+    "changwat_e": "Lop Buri"
+  },
+  {
+    "ch_id": 17,
+    "changwat_t": "จ. สิงห์บุรี",
+    "changwat_e": "Sing Buri"
+  },
+  {
+    "ch_id": 18,
+    "changwat_t": "จ. ชัยนาท",
+    "changwat_e": "Chai Nat"
+  },
+  {
+    "ch_id": 19,
+    "changwat_t": "จ. สระบุรี",
+    "changwat_e": "Saraburi"
+  },
+  {
+    "ch_id": 20,
+    "changwat_t": "จ. ชลบุรี",
+    "changwat_e": "Chon Buri"
+  },
+  {
+    "ch_id": 21,
+    "changwat_t": "จ. ระยอง",
+    "changwat_e": "Rayong"
+  },
+  {
+    "ch_id": 22,
+    "changwat_t": "จ. จันทบุรี",
+    "changwat_e": "Chanthaburi"
+  },
+  {
+    "ch_id": 23,
+    "changwat_t": "จ. ตราด",
+    "changwat_e": "Trat"
+  },
+  {
+    "ch_id": 24,
+    "changwat_t": "จ. ฉะเชิงเทรา",
+    "changwat_e": "Chachoengsao"
+  },
+  {
+    "ch_id": 25,
+    "changwat_t": "จ. ปราจีนบุรี",
+    "changwat_e": "Prachin Buri"
+  },
+  {
+    "ch_id": 26,
+    "changwat_t": "จ. นครนายก",
+    "changwat_e": "Nakhon Nayok"
+  },
+  {
+    "ch_id": 27,
+    "changwat_t": "จ. สระแก้ว",
+    "changwat_e": "Sa kaeo"
+  },
+  {
+    "ch_id": 30,
+    "changwat_t": "จ. นครราชสีมา",
+    "changwat_e": "Nakhon Ratchasima"
+  },
+  {
+    "ch_id": 31,
+    "changwat_t": "จ. บุรีรัมย์",
+    "changwat_e": "Buri Ram"
+  },
+  {
+    "ch_id": 32,
+    "changwat_t": "จ. สุรินทร์",
+    "changwat_e": "Surin"
+  },
+  {
+    "ch_id": 33,
+    "changwat_t": "จ. ศรีสะเกษ",
+    "changwat_e": "Si Sa Ket"
+  },
+  {
+    "ch_id": 34,
+    "changwat_t": "จ. อุบลราชธานี",
+    "changwat_e": "Ubon Ratchathani"
+  },
+  {
+    "ch_id": 35,
+    "changwat_t": "จ. ยโสธร",
+    "changwat_e": "Yasothon"
+  },
+  {
+    "ch_id": 36,
+    "changwat_t": "จ. ชัยภูมิ",
+    "changwat_e": "Chaiyaphum"
+  },
+  {
+    "ch_id": 37,
+    "changwat_t": "จ. อำนาจเจริญ",
+    "changwat_e": "Amnat Charoen"
+  },
+  {
+    "ch_id": 38,
+    "changwat_t": "จ. บึงกาฬ",
+    "changwat_e": "Bueng Kan"
+  },
+  {
+    "ch_id": 39,
+    "changwat_t": "จ. หนองบัวลำภู",
+    "changwat_e": "Nong Bua Lam Phu"
+  },
+  {
+    "ch_id": 40,
+    "changwat_t": "จ. ขอนแก่น",
+    "changwat_e": "Khon Kaen"
+  },
+  {
+    "ch_id": 41,
+    "changwat_t": "จ. อุดรธานี",
+    "changwat_e": "Udon Thani"
+  },
+  {
+    "ch_id": 42,
+    "changwat_t": "จ. เลย",
+    "changwat_e": "Loei"
+  },
+  {
+    "ch_id": 43,
+    "changwat_t": "จ. หนองคาย",
+    "changwat_e": "Nong Khai"
+  },
+  {
+    "ch_id": 44,
+    "changwat_t": "จ. มหาสารคาม",
+    "changwat_e": "Maha Sarakham"
+  },
+  {
+    "ch_id": 45,
+    "changwat_t": "จ. ร้อยเอ็ด",
+    "changwat_e": "Roi Et"
+  },
+  {
+    "ch_id": 46,
+    "changwat_t": "จ. กาฬสินธุ์",
+    "changwat_e": "Kalasin"
+  },
+  {
+    "ch_id": 47,
+    "changwat_t": "จ. สกลนคร",
+    "changwat_e": "Sakon Nakhon"
+  },
+  {
+    "ch_id": 48,
+    "changwat_t": "จ. นครพนม",
+    "changwat_e": "Nakhon Phanom"
+  },
+  {
+    "ch_id": 49,
+    "changwat_t": "จ. มุกดาหาร",
+    "changwat_e": "Mukdahan"
+  },
+  {
+    "ch_id": 50,
+    "changwat_t": "จ. เชียงใหม่",
+    "changwat_e": "Chiang Mai"
+  },
+  {
+    "ch_id": 51,
+    "changwat_t": "จ. ลำพูน",
+    "changwat_e": "Lamphun"
+  },
+  {
+    "ch_id": 52,
+    "changwat_t": "จ. ลำปาง",
+    "changwat_e": "Lampang"
+  },
+  {
+    "ch_id": 53,
+    "changwat_t": "จ. อุตรดิตถ์",
+    "changwat_e": "Uttaradit"
+  },
+  {
+    "ch_id": 54,
+    "changwat_t": "จ. แพร่",
+    "changwat_e": "Phrae"
+  },
+  {
+    "ch_id": 55,
+    "changwat_t": "จ. น่าน",
+    "changwat_e": "Nan"
+  },
+  {
+    "ch_id": 56,
+    "changwat_t": "จ. พะเยา",
+    "changwat_e": "Phayao"
+  },
+  {
+    "ch_id": 57,
+    "changwat_t": "จ. เชียงราย",
+    "changwat_e": "Chiang Rai"
+  },
+  {
+    "ch_id": 58,
+    "changwat_t": "จ. แม่ฮ่องสอน",
+    "changwat_e": "Mae Hong Son"
+  },
+  {
+    "ch_id": 60,
+    "changwat_t": "จ. นครสวรรค์",
+    "changwat_e": "Nakhon Sawan"
+  },
+  {
+    "ch_id": 61,
+    "changwat_t": "จ. อุทัยธานี",
+    "changwat_e": "Uthai Thani"
+  },
+  {
+    "ch_id": 62,
+    "changwat_t": "จ. กำแพงเพชร",
+    "changwat_e": "Kamphaeng Phet"
+  },
+  {
+    "ch_id": 63,
+    "changwat_t": "จ. ตาก",
+    "changwat_e": "Tak"
+  },
+  {
+    "ch_id": 64,
+    "changwat_t": "จ. สุโขทัย",
+    "changwat_e": "Sukhothai"
+  },
+  {
+    "ch_id": 65,
+    "changwat_t": "จ. พิษณุโลก",
+    "changwat_e": "Phitsanulok"
+  },
+  {
+    "ch_id": 66,
+    "changwat_t": "จ. พิจิตร",
+    "changwat_e": "Phichit"
+  },
+  {
+    "ch_id": 67,
+    "changwat_t": "จ. เพชรบูรณ์",
+    "changwat_e": "Phetchabun"
+  },
+  {
+    "ch_id": 70,
+    "changwat_t": "จ. ราชบุรี",
+    "changwat_e": "Ratchaburi"
+  },
+  {
+    "ch_id": 71,
+    "changwat_t": "จ. กาญจนบุรี",
+    "changwat_e": "Kanchanaburi"
+  },
+  {
+    "ch_id": 72,
+    "changwat_t": "จ. สุพรรณบุรี",
+    "changwat_e": "Suphan Buri"
+  },
+  {
+    "ch_id": 73,
+    "changwat_t": "จ. นครปฐม",
+    "changwat_e": "Nakhon Pathom"
+  },
+  {
+    "ch_id": 74,
+    "changwat_t": "จ. สมุทรสาคร",
+    "changwat_e": "Samut Sakhon"
+  },
+  {
+    "ch_id": 75,
+    "changwat_t": "จ. สมุทรสงคราม",
+    "changwat_e": "Samut Songkhram"
+  },
+  {
+    "ch_id": 76,
+    "changwat_t": "จ. เพชรบุรี",
+    "changwat_e": "Phetchaburi"
+  },
+  {
+    "ch_id": 77,
+    "changwat_t": "จ. ประจวบคีรีขันธ์",
+    "changwat_e": "Prachuap Khiri Khan"
+  },
+  {
+    "ch_id": 80,
+    "changwat_t": "จ. นครศรีธรรมราช",
+    "changwat_e": "Nakhon Si Thammarat"
+  },
+  {
+    "ch_id": 81,
+    "changwat_t": "จ. กระบี่",
+    "changwat_e": "Krabi"
+  },
+  {
+    "ch_id": 82,
+    "changwat_t": "จ. พังงา",
+    "changwat_e": "Phang-nga"
+  },
+  {
+    "ch_id": 83,
+    "changwat_t": "จ. ภูเก็ต",
+    "changwat_e": "Phuket"
+  },
+  {
+    "ch_id": 84,
+    "changwat_t": "จ. สุราษฎร์ธานี",
+    "changwat_e": "Surat Thani"
+  },
+  {
+    "ch_id": 85,
+    "changwat_t": "จ. ระนอง",
+    "changwat_e": "Ranong"
+  },
+  {
+    "ch_id": 86,
+    "changwat_t": "จ. ชุมพร",
+    "changwat_e": "Chumphon"
+  },
+  {
+    "ch_id": 90,
+    "changwat_t": "จ. สงขลา",
+    "changwat_e": "Songkhla"
+  },
+  {
+    "ch_id": 91,
+    "changwat_t": "จ. สตูล",
+    "changwat_e": "Satun"
+  },
+  {
+    "ch_id": 92,
+    "changwat_t": "จ. ตรัง",
+    "changwat_e": "Trang"
+  },
+  {
+    "ch_id": 93,
+    "changwat_t": "จ. พัทลุง",
+    "changwat_e": "Phatthalung"
+  },
+  {
+    "ch_id": 94,
+    "changwat_t": "จ. ปัตตานี",
+    "changwat_e": "Pattani"
+  },
+  {
+    "ch_id": 95,
+    "changwat_t": "จ. ยะลา",
+    "changwat_e": "Yala"
+  },
+  {
+    "ch_id": 96,
+    "changwat_t": "จ. นราธิวาส",
+    "changwat_e": "Narathiwat"
+  }
+]

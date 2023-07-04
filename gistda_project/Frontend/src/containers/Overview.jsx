@@ -545,6 +545,7 @@ export default function DetailHotspot() {
             height='100%'
             colSortDisabled={['district']}
             colSortDefault='hotspot'
+            direction='desc'
           />
         </div>
       )}

@@ -62,6 +62,9 @@
   "area": "Area",
   "sqm": "sq.m.",
   "drawAreaRequest": "Please Draw Your Area of Interest to Begin Analysis",
+  "selectFromBelow": "Select From Below",
+  "all": "All",
+  "or": "or",
   "pv": {
     "ลำพูน": "Lamphun",
     "ยโสธร": "Yasothon",

@@ -7,6 +7,7 @@ import { TableVirtuoso } from 'react-virtuoso';
 
 import * as turf from '@turf/turf';
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
@@ -16,13 +17,15 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import TableContainer from '@mui/material/TableContainer';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { map, sphere } from '../components';
+import { map } from '../components';
 
 const baseURL = 'http://localhost:3001/';
 
@@ -83,6 +86,11 @@ export default function Tablesort({
     },
   ]);
 
+  function handleClick2(event) {
+    event.preventDefault();
+    console.info('You clicked a breadcrumb.');
+  }
+
   const fetchData = async ({ query, setData }) => {
     // setIsTableLoaded(false);
     axios
@@ -129,9 +137,18 @@ export default function Tablesort({
     }
   }, [coordinates]);
 
-  function createDataDistrict(id, district, hotspot, subDistrict, time, date) {
+  function createDataDistrict(
+    id,
+    province,
+    district,
+    hotspot,
+    subDistrict,
+    time,
+    date
+  ) {
     return {
       id,
+      province,
       district,
       subDistrict,
       hotspot: 1,
@@ -156,6 +173,7 @@ export default function Tablesort({
             key,
             createDataDistrict(
               item.ap_idn,
+              item.pv_tn,
               `${i18n.language === 'th' ? item.ap_tn : item.ap_en}`,
               `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
               1,
@@ -167,44 +185,47 @@ export default function Tablesort({
       });
 
       const tempCol = [
-        columnsData,
-        [
-          {
-            width: 120,
-            label: t('district'),
-            dataKey: 'district',
-            align: 'left',
-          },
-          {
-            width: 130,
-            label: t('hotspot'),
-            dataKey: 'hotspot',
-          },
-          {
-            width: 100,
-            label: t('subDistrict'),
-            dataKey: 'subDistrict',
-            renderButton: true,
-          },
-          {
-            width: 110,
-            label: t('time'),
-            dataKey: 'time',
-          },
-        ],
+        {
+          width: 120,
+          label: t('district'),
+          dataKey: 'district',
+          align: 'left',
+        },
+        {
+          width: 130,
+          label: t('hotspot'),
+          dataKey: 'hotspot',
+        },
+        {
+          width: 100,
+          label: t('subDistrict'),
+          dataKey: 'subDistrict',
+          renderButton: true,
+        },
+        {
+          width: 110,
+          label: t('time'),
+          dataKey: 'time',
+        },
       ];
-      setColumnsData(tempCol);
 
-      const tempRow = [rowData, Array.from(rowsMap.values())];
-      setRowData(tempRow);
-
+      setColumnsData([...columnsData, tempCol]);
+      setRowData([...rowData, Array.from(rowsMap.values())]);
       setColDisabled([colDisabled, 'subDistrict']);
     }
   }, [district]);
 
-  function createDataSubDistrict(id, subDistrict, hotspot, time, date) {
+  function createDataSubDistrict(
+    id,
+    district,
+    subDistrict,
+    hotspot,
+    time,
+    date
+  ) {
     return {
       id,
+      district,
       subDistrict,
       hotspot: 1,
       time,
@@ -228,6 +249,7 @@ export default function Tablesort({
             key,
             createDataSubDistrict(
               item.tb_idn,
+              item.ap_tn,
               `${i18n.language === 'th' ? item.tb_tn : item.tb_en}`,
               1,
               formattedTime,
@@ -238,31 +260,26 @@ export default function Tablesort({
       });
 
       const tempCol = [
-        columnsData,
-        [
-          {
-            width: 120,
-            label: t('subDistrict'),
-            dataKey: 'subDistrict',
-            align: 'left',
-          },
-          {
-            width: 130,
-            label: t('hotspot'),
-            dataKey: 'hotspot',
-          },
-          {
-            width: 110,
-            label: t('time'),
-            dataKey: 'time',
-          },
-        ],
+        {
+          width: 120,
+          label: t('subDistrict'),
+          dataKey: 'subDistrict',
+          align: 'left',
+        },
+        {
+          width: 130,
+          label: t('hotspot'),
+          dataKey: 'hotspot',
+        },
+        {
+          width: 110,
+          label: t('time'),
+          dataKey: 'time',
+        },
       ];
-      setColumnsData(tempCol);
 
-      const tempRow = [rowData, Array.from(rowsMap.values())];
-      setRowData(tempRow);
-
+      setColumnsData([...columnsData, tempCol]);
+      setRowData([...rowData, Array.from(rowsMap.values())]);
       setColDisabled([colDisabled, '']);
     }
   }, [subDistrict]);
@@ -278,7 +295,7 @@ export default function Tablesort({
       fetchData({
         query: `data=hotspot_2023${date.format(
           'MM'
-        )}&select=latitude,longitude,lu_hp,ap_tn,tb_tn,ap_en,tb_en,pv_idn,ap_idn,th_time&where=acq_date='${
+        )}&select=latitude,longitude,lu_hp,ap_tn,tb_tn,ap_en,tb_en,tb_idn,pv_en,pv_tn,ap_idn,th_time&where=acq_date='${
           row.date
         }'AND pv_idn='${row.id}'`,
         setData: setDistrict,
@@ -292,13 +309,27 @@ export default function Tablesort({
       fetchData({
         query: `data=hotspot_2023${date.format(
           'MM'
-        )}&select=latitude,longitude,lu_hp,tb_tn,tb_en,pv_idn,th_time&where=acq_date='${
+        )}&select=latitude,longitude,lu_hp,tb_tn,tb_en,ap_tn,ap_en,tb_idn,th_time&where=acq_date='${
           row.date
         }'AND ap_idn='${row.id}'`,
 
         setData: setSubDistrict,
       });
     }
+  };
+
+  const goBack = () => {
+    if (district && subDistrict) setSubDistrict();
+    else if (district) setDistrict();
+    else setSubDistrict();
+    columnsData.pop();
+    rowData.pop();
+    colDisabled.pop();
+    zoom.pop();
+    setColumnsData(columnsData);
+    setRowData(rowData);
+    setColDisabled(colDisabled.slice(-1)[0]);
+    map.bound(zoom.slice(-1)[0]);
   };
 
   function fixedHeaderContent() {
@@ -438,26 +469,59 @@ export default function Tablesort({
         />
       </Paper>
       {district || subDistrict ? (
-        <div className='mt-[14px]'>
-          <Button
-            variant='contained'
-            startIcon={<ArrowBackIosIcon />}
-            onClick={() => {
-              if (district && subDistrict) setSubDistrict();
-              else if (district) setDistrict();
-              else setSubDistrict();
-              columnsData.pop();
-              rowData.pop();
-              colDisabled.pop();
-              zoom.pop();
-              setColumnsData(columnsData.slice(-1)[0]);
-              setRowData(rowData.slice(-1)[0]);
-              setColDisabled(colDisabled.slice(-1)[0]);
-              map.bound(zoom.slice(-1)[0]);
-            }}
-          >
-            Go Back
-          </Button>
+        <div className='flex flex-row mt-[14px] items-center space-x-4'>
+          <div>
+            <Button
+              variant='contained'
+              startIcon={<ArrowBackIosIcon />}
+              onClick={goBack}
+            >
+              Go Back
+            </Button>
+          </div>
+          <div>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize='small' />}
+              aria-label='breadcrumb'
+            >
+              <Link
+                underline='none'
+                key='1'
+                color='inherit'
+                // onClick={() => {}}
+                // className='cursor-pointer'
+              >
+                ไทย
+              </Link>
+              {district ? (
+                <Link
+                  // underline={subDistrict ? 'hover' : 'none'}
+                  underline='none'
+                  key='2'
+                  color={subDistrict ? 'inherit' : 'text.primary'}
+                  // onClick={subDistrict ? goBack : null}
+                  // className={subDistrict ? 'cursor-pointer' : ''}
+                >
+                  {district ? district.result[0].pv_tn : ''}
+                </Link>
+              ) : (
+                ''
+              )}
+              {subDistrict ? (
+                <Link
+                  underline='none'
+                  key='3'
+                  color={subDistrict ? 'text.primary' : 'inherit'}
+                  // onClick={handleClick2}
+                  // className='cursor-pointer'
+                >
+                  {subDistrict ? subDistrict.result[0].ap_tn : ''}
+                </Link>
+              ) : (
+                ''
+              )}
+            </Breadcrumbs>
+          </div>
         </div>
       ) : (
         ''
