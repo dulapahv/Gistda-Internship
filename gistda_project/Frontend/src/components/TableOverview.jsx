@@ -79,17 +79,12 @@ export default function Tablesort({
   const [date, setDate] = useState(dayjs('2023-03-06'));
   const [zoom, setZoom] = useState([
     {
-      minLon: 97.345,
-      minLat: 5.612,
-      maxLon: 105.819,
-      maxLat: 20.464,
+      minLon: 97.343699,
+      minLat: 5.612738,
+      maxLon: 105.636781,
+      maxLat: 20.464926,
     },
   ]);
-
-  function handleClick2(event) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-  }
 
   const fetchData = async ({ query, setData }) => {
     // setIsTableLoaded(false);
@@ -131,7 +126,7 @@ export default function Tablesort({
         },
       ];
       setZoom(zoomTemp);
-      map.bound(zoomTemp.slice(-1)[0]);
+      map.bound(zoomTemp.slice(-1)[0], { padding: { top: 7, bottom: 7 } });
     } else {
       console.log('No valid coordinates found.');
     }
@@ -329,7 +324,7 @@ export default function Tablesort({
     setColumnsData(columnsData);
     setRowData(rowData);
     setColDisabled(colDisabled.slice(-1)[0]);
-    map.bound(zoom.slice(-1)[0]);
+    map.bound(zoom.slice(-1)[0], { padding: { top: 7, bottom: 7 } });
   };
 
   function fixedHeaderContent() {
@@ -505,7 +500,7 @@ export default function Tablesort({
                     direction: 'desc',
                   });
                   setColDisabled(colSortDisabled);
-                  map.bound(zoom[0]);
+                  map.bound(zoom[0], { padding: { top: 7, bottom: 7 } });
                 }}
                 className='cursor-pointer'
               >

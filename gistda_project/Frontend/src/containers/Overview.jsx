@@ -12,8 +12,10 @@ import Checkbox from '@mui/material/Checkbox';
 import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 import BorderAllIcon from '@mui/icons-material/BorderAll';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import BorderClearIcon from '@mui/icons-material/BorderClear';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -43,8 +45,8 @@ const buttonTheme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#78bcfe',
-      dark: '#8bc2ff',
+      main: '#bd718a',
+      dark: '#c97e97',
       contrastText: '#ffffff',
     },
   },
@@ -139,11 +141,15 @@ const dotFactory = (
 export default function DetailHotspot() {
   const { t, i18n } = useTranslation();
   const [boundary, setBoundary] = useState(false);
+  const [pm25, setPm25] = useState(false);
   const [isTableLoaded, setIsTableLoaded] = useState(false);
   const [date, setDate] = React.useState(dayjs('2023-03-06'));
   const [crop, setCrop] = useState('rice');
   const [hotspotData, setHotspotData] = useState();
-  const [cropData, setCropData] = useState();
+  const [riceData, setRiceData] = useState('');
+  const [maizeData, setMaizeData] = useState();
+  const [sugarcaneData, setSugarcaneData] = useState();
+  const [cassavaData, setCassavaData] = useState();
   const [isRiceLoaded, setIsRiceLoaded] = useState(true);
   const [isMaizeLoaded, setIsMaizeLoaded] = useState(true);
   const [isSugarcaneLoaded, setIsSugarcaneLoaded] = useState(true);
@@ -164,6 +170,96 @@ export default function DetailHotspot() {
       });
   };
 
+  let layer_pm25;
+  let layer_pvBorder;
+  if (map) {
+    layer_pm25 = new sphere.Layer('0', {
+      type: sphere.LayerType.WMS,
+      url: 'https://gistdaportal.gistda.or.th/data/services/pm_check/pm25_hourly_raster/MapServer/WMSServer',
+      // zoomRange: { min: 1, max: 12 },
+      zIndex: 5,
+      opacity: 0.8,
+      id: 'layer_pm25',
+    });
+
+    layer_pvBorder = new sphere.Layer('0', {
+      type: sphere.LayerType.WMS,
+      url: 'https://gistdaportal.gistda.or.th/data2/services/L05_Province_GISTDA_50k_nonlabel/MapServer/WMSServer',
+      // zoomRange: { min: 1, max: 12 },
+      zIndex: 6,
+      opacity: 1,
+      id: 'layer_pvBorder',
+    });
+  }
+
+  if (map) {
+    // console.log(riceData);
+    if (pm25) {
+      map.Layers.add(layer_pm25);
+    } else {
+      map.Layers.list().forEach((layer) => {
+        if (layer.id === 'layer_pm25') {
+          map.Layers.remove(layer_pm25);
+          return;
+        }
+      });
+    }
+    if (boundary) {
+      map.Layers.add(layer_pvBorder);
+    } else {
+      map.Layers.list().forEach((layer) => {
+        if (layer.id === 'layer_pvBorder') {
+          map.Layers.remove(layer_pvBorder);
+          return;
+        }
+      });
+    }
+
+    if (boundary) {
+      let layer_rice = new sphere.Layer({
+        sources: {
+          rice: {
+            type: 'geojson',
+            data: riceData.result[0].feature_collection,
+          },
+        },
+        layers: [
+          {
+            id: 'layer_rice',
+            type: 'fill',
+            source: 'rice',
+            zIndex: 5,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                1,
+                'rgb(178, 24, 43)', // If legend is 0, set color to red
+                2,
+                'rgb(0, 255, 0)', // If legend is 1, set color to green
+                3,
+                'rgb(255, 255, 0)', // If legend is 2, set color to yellow
+                4,
+                'rgb(0, 0, 255)', // If legend is 3, set color to blue
+                5,
+                'rgb(255, 0, 255)', // If legend is 4, set color to purple
+                6,
+                'rgb(255, 165, 0)', // If legend is 5, set color to orange
+                7,
+                '#48a1e9',
+                8,
+                '#f7f056',
+                '#000'
+              ],
+              'fill-opacity': 0.4, // Adjust the fill opacity if needed
+            },
+          },
+        ],
+      });
+      map.Layers.add(layer_rice);
+    }
+  }
+
   useEffect(() => {
     const month = date.format('MM');
     const lastDate =
@@ -174,16 +270,23 @@ export default function DetailHotspot() {
       'DD-MM-YY'
     )}'`;
     // const cropQuery = `data=${crop}_2023${month}${lastDate}&select=p_name,rai,yield&where=data_date='${dateCrop}'`;
-    const cropQuery = `data=${crop}_2023${month}${lastDate}&select=st_asgeojson(geom)&where=data_date='${dateCrop}'limit 1`;
+    // const cropQuery = `data=${crop}_2023${month}${lastDate}&select=st_asgeojson(geom)&where=data_date='${dateCrop}'limit 1`;
+
+    const riceQuery = `data=rice_20230315&select=json_build_object('type', 'FeatureCollection', 'crs', json_build_object('type', 'name', 'properties', json_build_object('name', 'urn:ogc:def:crs:OGC:1.3:CRS84')), 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(geom)::json, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '2023-03-15' LIMIT 5000) AS subquery`;
 
     fetchData({
       query: hotspotQuery,
       setData: setHotspotData,
     });
 
+    // fetchData({
+    //   query: cropQuery,
+    //   setData: setRiceData,
+    // });
+
     fetchData({
-      query: cropQuery,
-      setData: setCropData,
+      query: riceQuery,
+      setData: setRiceData,
     });
   }, [date]);
 
@@ -260,45 +363,80 @@ export default function DetailHotspot() {
   if (!hotspotData || !isTableLoaded) {
     return (
       <div className='flex flex-col space-y-4'>
-        <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+        <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-3 content-center'>
           <ThemeProvider theme={buttonTheme}>
             <Button
               variant='contained'
               className='h-full w-full min-h-50 !capitalize'
+              startIcon={boundary ? <BorderAllIcon /> : <BorderClearIcon />}
               onClick={() => setBoundary(!boundary)}
-              color={boundary ? 'secondary' : 'primary'}
+              color={boundary ? 'primary' : 'secondary'}
             >
-              {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+              {boundary ? t('showProvinceBoundary') : t('hideProvinceBoundary')}
+            </Button>
+            <Button
+              variant='contained'
+              className='h-full w-full min-h-50 !capitalize'
+              startIcon={pm25 ? <CloudQueueIcon /> : <CloudOffIcon />}
+              onClick={() => setPm25(!pm25)}
+              color={pm25 ? 'primary' : 'secondary'}
+            >
+              {pm25 ? t('showPm25') : t('hidePm25')}
             </Button>
           </ThemeProvider>
-          <ThemeProvider theme={datePickerTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label={t('date')}
-                minDate={dayjs('01-02-23', 'DD-MM-YY')}
-                maxDate={dayjs('31-05-23', 'DD-MM-YY')}
-                value={date}
-                onChange={(newValue) => {
-                  setDate(newValue);
-                }}
-                format='DD/MM/YYYY'
-              />
-            </LocalizationProvider>
-          </ThemeProvider>
+          <div className='grid content-center'>
+            <ThemeProvider theme={datePickerTheme}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label={t('date')}
+                  minDate={dayjs('01-02-23', 'DD-MM-YY')}
+                  maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+                  value={date}
+                  onChange={(newValue) => {
+                    setDate(newValue);
+                  }}
+                  format='DD/MM/YYYY'
+                />
+              </LocalizationProvider>
+            </ThemeProvider>
+          </div>
         </div>
         <div>
-          <Stack spacing={-2}>
-            <ThemeProvider theme={skeletonTheme}>
-              {Array.from({ length: 9 }).map((_, index) => (
+          <ThemeProvider theme={skeletonTheme}>
+            <Stack
+              direction='column'
+              justifyContent='center'
+              alignItems='stretch'
+              spacing={2}
+            >
+              <Skeleton
+                variant='rounded'
+                animation='wave'
+                height={70}
+                width='100%'
+              />
+              <Skeleton
+                variant='rounded'
+                animation='wave'
+                height={80}
+                width='100%'
+              />
+              <Skeleton
+                variant='rounded'
+                animation='wave'
+                height={120}
+                width='100%'
+              />
+              {Array.from({ length: 7 }).map((_, index) => (
                 <Skeleton
-                  key={index}
+                  variant='rounded'
                   animation='wave'
-                  height={80}
+                  height={50}
                   width='100%'
                 />
               ))}
-            </ThemeProvider>
-          </Stack>
+            </Stack>
+          </ThemeProvider>
         </div>
       </div>
     );
@@ -368,32 +506,43 @@ export default function DetailHotspot() {
 
   return (
     <div className='flex flex-col space-y-4 h-full'>
-      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
+      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-3 content-center'>
         <ThemeProvider theme={buttonTheme}>
           <Button
             variant='contained'
             className='h-full w-full min-h-50 !capitalize'
-            startIcon={boundary ? <BorderClearIcon /> : <BorderAllIcon />}
+            startIcon={boundary ? <BorderAllIcon /> : <BorderClearIcon />}
             onClick={() => setBoundary(!boundary)}
-            color={boundary ? 'secondary' : 'primary'}
+            color={boundary ? 'primary' : 'secondary'}
           >
-            {boundary ? t('hideProvinceBoundary') : t('showProvinceBoundary')}
+            {boundary ? t('showProvinceBoundary') : t('hideProvinceBoundary')}
+          </Button>
+          <Button
+            variant='contained'
+            className='h-full w-full min-h-50 !capitalize'
+            startIcon={pm25 ? <CloudQueueIcon /> : <CloudOffIcon />}
+            onClick={() => setPm25(!pm25)}
+            color={pm25 ? 'primary' : 'secondary'}
+          >
+            {pm25 ? t('showPm25') : t('hidePm25')}
           </Button>
         </ThemeProvider>
-        <ThemeProvider theme={datePickerTheme}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={t('date')}
-              minDate={dayjs('01-02-23', 'DD-MM-YY')}
-              maxDate={dayjs('31-05-23', 'DD-MM-YY')}
-              value={date}
-              onChange={(newValue) => {
-                setDate(newValue);
-              }}
-              format='DD/MM/YYYY'
-            />
-          </LocalizationProvider>
-        </ThemeProvider>
+        <div className='grid content-center'>
+          <ThemeProvider theme={datePickerTheme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label={t('date')}
+                minDate={dayjs('01-02-23', 'DD-MM-YY')}
+                maxDate={dayjs('31-05-23', 'DD-MM-YY')}
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                format='DD/MM/YYYY'
+              />
+            </LocalizationProvider>
+          </ThemeProvider>
+        </div>
       </div>
       <div className='flex flex-col bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 drop-shadow-md'>
         <ThemeProvider theme={RadioButtonTheme}>

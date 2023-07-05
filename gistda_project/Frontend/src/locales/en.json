@@ -8,6 +8,8 @@
   "analysisTitle": "Spatial Correlation Analysis between Crop Cultivation and Hotspot Occurrences",
   "showProvinceBoundary": "Show Province Boundary Layer",
   "hideProvinceBoundary": "Hide Province Boundary Layer",
+  "showPm25": "Show PM2.5 Layer",
+  "hidePm25": "Hide PM2.5 Layer",
   "dateRange": "Date Range",
   "displayCropType": "Display Crop Type",
   "cropType": "Crop Type",

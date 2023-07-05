@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import Stack from '@mui/material/Stack';
+import Skeleton from '@mui/material/Skeleton';
 import PublicIcon from '@mui/icons-material/Public';
 import ToggleButton from '@mui/material/ToggleButton';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -10,7 +12,7 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Analysis, Overview } from '.';
-import { Header, map, Map, sphere } from '../components';
+import { Header, map, Map, sphere, SphereMap } from '../components';
 
 const ToggleButtonGroupTheme = createTheme({
   palette: {
@@ -31,6 +33,15 @@ const LinearProgressTheme = createTheme({
     primary: {
       main: '#F390B0',
     },
+  },
+});
+
+const skeletonTheme = createTheme({
+  palette: {
+    mode: JSON.parse(localStorage.getItem('theme')),
+  },
+  typography: {
+    fontFamily: ['Kanit', 'sans-serif'].join(','),
   },
 });
 
@@ -81,13 +92,15 @@ export default function Visual() {
   }, 3000);
 
   if (isMapLoaded) {
-    // sphere.Bound = {
-    //   minLon: 97.345,
-    //   minLat: 5.612,
-    //   maxLon: 105.819,
-    //   maxLat: 20.464,
-    // };
-    // map.bound(sphere.Bound);
+    map.bound(
+      {
+        minLon: 97.343699,
+        minLat: 5.612738,
+        maxLon: 105.636781,
+        maxLat: 20.464926,
+      },
+      { padding: { top: 7, bottom: 7 } }
+    );
     if (!window.sphereDrawLoaded) {
       window.sphereDrawLoaded = true;
       window.sphere.Util.loadStyle(
@@ -154,18 +167,87 @@ export default function Visual() {
               <Map mapStyle='h-full w-full' />
             </div>
           </div>
-          <div
-            id='overviewPage'
-            className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'
-          >
-            <Overview />
-          </div>
-          <div
-            id='analysisPage'
-            className='xl:w-2/5 p-4 order-2 xl:order-1 hidden'
-          >
-            <Analysis />
-          </div>
+          {isMapLoaded ? (
+            <>
+              <div
+                id='overviewPage'
+                className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'
+              >
+                <Overview />
+              </div>
+              <div
+                id='analysisPage'
+                className='xl:w-2/5 p-4 order-2 xl:order-1 hidden'
+              >
+                <Analysis />
+              </div>
+            </>
+          ) : (
+            <h1 className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'>
+              <div>
+                <ThemeProvider theme={skeletonTheme}>
+                  <Stack
+                    direction='column'
+                    justifyContent='center'
+                    alignItems='stretch'
+                    spacing={2}
+                  >
+                    <Stack
+                      direction='row'
+                      justifyContent='center'
+                      alignItems='center'
+                      spacing={2}
+                    >
+                      <Skeleton
+                        variant='rounded'
+                        animation='wave'
+                        height={70}
+                        width='100%'
+                      />
+                      <Skeleton
+                        variant='rounded'
+                        animation='wave'
+                        height={70}
+                        width='100%'
+                      />
+                      <Skeleton
+                        variant='rounded'
+                        animation='wave'
+                        height={70}
+                        width='100%'
+                      />
+                    </Stack>
+                    <Skeleton
+                      variant='rounded'
+                      animation='wave'
+                      height={80}
+                      width='100%'
+                    />
+                    <Skeleton
+                      variant='rounded'
+                      animation='wave'
+                      height={130}
+                      width='100%'
+                    />
+                    <Skeleton
+                      variant='rounded'
+                      animation='wave'
+                      height={120}
+                      width='100%'
+                    />
+                    {Array.from({ length: 6 }).map((_, index) => (
+                      <Skeleton
+                        variant='rounded'
+                        animation='wave'
+                        height={50}
+                        width='100%'
+                      />
+                    ))}
+                  </Stack>
+                </ThemeProvider>
+              </div>
+            </h1>
+          )}
         </div>
       </div>
     </div>

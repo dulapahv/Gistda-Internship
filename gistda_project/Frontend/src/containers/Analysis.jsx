@@ -71,9 +71,9 @@ export default function Analysis() {
   const [province, setProvince] = useState(10);
   const [provinceList, setProvinceList] = useState(pvList);
   const [district, setDistrict] = useState(0);
-  const [districtList, setDistrictList] = useState([]);
+  const [districtList, setDistrictList] = useState(apList);
   const [subDistrict, setSubDistrict] = useState(0);
-  const [subDistrictList, setSubDistrictList] = useState([]);
+  const [subDistrictList, setSubDistrictList] = useState(tbList);
 
   const options = {
     plugins: {
@@ -115,22 +115,22 @@ export default function Analysis() {
     },
   };
 
-  const fetchData = async ({ query, setData }) => {
-    axios
-      .get(`${baseURL}?${query}`)
-      .then(function (response) {
-        setData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+  // const fetchData = async ({ query, setData }) => {
+  //   axios
+  //     .get(`${baseURL}?${query}`)
+  //     .then(function (response) {
+  //       setData(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
 
-  const fetchProvinceList = async () => {
-    const query =
-      'data=thai_coord&select=distinct(ch_id),changwat_e&order=province';
-    fetchData({ query, setData: setProvinceList });
-  };
+  // const fetchProvinceList = async () => {
+  //   const query =
+  //     'data=thai_coord&select=distinct(ch_id),changwat_e&order=province';
+  //   fetchData({ query, setData: setProvinceList });
+  // };
 
   useEffect(() => {
     const handleDrawCreate = (e) => {
@@ -340,15 +340,15 @@ export default function Analysis() {
                     <MenuItem key={0} value={0}>
                       {t('all')}
                     </MenuItem>
-                    {apList.map((amphoe) =>
-                      Number(String(amphoe.am_id).substring(0, 2)) ===
+                    {districtList.map((district) =>
+                      Number(String(district.am_id).substring(0, 2)) ===
                       province ? (
-                        <MenuItem key={amphoe.am_id} value={amphoe.am_id}>
+                        <MenuItem key={district.am_id} value={district.am_id}>
                           {i18n.language === 'th'
-                            ? amphoe.amphoe_t
+                            ? district.amphoe_t
                                 .replace('อ.', '')
                                 .replace('เขต', '')
-                            : amphoe.amphoe_e}
+                            : district.amphoe_e}
                         </MenuItem>
                       ) : (
                         []
@@ -372,15 +372,18 @@ export default function Analysis() {
                     <MenuItem key={0} value={0}>
                       {t('all')}
                     </MenuItem>
-                    {tbList.map((tambon) =>
-                      Number(String(tambon.ta_id).substring(0, 4)) ===
+                    {subDistrictList.map((subDistrict) =>
+                      Number(String(subDistrict.ta_id).substring(0, 4)) ===
                       district ? (
-                        <MenuItem key={tambon.ta_id} value={tambon.ta_id}>
+                        <MenuItem
+                          key={subDistrict.ta_id}
+                          value={subDistrict.ta_id}
+                        >
                           {i18n.language === 'th'
-                            ? tambon.tambon_t
+                            ? subDistrict.tambon_t
                                 .replace('ต.', '')
                                 .replace('แขวง', '')
-                            : tambon.tambon_e}
+                            : subDistrict.tambon_e}
                         </MenuItem>
                       ) : (
                         []
