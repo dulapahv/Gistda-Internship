@@ -12,7 +12,7 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Analysis, Overview } from '.';
-import { Header, map, Map, sphere, SphereMap } from '../components';
+import { Header, map, Map, sphere } from '../components';
 
 const ToggleButtonGroupTheme = createTheme({
   palette: {
@@ -171,13 +171,13 @@ export default function Visual() {
             <>
               <div
                 id='overviewPage'
-                className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'
+                className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2 overflow-y-scroll'
               >
                 <Overview />
               </div>
               <div
                 id='analysisPage'
-                className='xl:w-2/5 p-4 order-2 xl:order-1 hidden'
+                className='xl:w-2/5 p-4 order-2 xl:order-1 overflow-y-scroll hidden'
               >
                 <Analysis />
               </div>
@@ -237,6 +237,7 @@ export default function Visual() {
                     />
                     {Array.from({ length: 6 }).map((_, index) => (
                       <Skeleton
+                        key={index}
                         variant='rounded'
                         animation='wave'
                         height={50}

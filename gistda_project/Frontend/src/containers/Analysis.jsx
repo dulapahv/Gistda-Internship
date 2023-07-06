@@ -281,7 +281,7 @@ export default function Analysis() {
           </h1>
           <div className='flex justify-center'>
             <div className='w-5/6'>
-              {dotCount > 0 ? <Doughnut data={data} options={options} /> : ''}
+              {dotCount > 0 && <Doughnut data={data} options={options} />}
             </div>
           </div>
         </div>

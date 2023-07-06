@@ -365,9 +365,8 @@ export default function Tablesort({
                 ? 'default'
                 : 'pointer'
             } ${
-              !colDisabled.slice(-1)[0].includes(column.dataKey)
-                ? 'hover:bg-[#f7e8ec] dark:hover:bg-[#4b3b40]'
-                : ''
+              !colDisabled.slice(-1)[0].includes(column.dataKey) &&
+              'hover:bg-[#f7e8ec] dark:hover:bg-[#4b3b40]'
             } ${
               colDisabled.slice(-1)[0].includes(column.dataKey)
                 ? 'pointer-events-none'
@@ -450,21 +449,8 @@ export default function Tablesort({
   const dat = sortConfig.key ? sortedRows : rowData.slice(-1)[0];
   return (
     <ThemeProvider theme={tableTheme}>
-      <Paper
-        style={{
-          height: district || subDistrict ? 'calc(100% - 40px)' : '100%',
-          width: '100%',
-        }}
-      >
-        <TableVirtuoso
-          data={dat}
-          components={VirtuosoTableComponents}
-          fixedHeaderContent={fixedHeaderContent}
-          itemContent={rowContent}
-        />
-      </Paper>
-      {district || subDistrict ? (
-        <div className='flex flex-row mt-[14px] items-center space-x-4'>
+      {(district || subDistrict) && (
+        <div className='flex flex-row mb-[14px] items-center space-x-4'>
           <div>
             <Button
               variant='contained'
@@ -506,42 +492,45 @@ export default function Tablesort({
               >
                 {t('thailand')}
               </Link>
-              {district ? (
+              {district && (
                 <Link
                   underline={subDistrict ? 'hover' : 'none'}
                   color={subDistrict ? 'inherit' : 'text.primary'}
                   onClick={subDistrict ? goBack : null}
-                  className={subDistrict ? 'cursor-pointer' : ''}
+                  className={subDistrict && 'cursor-pointer'}
                 >
-                  {district
-                    ? i18n.language === 'th'
-                      ? district.result[0].pv_tn
-                      : district.result[0].pv_en
-                    : ''}
+                  {district && i18n.language === 'th'
+                    ? district.result[0].pv_tn
+                    : district.result[0].pv_en}
                 </Link>
-              ) : (
-                ''
               )}
-              {subDistrict ? (
+              {subDistrict && (
                 <Link
                   underline='none'
                   color={subDistrict ? 'text.primary' : 'inherit'}
                 >
-                  {subDistrict
-                    ? i18n.language === 'th'
-                      ? subDistrict.result[0].ap_tn
-                      : subDistrict.result[0].ap_en
-                    : ''}
+                  {subDistrict && i18n.language === 'th'
+                    ? subDistrict.result[0].ap_tn
+                    : subDistrict.result[0].ap_en}
                 </Link>
-              ) : (
-                ''
               )}
             </Breadcrumbs>
           </div>
         </div>
-      ) : (
-        ''
       )}
+      <Paper
+        style={{
+          height: district || subDistrict ? 'calc(100% - 40px)' : '100%',
+          width: '100%',
+        }}
+      >
+        <TableVirtuoso
+          data={dat}
+          components={VirtuosoTableComponents}
+          fixedHeaderContent={fixedHeaderContent}
+          itemContent={rowContent}
+        />
+      </Paper>
     </ThemeProvider>
   );
 }
