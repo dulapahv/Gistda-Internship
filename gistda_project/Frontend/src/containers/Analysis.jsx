@@ -14,13 +14,15 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import CircularProgress from '@mui/material/CircularProgress';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { getDots } from '.';
 import apList from './amphoe.json';
 import tbList from './tambon.json';
 import pvList from './province.json';
 import { map, sphere } from '../components';
+import { getDots, getLastCropDate, getLastDateCrop, getMonth } from '.';
 
 const baseURL = 'http://localhost:3001/';
 
@@ -67,6 +69,7 @@ let {
 export default function Analysis() {
   const { t, i18n } = useTranslation();
   const [area, setArea] = useState(0);
+  const [cropArea, setCropArea] = useState(0);
   const [dotCount, setDotCount] = useState(0);
   const [province, setProvince] = useState(10);
   const [provinceList, setProvinceList] = useState(pvList);
@@ -74,6 +77,12 @@ export default function Analysis() {
   const [districtList, setDistrictList] = useState(apList);
   const [subDistrict, setSubDistrict] = useState(0);
   const [subDistrictList, setSubDistrictList] = useState(tbList);
+  const [cropData, setCropData] = useState();
+  const [coordinates, setCoordinates] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [overlay, setOverlay] = useState();
+  const [cropLayer, setCropLayer] = useState();
+  const [showResult, setShowResult] = useState(false);
 
   const options = {
     plugins: {
@@ -115,25 +124,192 @@ export default function Analysis() {
     },
   };
 
-  // const fetchData = async ({ query, setData }) => {
-  //   axios
-  //     .get(`${baseURL}?${query}`)
-  //     .then(function (response) {
-  //       setData(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
+  const fetchData = async ({ query, setData }) => {
+    axios
+      .get(`${baseURL}?${query}`)
+      .then(function (response) {
+        setData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
-  // const fetchProvinceList = async () => {
-  //   const query =
-  //     'data=thai_coord&select=distinct(ch_id),changwat_e&order=province';
-  //   fetchData({ query, setData: setProvinceList });
-  // };
+  useEffect(() => {
+    if (!showResult) {
+      setArea(0);
+      resetDotCount();
+      if (overlay) map.Overlays.remove(overlay);
+      if (cropLayer) map.Layers.remove(cropLayer);
+    }
+  }, [showResult]);
+
+  const handleSearchButton = () => {
+    setIsLoading(true);
+    if (subDistrict !== 0) {
+      const coordQuery = `data=thai_coord&select=lat,long&where=ta_id='${subDistrict}'`;
+      fetchData({
+        query: coordQuery,
+        setData: setCoordinates,
+      });
+      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
+      fetchData({
+        query: cropQuery,
+        setData: setCropData,
+      });
+    } else if (district !== 0) {
+      const coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
+      fetchData({
+        query: coordQuery,
+        setData: setCoordinates,
+      });
+      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
+      fetchData({
+        query: cropQuery,
+        setData: setCropData,
+      });
+    } else {
+      const coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
+      fetchData({
+        query: coordQuery,
+        setData: setCoordinates,
+      });
+      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
+      fetchData({
+        query: cropQuery,
+        setData: setCropData,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!coordinates) return;
+
+    const points = [];
+
+    coordinates.result.forEach((coord) => {
+      const lat = parseFloat(coord.lat);
+      const lon = parseFloat(coord.long);
+
+      if (!isNaN(lat) && !isNaN(lon)) {
+        const point = turf.point([lon, lat]);
+        points.push(point);
+      }
+    });
+
+    const geojson = turf.featureCollection(points);
+
+    // find 4 coordinates of geojson that from a rectangle box
+    const bbox = turf.bbox(geojson);
+    const newCoordinates = [
+      { lat: bbox[1], lon: bbox[0] },
+      { lat: bbox[3], lon: bbox[0] },
+      { lat: bbox[3], lon: bbox[2] },
+      { lat: bbox[1], lon: bbox[2] },
+    ];
+
+    let shape;
+    if (bbox[0] === bbox[2] && bbox[1] === bbox[3]) {
+      shape = new sphere.Circle(
+        {
+          lat: bbox[1],
+          lon: bbox[0],
+        },
+        0.01,
+        {
+          fillColor: 'rgba(247, 177, 66, 0.1)',
+          lineColor: 'rgba(247, 177, 66, 1)',
+          lineWidth: 2,
+        }
+      );
+    } else {
+      shape = new sphere.Polygon(newCoordinates, {
+        fillColor: 'rgba(247, 177, 66, 0.1)',
+        lineColor: 'rgba(247, 177, 66, 1)',
+        lineStyle: sphere.LineStyle.Dashed,
+        lineWidth: 2,
+      });
+    }
+
+    setOverlay(shape);
+    map.Overlays.add(shape);
+    setDotCount(countDot(getDots(), shape));
+
+    if (points.length > 0) {
+      const bbox = turf.bbox(geojson);
+      const zoomTemp = {
+        minLon: subDistrict !== 0 ? bbox[0] - 0.015 : bbox[0],
+        minLat: subDistrict !== 0 ? bbox[1] - 0.015 : bbox[1],
+        maxLon: subDistrict !== 0 ? bbox[2] + 0.015 : bbox[2],
+        maxLat: subDistrict !== 0 ? bbox[3] + 0.015 : bbox[3],
+      };
+      const pt = district !== 0 ? 200 : 100;
+      const pb = district !== 0 ? 200 : 100;
+      map.bound(zoomTemp, { padding: { top: pt, bottom: pb } });
+      map.Event.bind(sphere.EventName.LayerChange, function () {});
+    } else {
+      console.log('No valid coordinates found.');
+    }
+  }, [coordinates]);
+
+  useEffect(() => {
+    if (cropData) {
+      try {
+        setCropArea(turf.area(cropData.result[0].feature_collection));
+      } catch (error) {
+        setIsLoading(false);
+      }
+      let layer_crop = new sphere.Layer({
+        sources: {
+          rice: {
+            type: 'geojson',
+            data: cropData.result[0].feature_collection,
+          },
+        },
+        layers: [
+          {
+            id: 'layer_crop',
+            type: 'fill',
+            source: 'rice',
+            zIndex: 4,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                1,
+                '#096108',
+                2,
+                '#4a8a10',
+                3,
+                '#8bb619',
+                4,
+                '#d4e725',
+                5,
+                '#fce626',
+                6,
+                '#fba81c',
+                7,
+                '#fa7115',
+                8,
+                '#fa290f',
+                '#000',
+              ],
+              'fill-opacity': 0.4,
+            },
+          },
+        ],
+      });
+      setCropLayer(layer_crop);
+      map.Layers.add(layer_crop);
+      console.log(map.Layers.list());
+      setIsLoading(false);
+      setShowResult(true);
+    }
+  }, [cropData]);
 
   useEffect(() => {
     const handleDrawCreate = (e) => {
+      setShowResult(true);
       if (e.features && e.features[0].geometry.coordinates.length === 1) {
         setArea(turf.area(e.features[0]));
         let count = 0;
@@ -217,6 +393,7 @@ export default function Analysis() {
       setArea(0);
       setDotCount(0);
       resetDotCount();
+      setShowResult(false);
     };
 
     if (map) {
@@ -269,10 +446,31 @@ export default function Analysis() {
   };
   return (
     <>
-      {area ? (
-        <div className='flex flex-col w-full space-y-2'>
+      {showResult ? (
+        <div className='flex flex-col w-full space-y-4'>
+          <div>
+            <ThemeProvider theme={buttonTheme}>
+              <Button
+                variant='contained'
+                startIcon={<ArrowBackIosIcon />}
+                onClick={() => setShowResult(false)}
+              >
+                {t('back')}
+              </Button>
+            </ThemeProvider>
+          </div>
           <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-            {t('area')}: {area.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+            {area > 0 && (
+              <>
+                {t('area')}:{' '}
+                {area.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {t('sqm')}
+              </>
+            )}
+          </h1>
+          <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
+            พื้นที่เพาะปลูก:{' '}
+            {cropArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
             {t('sqm')}
           </h1>
           <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
@@ -393,13 +591,21 @@ export default function Analysis() {
                 </FormControl>
               </ThemeProvider>
               <ThemeProvider theme={buttonTheme}>
-                <Button
-                  variant='contained'
-                  startIcon={<QueryStatsIcon />}
-                  size='large'
-                >
-                  เริ่มวิเคราะห์
-                </Button>
+                <div className='relative w-full'>
+                  <Button
+                    variant='contained'
+                    startIcon={<QueryStatsIcon />}
+                    size='large'
+                    onClick={handleSearchButton}
+                    className='w-full z-10'
+                    disabled={isLoading}
+                  >
+                    เริ่มวิเคราะห์
+                  </Button>
+                  <div className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
+                    {isLoading && <CircularProgress />}
+                  </div>
+                </div>
               </ThemeProvider>
             </form>
           </div>

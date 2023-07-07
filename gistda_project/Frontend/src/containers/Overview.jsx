@@ -120,7 +120,13 @@ const hexToRGBA = (hex, alpha) => {
 };
 
 let dots = [];
+let month;
+let lastDate;
+let tempDateCrop;
 
+export const getMonth = () => month;
+export const getLastCropDate = () => lastDate;
+export const getLastDateCrop = () => tempDateCrop;
 export const getDots = () => dots;
 
 const dotFactory = (
@@ -526,10 +532,9 @@ export default function DetailHotspot() {
   }, [cropType, isCropShowed, cassavaData]);
 
   useEffect(() => {
-    const month = date.format('MM');
-    const lastDate =
-      date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
-    const tempDateCrop = date.format('YYYY-MM') + '-' + lastDate;
+    month = date.format('MM');
+    lastDate = date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
+    tempDateCrop = date.format('YYYY-MM') + '-' + lastDate;
     if (tempDateCrop === lastDateCrop && cropType === lastCropType) return;
     setLastDateCrop(tempDateCrop);
     if (cropType === 'rice') {
