@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
+import { Bar } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from 'chart.js';
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
 
 import * as turf from '@turf/turf';
 import Select from '@mui/material/Select';
@@ -13,6 +23,7 @@ import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import CancelIcon from '@mui/icons-material/Cancel';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -53,7 +64,16 @@ const buttonTheme = createTheme({
   },
 });
 
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels, Title);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartDataLabels,
+  Title,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 ChartJS.defaults.color = '#fff';
 ChartJS.defaults.font.family = 'kanit';
 
@@ -66,10 +86,15 @@ let {
   otherCount = 0,
 } = {};
 
+let { cropRice = 0, cropMaize = 0, cropSugarcane = 0, cropOther = 0 } = {};
+
 export default function Analysis() {
   const { t, i18n } = useTranslation();
-  const [area, setArea] = useState(0);
-  const [cropArea, setCropArea] = useState(0);
+  const [drawArea, setDrawArea] = useState(0);
+  const [riceArea, setRiceArea] = useState(0);
+  const [maizeArea, setMaizeArea] = useState(0);
+  const [sugarcaneArea, setSugarcaneArea] = useState(0);
+  const [cassavaArea, setCassavaArea] = useState(0);
   const [dotCount, setDotCount] = useState(0);
   const [province, setProvince] = useState(10);
   const [provinceList, setProvinceList] = useState(pvList);
@@ -77,14 +102,22 @@ export default function Analysis() {
   const [districtList, setDistrictList] = useState(apList);
   const [subDistrict, setSubDistrict] = useState(0);
   const [subDistrictList, setSubDistrictList] = useState(tbList);
-  const [cropData, setCropData] = useState();
+  const [riceData, setRiceData] = useState();
+  const [maizeData, setMaizeData] = useState();
+  const [sugarcaneData, setSugarcaneData] = useState();
+  const [cassavaData, setCassavaData] = useState();
   const [coordinates, setCoordinates] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [overlay, setOverlay] = useState();
-  const [cropLayer, setCropLayer] = useState();
   const [showResult, setShowResult] = useState(false);
+  const [controller, setController] = useState(null);
+  const prevControllerRef = useRef(null);
+  const [riceLayer, setRiceLayer] = useState();
+  const [maizeLayer, setMaizeLayer] = useState();
+  const [sugarcaneLayer, setSugarcaneLayer] = useState();
+  const [cassavaLayer, setCassavaLayer] = useState();
 
-  const options = {
+  const doughnutChartOptions = {
     plugins: {
       title: {
         display: true,
@@ -124,27 +157,71 @@ export default function Analysis() {
     },
   };
 
-  const fetchData = async ({ query, setData }) => {
-    axios
-      .get(`${baseURL}?${query}`)
-      .then(function (response) {
-        setData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const barChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Area each crop type in and around the area',
+      },
+    },
   };
 
+  const fetchData = async ({ query, setData }) => {
+    const newController = new AbortController();
+    prevControllerRef.current = newController;
+    setController(newController);
+
+    try {
+      const response = await axios.get(`${baseURL}?${query}`, {
+        signal: newController.signal,
+      });
+
+      if (!prevControllerRef.current.signal.aborted) {
+        setData(response.data);
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.log(error);
+      }
+    }
+  };
   useEffect(() => {
     if (!showResult) {
-      setArea(0);
-      resetDotCount();
-      if (overlay) map.Overlays.remove(overlay);
-      if (cropLayer) map.Layers.remove(cropLayer);
+      setDrawArea(0);
+      // resetDotCount();
+      setRiceArea(0);
+      setMaizeArea(0);
+      setSugarcaneArea(0);
+      setCassavaArea(0);
+      if (overlay) {
+        map.Overlays.remove(overlay);
+        setOverlay();
+      }
+      if (riceLayer) {
+        map.Layers.remove(riceLayer);
+        setRiceLayer();
+      }
+      if (maizeLayer) {
+        map.Layers.remove(maizeLayer);
+        setMaizeLayer();
+      }
+      if (sugarcaneLayer) {
+        map.Layers.remove(sugarcaneLayer);
+        setSugarcaneLayer();
+        if (cassavaLayer) {
+          map.Layers.remove(cassavaLayer);
+          setCassavaLayer();
+        }
+      }
     }
   }, [showResult]);
 
   const handleSearchButton = () => {
+    resetDotCount();
     setIsLoading(true);
     if (subDistrict !== 0) {
       const coordQuery = `data=thai_coord&select=lat,long&where=ta_id='${subDistrict}'`;
@@ -152,10 +229,25 @@ export default function Analysis() {
         query: coordQuery,
         setData: setCoordinates,
       });
-      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
+      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
       fetchData({
-        query: cropQuery,
-        setData: setCropData,
+        query: riceQuery,
+        setData: setRiceData,
+      });
+      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
+      fetchData({
+        query: maizeQuery,
+        setData: setMaizeData,
+      });
+      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
+      fetchData({
+        query: sugarcaneQuery,
+        setData: setSugarcaneData,
+      });
+      const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
+      fetchData({
+        query: cassavaQuery,
+        setData: setCassavaData,
       });
     } else if (district !== 0) {
       const coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
@@ -163,10 +255,25 @@ export default function Analysis() {
         query: coordQuery,
         setData: setCoordinates,
       });
-      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
+      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
       fetchData({
-        query: cropQuery,
-        setData: setCropData,
+        query: riceQuery,
+        setData: setRiceData,
+      });
+      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
+      fetchData({
+        query: maizeQuery,
+        setData: setMaizeData,
+      });
+      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
+      fetchData({
+        query: sugarcaneQuery,
+        setData: setSugarcaneData,
+      });
+      const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
+      fetchData({
+        query: cassavaQuery,
+        setData: setCassavaData,
       });
     } else {
       const coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
@@ -174,11 +281,88 @@ export default function Analysis() {
         query: coordQuery,
         setData: setCoordinates,
       });
-      const cropQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', to_jsonb(rice_2023${getMonth()}${getLastCropDate()}) - 'geom') AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
+      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
       fetchData({
-        query: cropQuery,
-        setData: setCropData,
+        query: riceQuery,
+        setData: setRiceData,
       });
+      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
+      fetchData({
+        query: maizeQuery,
+        setData: setMaizeData,
+      });
+      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
+      fetchData({
+        query: sugarcaneQuery,
+        setData: setSugarcaneData,
+      });
+    }
+  };
+
+  function handleDraw(geom) {
+    const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      geom
+    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
+    fetchData({
+      query: riceQuery,
+      setData: setRiceData,
+    });
+    const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      geom
+    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
+    fetchData({
+      query: maizeQuery,
+      setData: setMaizeData,
+    });
+    const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      geom
+    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
+    fetchData({
+      query: sugarcaneQuery,
+      setData: setSugarcaneData,
+    });
+    const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      geom
+    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
+    fetchData({
+      query: cassavaQuery,
+      setData: setCassavaData,
+    });
+  }
+
+  const cancelSearch = () => {
+    if (controller) {
+      controller.abort();
+      setController(null);
+    }
+    setRiceArea(0);
+    setMaizeArea(0);
+    setSugarcaneArea(0);
+    setCassavaArea(0);
+    setDrawArea(0);
+    setDotCount(0);
+    resetDotCount();
+    setIsLoading(false);
+    setShowResult(false);
+    if (overlay) {
+      map.Overlays.remove(overlay);
+      setOverlay();
+    }
+    if (riceLayer) {
+      map.Layers.remove(riceLayer);
+      setRiceLayer();
+    }
+    if (maizeLayer) {
+      map.Layers.remove(maizeLayer);
+      setMaizeLayer();
+    }
+    if (sugarcaneLayer) {
+      map.Layers.remove(sugarcaneLayer);
+      setSugarcaneLayer();
+      if (cassavaLayer) {
+        map.Layers.remove(cassavaLayer);
+        setCassavaLayer();
+      }
     }
   };
 
@@ -199,7 +383,6 @@ export default function Analysis() {
 
     const geojson = turf.featureCollection(points);
 
-    // find 4 coordinates of geojson that from a rectangle box
     const bbox = turf.bbox(geojson);
     const newCoordinates = [
       { lat: bbox[1], lon: bbox[0] },
@@ -217,16 +400,15 @@ export default function Analysis() {
         },
         0.01,
         {
-          fillColor: 'rgba(247, 177, 66, 0.1)',
-          lineColor: 'rgba(247, 177, 66, 1)',
+          fillColor: 'rgba(73, 177, 207, 0.1)',
+          lineColor: 'rgba(73, 177, 207, 1)',
           lineWidth: 2,
         }
       );
     } else {
       shape = new sphere.Polygon(newCoordinates, {
-        fillColor: 'rgba(247, 177, 66, 0.1)',
-        lineColor: 'rgba(247, 177, 66, 1)',
-        lineStyle: sphere.LineStyle.Dashed,
+        fillColor: 'rgba(73, 177, 207, 0.1)',
+        lineColor: 'rgba(73, 177, 207, 1)',
         lineWidth: 2,
       });
     }
@@ -253,65 +435,148 @@ export default function Analysis() {
   }, [coordinates]);
 
   useEffect(() => {
-    if (cropData) {
+    if (riceData) {
       try {
-        setCropArea(turf.area(cropData.result[0].feature_collection));
+        setRiceArea(turf.area(riceData.result[0].feature_collection));
       } catch (error) {
         setIsLoading(false);
       }
-      let layer_crop = new sphere.Layer({
+      let layer_crop_rice = new sphere.Layer({
         sources: {
           rice: {
             type: 'geojson',
-            data: cropData.result[0].feature_collection,
+            data: riceData.result[0].feature_collection,
           },
         },
         layers: [
           {
-            id: 'layer_crop',
+            id: 'layer_crop_rice',
             type: 'fill',
             source: 'rice',
             zIndex: 4,
             paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                '#096108',
-                2,
-                '#4a8a10',
-                3,
-                '#8bb619',
-                4,
-                '#d4e725',
-                5,
-                '#fce626',
-                6,
-                '#fba81c',
-                7,
-                '#fa7115',
-                8,
-                '#fa290f',
-                '#000',
-              ],
-              'fill-opacity': 0.4,
+              'fill-color': '#56c0c0',
+              'fill-opacity': 0.5,
             },
           },
         ],
       });
-      setCropLayer(layer_crop);
-      map.Layers.add(layer_crop);
-      console.log(map.Layers.list());
+      setRiceLayer(layer_crop_rice);
+      map.Layers.add(layer_crop_rice);
       setIsLoading(false);
       setShowResult(true);
     }
-  }, [cropData]);
+  }, [riceData]);
+
+  useEffect(() => {
+    if (maizeData) {
+      try {
+        setMaizeArea(turf.area(maizeData.result[0].feature_collection));
+      } catch (error) {
+        setIsLoading(false);
+      }
+      let layer_crop_maize = new sphere.Layer({
+        sources: {
+          maize: {
+            type: 'geojson',
+            data: maizeData.result[0].feature_collection,
+          },
+        },
+        layers: [
+          {
+            id: 'layer_crop_maize',
+            type: 'fill',
+            source: 'maize',
+            zIndex: 4,
+            paint: {
+              'fill-color': '#fbc740',
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      setMaizeLayer(layer_crop_maize);
+      map.Layers.add(layer_crop_maize);
+      setIsLoading(false);
+      setShowResult(true);
+    }
+  }, [maizeData]);
+
+  useEffect(() => {
+    if (sugarcaneData) {
+      try {
+        setSugarcaneArea(turf.area(sugarcaneData.result[0].feature_collection));
+      } catch (error) {
+        setIsLoading(false);
+      }
+      let layer_crop_sugarcane = new sphere.Layer({
+        sources: {
+          sugarcane: {
+            type: 'geojson',
+            data: sugarcaneData.result[0].feature_collection,
+          },
+        },
+        layers: [
+          {
+            id: 'layer_crop_sugarcane',
+            type: 'fill',
+            source: 'sugarcane',
+            zIndex: 4,
+            paint: {
+              'fill-color': '#fba046',
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      setSugarcaneLayer(layer_crop_sugarcane);
+      map.Layers.add(layer_crop_sugarcane);
+      setIsLoading(false);
+      setShowResult(true);
+    }
+  }, [sugarcaneData]);
+
+  useEffect(() => {
+    if (cassavaData) {
+      try {
+        setCassavaArea(turf.area(cassavaData.result[0].feature_collection));
+      } catch (error) {
+        setIsLoading(false);
+      }
+      let layer_crop_cassava = new sphere.Layer({
+        sources: {
+          cassava: {
+            type: 'geojson',
+            data: cassavaData.result[0].feature_collection,
+          },
+        },
+        layers: [
+          {
+            id: 'layer_crop_cassava',
+            type: 'fill',
+            source: 'cassava',
+            zIndex: 4,
+            paint: {
+              'fill-color': '#fb6584',
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      setCassavaLayer(layer_crop_cassava);
+      map.Layers.add(layer_crop_cassava);
+      setIsLoading(false);
+      setShowResult(true);
+    }
+  }, [cassavaData]);
 
   useEffect(() => {
     const handleDrawCreate = (e) => {
-      setShowResult(true);
       if (e.features && e.features[0].geometry.coordinates.length === 1) {
-        setArea(turf.area(e.features[0]));
+        setIsLoading(true);
+        setShowResult(false);
+        handleDraw(e.features[0].geometry);
+        setDrawArea(turf.area(e.features[0]));
         let count = 0;
         resetDotCount();
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
@@ -328,7 +593,10 @@ export default function Analysis() {
         }
         setDotCount(count);
       } else {
-        setArea(turf.area(e.createdFeatures[0]));
+        setIsLoading(true);
+        setShowResult(false);
+        handleDraw(e.createdFeatures[0].geometry);
+        setDrawArea(turf.area(e.createdFeatures[0]));
         let count = 0;
         resetDotCount();
         for (
@@ -353,7 +621,10 @@ export default function Analysis() {
 
     const handleUpdate = (e) => {
       if (e.features[0].geometry.coordinates.length === 1) {
-        setArea(turf.area(e.features[0]));
+        setIsLoading(true);
+        setShowResult(false);
+        handleDraw(e.features[0].geometry);
+        setDrawArea(turf.area(e.features[0]));
         let count = 0;
         resetDotCount();
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
@@ -370,7 +641,10 @@ export default function Analysis() {
         }
         setDotCount(count);
       } else {
-        setArea(turf.area(e.features[0]));
+        setIsLoading(true);
+        setShowResult(false);
+        handleDraw(e.features[0].geometry);
+        setDrawArea(turf.area(e.features[0]));
         let count = 0;
         resetDotCount();
         for (let i = 0; i < e.features[0].geometry.coordinates.length; i++) {
@@ -389,10 +663,15 @@ export default function Analysis() {
       }
     };
 
-    const handleDrawDelete = () => {
-      setArea(0);
+    const handleDrawDelete = (e) => {
+      setRiceArea(0);
+      setMaizeArea(0);
+      setSugarcaneArea(0);
+      setCassavaArea(0);
+      setDrawArea(0);
       setDotCount(0);
       resetDotCount();
+      setIsLoading(false);
       setShowResult(false);
     };
 
@@ -403,16 +682,17 @@ export default function Analysis() {
       map.Renderer.on('draw.update', handleUpdate);
     }
 
-    return () => {
-      if (map) {
-        map.Renderer.off('draw.create', handleDrawCreate);
-        map.Renderer.off('draw.delete', handleDrawDelete);
-        map.Renderer.off('draw.combine', handleDrawCreate);
-        map.Renderer.off('draw.update', handleUpdate);
-      }
-    };
-  }, [map, setArea, setDotCount, getDots]);
-  const data = {
+    // return () => {
+    //   if (map) {
+    //     map.Renderer.off('draw.create', handleDrawCreate);
+    //     map.Renderer.off('draw.delete', handleDrawDelete);
+    //     map.Renderer.off('draw.combine', handleDrawCreate);
+    //     map.Renderer.off('draw.update', handleUpdate);
+    //   }
+    // };
+  }, [map, setDrawArea, setDotCount, getDots]);
+
+  const landUseData = {
     labels: [
       t('landUse.นาข้าว'),
       t('landUse.ข้าวโพดและไร่หมุนเวียน'),
@@ -433,17 +713,39 @@ export default function Analysis() {
           otherCount,
         ],
         backgroundColor: [
-          '#fb6584',
-          '#48a1e9',
-          '#fbce5c',
           '#56c0c0',
-          '#9c63fd',
+          '#fbce5c',
           '#fba046',
+          '#fb6584',
+          '#9c63fd',
+          '#48a1e9',
         ],
         borderWidth: 0,
       },
     ],
   };
+  const barChartData = {
+    labels: [
+      t('crop.rice'),
+      t('crop.maize'),
+      t('crop.sugarcane'),
+      t('crop.cassava'),
+    ],
+    datasets: [
+      {
+        label: '',
+        data: [
+          riceArea.toFixed(3),
+          maizeArea.toFixed(3),
+          sugarcaneArea.toFixed(3),
+          cassavaArea.toFixed(3),
+        ],
+        backgroundColor: ['#56c0c0', '#fbce5c', '#fba046', '#fb6584'],
+        borderWidth: 0,
+      },
+    ],
+  };
+
   return (
     <>
       {showResult ? (
@@ -460,17 +762,19 @@ export default function Analysis() {
             </ThemeProvider>
           </div>
           <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-            {area > 0 && (
+            {drawArea > 0 && (
               <>
                 {t('area')}:{' '}
-                {area.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                 {t('sqm')}
               </>
             )}
           </h1>
           <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
             พื้นที่เพาะปลูก:{' '}
-            {cropArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+            {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
+              .toFixed(3)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
             {t('sqm')}
           </h1>
           <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
@@ -479,7 +783,12 @@ export default function Analysis() {
           </h1>
           <div className='flex justify-center'>
             <div className='w-5/6'>
-              {dotCount > 0 && <Doughnut data={data} options={options} />}
+              {dotCount > 0 && (
+                <Doughnut data={landUseData} options={doughnutChartOptions} />
+              )}
+              {riceArea > 0 && (
+                <Bar data={barChartData} options={barChartOptions} />
+              )}
             </div>
           </div>
         </div>
@@ -510,7 +819,7 @@ export default function Analysis() {
                       setDistrict(0);
                       setSubDistrict(0);
                     }}
-                    onInvalid={(e) => e.target.setCustomValidity('กรุณาเลือก')}
+                    disabled={isLoading ? true : false}
                   >
                     {provinceList.map((province) => (
                       <MenuItem key={province.ch_id} value={province.ch_id}>
@@ -533,7 +842,7 @@ export default function Analysis() {
                       setDistrict(e.target.value);
                       setSubDistrict(0);
                     }}
-                    disabled={province ? false : true}
+                    disabled={isLoading ? true : false}
                   >
                     <MenuItem key={0} value={0}>
                       {t('all')}
@@ -565,7 +874,7 @@ export default function Analysis() {
                     onChange={(e) => {
                       setSubDistrict(e.target.value);
                     }}
-                    disabled={district ? false : true}
+                    disabled={!district || isLoading ? true : false}
                   >
                     <MenuItem key={0} value={0}>
                       {t('all')}
@@ -600,12 +909,28 @@ export default function Analysis() {
                     className='w-full z-10'
                     disabled={isLoading}
                   >
-                    เริ่มวิเคราะห์
+                    {isLoading ? 'กำลังวิเคราะห์' : 'เริ่มวิเคราะห์'}
                   </Button>
                   <div className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
                     {isLoading && <CircularProgress />}
                   </div>
                 </div>
+                {isLoading && (
+                  <div className='w-full'>
+                    <Button
+                      variant='outlined'
+                      color='error'
+                      startIcon={<CancelIcon />}
+                      size='large'
+                      onClick={() => {
+                        cancelSearch();
+                      }}
+                      className='w-full z-10'
+                    >
+                      ยกเลิกการวิเคราะห์
+                    </Button>
+                  </div>
+                )}
               </ThemeProvider>
             </form>
           </div>

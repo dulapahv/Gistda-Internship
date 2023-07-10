@@ -29,12 +29,12 @@ import { TableOverview } from '../components';
 const baseURL = 'http://localhost:3001/';
 
 const color = {
-  rice: '#fb6584',
-  maize: '#48a1e9',
-  sugarcane: '#fbce5c',
-  otherCrop: '#56c0c0',
+  rice: '#56c0c0',
+  maize: '#fbce5c',
+  sugarcane: '#fba046',
+  otherCrop: '#fb6584',
   forest: '#9c63fd',
-  other: '#fba046',
+  other: '#48a1e9',
 };
 
 const buttonTheme = createTheme({
@@ -536,40 +536,40 @@ export default function DetailHotspot() {
     lastDate = date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
     tempDateCrop = date.format('YYYY-MM') + '-' + lastDate;
     if (tempDateCrop === lastDateCrop && cropType === lastCropType) return;
-    setLastDateCrop(tempDateCrop);
-    if (cropType === 'rice') {
-      setLastCropType('rice');
-      const riceQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-      fetchData({
-        query: riceQuery,
-        setData: setRiceData,
-        type: 1,
-      });
-    } else if (cropType === 'maize') {
-      setLastCropType('maize');
-      const maizeQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-      fetchData({
-        query: maizeQuery,
-        setData: setMaizeData,
-        type: 1,
-      });
-    } else if (cropType === 'sugarcane') {
-      setLastCropType('sugarcane');
-      const sugarcaneQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-      fetchData({
-        query: sugarcaneQuery,
-        setData: setSugarcaneData,
-        type: 1,
-      });
-    } else {
-      setLastCropType('cassava');
-      const cassavaQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-      fetchData({
-        query: cassavaQuery,
-        setData: setCassavaData,
-        type: 1,
-      });
-    }
+    // setLastDateCrop(tempDateCrop);
+    // if (cropType === 'rice') {
+    //   setLastCropType('rice');
+    //   const riceQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
+    //   fetchData({
+    //     query: riceQuery,
+    //     setData: setRiceData,
+    //     type: 1,
+    //   });
+    // } else if (cropType === 'maize') {
+    //   setLastCropType('maize');
+    //   const maizeQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
+    //   fetchData({
+    //     query: maizeQuery,
+    //     setData: setMaizeData,
+    //     type: 1,
+    //   });
+    // } else if (cropType === 'sugarcane') {
+    //   setLastCropType('sugarcane');
+    //   const sugarcaneQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
+    //   fetchData({
+    //     query: sugarcaneQuery,
+    //     setData: setSugarcaneData,
+    //     type: 1,
+    //   });
+    // } else {
+    //   setLastCropType('cassava');
+    //   const cassavaQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
+    //   fetchData({
+    //     query: cassavaQuery,
+    //     setData: setCassavaData,
+    //     type: 1,
+    //   });
+    // }
   }, [date, cropType]);
 
   useEffect(() => {
