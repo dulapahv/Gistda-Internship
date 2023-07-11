@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { Bar, Doughnut, Radar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
   ArcElement,
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LinearScale,
+  LineElement,
+  PointElement,
+  RadialLinearScale,
   Title,
   Tooltip,
 } from 'chart.js';
@@ -72,9 +75,14 @@ ChartJS.register(
   Title,
   BarElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler
 );
-ChartJS.defaults.color = '#fff';
+ChartJS.defaults.color =
+  JSON.parse(localStorage.getItem('theme')) === 'dark' ? '#fff' : '#000';
 ChartJS.defaults.font.family = 'kanit';
 
 let {
@@ -86,7 +94,10 @@ let {
   otherCount = 0,
 } = {};
 
-let { cropRice = 0, cropMaize = 0, cropSugarcane = 0, cropOther = 0 } = {};
+let riceIrrOfficeCount = new Array(17).fill(0);
+let maizeIrrOfficeCount = new Array(14).fill(0);
+let sugarcaneIrrOfficeCount = new Array(14).fill(0);
+let cassavaIrrOfficeCount = new Array(14).fill(0);
 
 export default function Analysis() {
   const { t, i18n } = useTranslation();
@@ -117,7 +128,7 @@ export default function Analysis() {
   const [sugarcaneLayer, setSugarcaneLayer] = useState();
   const [cassavaLayer, setCassavaLayer] = useState();
 
-  const doughnutChartOptions = {
+  const hotspotChartOptions = {
     plugins: {
       title: {
         display: true,
@@ -157,7 +168,7 @@ export default function Analysis() {
     },
   };
 
-  const barChartOptions = {
+  const cropTypeAreaChartOptions = {
     responsive: true,
     plugins: {
       legend: {
@@ -166,6 +177,96 @@ export default function Analysis() {
       title: {
         display: true,
         text: 'Area each crop type in and around the area',
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + ' ' + t('rai');
+        },
+      },
+    },
+  };
+
+  const irrOfficeChartOptions = {
+    indexAxis: 'y',
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      },
+      title: {
+        display: true,
+        text: 'Irrigation Office of Each Crop Area',
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + '%';
+        },
+        display: function (context) {
+          var index = context.dataIndex;
+          var value = context.dataset.data[index];
+          return value > 0; // display labels with a value greater than 0
+        },
+      },
+    },
+  };
+
+  const qolIndexChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Quality of Life Index',
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value;
+        },
       },
     },
   };
@@ -191,8 +292,10 @@ export default function Analysis() {
   };
   useEffect(() => {
     if (!showResult) {
-      setDrawArea(0);
-      // resetDotCount();
+      riceIrrOfficeCount = new Array(17).fill(0);
+      maizeIrrOfficeCount = new Array(14).fill(0);
+      sugarcaneIrrOfficeCount = new Array(14).fill(0);
+      cassavaIrrOfficeCount = new Array(14).fill(0);
       setRiceArea(0);
       setMaizeArea(0);
       setSugarcaneArea(0);
@@ -220,113 +323,92 @@ export default function Analysis() {
     }
   }, [showResult]);
 
+  const fetchDataByQuery = (query, setData) => {
+    fetchData({
+      query,
+      setData,
+    });
+  };
+
   const handleSearchButton = () => {
     resetDotCount();
     setIsLoading(true);
+
+    let coordQuery = '';
+    let cropQueries = [];
+
     if (subDistrict !== 0) {
-      const coordQuery = `data=thai_coord&select=lat,long&where=ta_id='${subDistrict}'`;
-      fetchData({
-        query: coordQuery,
-        setData: setCoordinates,
-      });
-      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
-      fetchData({
-        query: riceQuery,
-        setData: setRiceData,
-      });
-      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
-      fetchData({
-        query: maizeQuery,
-        setData: setMaizeData,
-      });
-      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
-      fetchData({
-        query: sugarcaneQuery,
-        setData: setSugarcaneData,
-      });
-      const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`;
-      fetchData({
-        query: cassavaQuery,
-        setData: setCassavaData,
-      });
+      coordQuery = `data=thai_coord&select=lat,long&where=ta_id='${subDistrict}'`;
+      cropQueries = [
+        `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`,
+        `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`,
+        `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`,
+        `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND t_code='${subDistrict}') AS subquery`,
+      ];
     } else if (district !== 0) {
-      const coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
-      fetchData({
-        query: coordQuery,
-        setData: setCoordinates,
-      });
-      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
-      fetchData({
-        query: riceQuery,
-        setData: setRiceData,
-      });
-      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
-      fetchData({
-        query: maizeQuery,
-        setData: setMaizeData,
-      });
-      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
-      fetchData({
-        query: sugarcaneQuery,
-        setData: setSugarcaneData,
-      });
-      const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`;
-      fetchData({
-        query: cassavaQuery,
-        setData: setCassavaData,
-      });
+      coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
+      cropQueries = [
+        `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`,
+        `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`,
+        `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`,
+        `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND a_code='${district}') AS subquery`,
+      ];
     } else {
-      const coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
-      fetchData({
-        query: coordQuery,
-        setData: setCoordinates,
-      });
-      const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
-      fetchData({
-        query: riceQuery,
-        setData: setRiceData,
-      });
-      const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
-      fetchData({
-        query: maizeQuery,
-        setData: setMaizeData,
-      });
-      const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`;
-      fetchData({
-        query: sugarcaneQuery,
-        setData: setSugarcaneData,
-      });
+      coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
+      cropQueries = [
+        `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`,
+        `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`,
+        `data=sugarccane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery, data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${getLastDateCrop()}' AND p_code='${province}') AS subquery`,
+      ];
     }
+
+    fetchDataByQuery(coordQuery, setCoordinates);
+
+    cropQueries.forEach((query, index) => {
+      const setDataFunc =
+        index === 0
+          ? setRiceData
+          : index === 1
+          ? setMaizeData
+          : index === 2
+          ? setSugarcaneData
+          : setCassavaData;
+      fetchDataByQuery(query, setDataFunc);
+    });
   };
 
   function handleDraw(geom) {
-    const riceQuery = `data=rice_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
-      geom
-    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
-    fetchData({
-      query: riceQuery,
-      setData: setRiceData,
-    });
-    const maizeQuery = `data=maize_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
-      geom
-    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
-    fetchData({
-      query: maizeQuery,
-      setData: setMaizeData,
-    });
-    const sugarcaneQuery = `data=sugarcane_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
-      geom
-    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
-    fetchData({
-      query: sugarcaneQuery,
-      setData: setSugarcaneData,
-    });
-    const cassavaQuery = `data=cassava_2023${getMonth()}${getLastCropDate()}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai)) AS features&where=data_date = '${getLastDateCrop()}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
-      geom
-    )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
-    fetchData({
-      query: cassavaQuery,
-      setData: setCassavaData,
+    const cropNames = ['rice', 'maize', 'sugarcane', 'cassava'];
+    const month = getMonth();
+    const lastCropDate = getLastCropDate();
+    const lastDateCrop = getLastDateCrop();
+
+    cropNames.forEach((cropName) => {
+      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+        geom
+      )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
+
+      fetchData({
+        query,
+        setData: (data) => {
+          switch (cropName) {
+            case 'rice':
+              setRiceData(data);
+              break;
+            case 'maize':
+              setMaizeData(data);
+              break;
+            case 'sugarcane':
+              setSugarcaneData(data);
+              break;
+            case 'cassava':
+              setCassavaData(data);
+              break;
+            default:
+              break;
+          }
+        },
+      });
     });
   }
 
@@ -437,7 +519,13 @@ export default function Analysis() {
   useEffect(() => {
     if (riceData) {
       try {
-        setRiceArea(turf.area(riceData.result[0].feature_collection));
+        setRiceArea(
+          turf.area(riceData.result[0].feature_collection) * 0.000625
+        );
+        countCropIrrOffice(
+          riceData.result[0].feature_collection.features,
+          riceIrrOfficeCount
+        );
       } catch (error) {
         setIsLoading(false);
       }
@@ -471,7 +559,13 @@ export default function Analysis() {
   useEffect(() => {
     if (maizeData) {
       try {
-        setMaizeArea(turf.area(maizeData.result[0].feature_collection));
+        setMaizeArea(
+          turf.area(maizeData.result[0].feature_collection) * 0.000625
+        );
+        countCropIrrOffice(
+          maizeData.result[0].feature_collection.features,
+          maizeIrrOfficeCount
+        );
       } catch (error) {
         setIsLoading(false);
       }
@@ -505,7 +599,13 @@ export default function Analysis() {
   useEffect(() => {
     if (sugarcaneData) {
       try {
-        setSugarcaneArea(turf.area(sugarcaneData.result[0].feature_collection));
+        setSugarcaneArea(
+          turf.area(sugarcaneData.result[0].feature_collection) * 0.000625
+        );
+        countCropIrrOffice(
+          sugarcaneData.result[0].feature_collection.features,
+          sugarcaneIrrOfficeCount
+        );
       } catch (error) {
         setIsLoading(false);
       }
@@ -539,7 +639,13 @@ export default function Analysis() {
   useEffect(() => {
     if (cassavaData) {
       try {
-        setCassavaArea(turf.area(cassavaData.result[0].feature_collection));
+        setCassavaArea(
+          turf.area(cassavaData.result[0].feature_collection) * 0.000625
+        );
+        countCropIrrOffice(
+          cassavaData.result[0].feature_collection.features,
+          cassavaIrrOfficeCount
+        );
       } catch (error) {
         setIsLoading(false);
       }
@@ -724,7 +830,8 @@ export default function Analysis() {
       },
     ],
   };
-  const barChartData = {
+
+  const cropAreaData = {
     labels: [
       t('crop.rice'),
       t('crop.maize'),
@@ -744,6 +851,57 @@ export default function Analysis() {
         borderWidth: 0,
       },
     ],
+  };
+
+  const cropTypes = [
+    {
+      label: t('crop.rice'),
+      data: riceIrrOfficeCount,
+      backgroundColor: '#56c0c0',
+      stack: 0,
+    },
+    {
+      label: t('crop.maize'),
+      data: maizeIrrOfficeCount,
+      backgroundColor: '#fbce5c',
+      stack: 1,
+    },
+    {
+      label: t('crop.sugarcane'),
+      data: sugarcaneIrrOfficeCount,
+      backgroundColor: '#fba046',
+      stack: 2,
+    },
+    {
+      label: t('crop.cassava'),
+      data: cassavaIrrOfficeCount,
+      backgroundColor: '#fb6584',
+      stack: 3,
+    },
+  ];
+
+  const irr_officeData = {
+    labels: Array.from(
+      { length: 17 },
+      (_, index) => t('irr_office') + ' ' + (index + 1)
+    ),
+    datasets: cropTypes.map((crop) => ({
+      label: crop.label,
+      data: crop.data.map((item, index) => {
+        if (item !== 0) {
+          return ((item / crop.data.reduce((a, b) => a + b, 0)) * 100).toFixed(
+            2
+          );
+        }
+        return 0;
+      }),
+      categoryPercentage: 1.0,
+      barPercentage: 1.0,
+      backgroundColor: crop.backgroundColor,
+      borderWidth: 0,
+      stack: crop.stack,
+      skipNull: true,
+    })),
   };
 
   return (
@@ -770,27 +928,48 @@ export default function Analysis() {
               </>
             )}
           </h1>
-          <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-            พื้นที่เพาะปลูก:{' '}
-            {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
-              .toFixed(3)
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-            {t('sqm')}
-          </h1>
-          <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-            {t('amountHotspotInLandType')}: {dotCount} {t('spot').toLowerCase()}
-            {dotCount > 1 && i18n.language === 'en' ? 's' : ''}
-          </h1>
-          <div className='flex justify-center'>
-            <div className='w-5/6'>
-              {dotCount > 0 && (
-                <Doughnut data={landUseData} options={doughnutChartOptions} />
-              )}
-              {riceArea > 0 && (
-                <Bar data={barChartData} options={barChartOptions} />
-              )}
-            </div>
-          </div>
+          {dotCount > 0 && (
+            <>
+              <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
+                {dotCount > 0 && (
+                  <>
+                    {t('amountHotspotInLandType')}: {dotCount}{' '}
+                    {t('spot').toLowerCase()}
+                    {dotCount > 1 && i18n.language === 'en' ? 's' : ''}
+                  </>
+                )}
+              </h1>
+              <div className='flex justify-center'>
+                <div className='w-4/6'>
+                  <Doughnut data={landUseData} options={hotspotChartOptions} />
+                </div>
+              </div>
+            </>
+          )}
+          {(riceArea > 0 ||
+            maizeArea > 0 ||
+            sugarcaneArea > 0 ||
+            cassavaArea > 0) && (
+            <>
+              <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
+                พื้นที่เพาะปลูก:{' '}
+                {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
+                  .toFixed(3)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {t('rai')}
+              </h1>
+              <div className='flex flex-col justify-center'>
+                <Bar
+                  data={cropAreaData}
+                  options={cropTypeAreaChartOptions}
+                  title=''
+                />
+                <div className='h-[1200px]'>
+                  <Bar data={irr_officeData} options={irrOfficeChartOptions} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div className='flex flex-col justify-center space-y-4 mt-2'>
@@ -847,19 +1026,18 @@ export default function Analysis() {
                     <MenuItem key={0} value={0}>
                       {t('all')}
                     </MenuItem>
-                    {districtList.map((district) =>
-                      Number(String(district.am_id).substring(0, 2)) ===
-                      province ? (
-                        <MenuItem key={district.am_id} value={district.am_id}>
-                          {i18n.language === 'th'
-                            ? district.amphoe_t
-                                .replace('อ.', '')
-                                .replace('เขต', '')
-                            : district.amphoe_e}
-                        </MenuItem>
-                      ) : (
-                        []
-                      )
+                    {districtList.map(
+                      (district) =>
+                        Number(String(district.am_id).substring(0, 2)) ===
+                          province && (
+                          <MenuItem key={district.am_id} value={district.am_id}>
+                            {i18n.language === 'th'
+                              ? district.amphoe_t
+                                  .replace('อ.', '')
+                                  .replace('เขต', '')
+                              : district.amphoe_e}
+                          </MenuItem>
+                        )
                     )}
                   </Select>
                 </FormControl>
@@ -879,22 +1057,21 @@ export default function Analysis() {
                     <MenuItem key={0} value={0}>
                       {t('all')}
                     </MenuItem>
-                    {subDistrictList.map((subDistrict) =>
-                      Number(String(subDistrict.ta_id).substring(0, 4)) ===
-                      district ? (
-                        <MenuItem
-                          key={subDistrict.ta_id}
-                          value={subDistrict.ta_id}
-                        >
-                          {i18n.language === 'th'
-                            ? subDistrict.tambon_t
-                                .replace('ต.', '')
-                                .replace('แขวง', '')
-                            : subDistrict.tambon_e}
-                        </MenuItem>
-                      ) : (
-                        []
-                      )
+                    {subDistrictList.map(
+                      (subDistrict) =>
+                        Number(String(subDistrict.ta_id).substring(0, 4)) ===
+                          district && (
+                          <MenuItem
+                            key={subDistrict.ta_id}
+                            value={subDistrict.ta_id}
+                          >
+                            {i18n.language === 'th'
+                              ? subDistrict.tambon_t
+                                  .replace('ต.', '')
+                                  .replace('แขวง', '')
+                              : subDistrict.tambon_e}
+                          </MenuItem>
+                        )
                     )}
                   </Select>
                 </FormControl>
@@ -971,5 +1148,13 @@ export default function Analysis() {
       }
     });
     return count;
+  }
+
+  function countCropIrrOffice(data, targetArray) {
+    data.forEach((d) => {
+      if (d.properties.office_cod) {
+        targetArray[parseInt(d.properties.office_cod) - 1]++;
+      }
+    });
   }
 }
