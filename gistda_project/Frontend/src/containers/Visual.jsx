@@ -101,6 +101,9 @@ export default function Visual() {
       },
       { padding: { top: 7, bottom: 7 } }
     );
+    if (document.getElementById('hotspot-checkbox'))
+      if (document.getElementById('hotspot-checkbox').checked === true)
+        document.getElementById('hotspot-checkbox').click();
     if (!window.sphereDrawLoaded) {
       window.sphereDrawLoaded = true;
       window.sphere.Util.loadStyle(

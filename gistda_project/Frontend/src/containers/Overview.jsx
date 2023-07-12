@@ -123,11 +123,13 @@ let dots = [];
 let month;
 let lastDate;
 let tempDateCrop;
+let currentDate;
 
 export const getMonth = () => month;
 export const getLastCropDate = () => lastDate;
 export const getLastDateCrop = () => tempDateCrop;
 export const getDots = () => dots;
+export const getDate = () => currentDate;
 
 const dotFactory = (
   lat,
@@ -168,15 +170,17 @@ export default function DetailHotspot() {
   const [cassavaData, setCassavaData] = useState();
   const [isCropShowed, setIsCropShowed] = useState(false);
   const [cropType, setCropType] = useState('rice');
-  const [isHotspotShowed, setIsHotspotShowed] = useState(true);
+  const [isHotspotShowed, setIsHotspotShowed] = useState(false);
   const [lastDateCrop, setLastDateCrop] = useState('2023-03-06');
   const [lastCropType, setLastCropType] = useState('rice');
-  const [isRiceLoaded, setIsRiceLoaded] = useState(true);
-  const [isMaizeLoaded, setIsMaizeLoaded] = useState(true);
-  const [isSugarcaneLoaded, setIsSugarcaneLoaded] = useState(true);
-  const [isOtherCropLoaded, setIsOtherCropLoaded] = useState(true);
-  const [isForestLoaded, setIsForestLoaded] = useState(true);
-  const [isOtherLoaded, setIsOtherLoaded] = useState(true);
+  const [isRiceLoaded, setIsRiceLoaded] = useState(false);
+  const [isMaizeLoaded, setIsMaizeLoaded] = useState(false);
+  const [isSugarcaneLoaded, setIsSugarcaneLoaded] = useState(false);
+  const [isOtherCropLoaded, setIsOtherCropLoaded] = useState(false);
+  const [isForestLoaded, setIsForestLoaded] = useState(false);
+  const [isOtherLoaded, setIsOtherLoaded] = useState(false);
+
+  currentDate = date;
 
   const fetchData = async ({ query, setData, type }) => {
     switch (type) {
@@ -211,324 +215,311 @@ export default function DetailHotspot() {
 
   let layer_pm25;
   let layer_pvBorder;
-  if (map) {
-    layer_pm25 = new sphere.Layer('0', {
-      type: sphere.LayerType.WMS,
-      url: 'https://gistdaportal.gistda.or.th/data/services/pm_check/pm25_hourly_raster/MapServer/WMSServer',
-      // zoomRange: { min: 1, max: 12 },
-      zIndex: 5,
-      opacity: 0.8,
-      id: 'layer_pm25',
-    });
 
-    layer_pvBorder = new sphere.Layer('0', {
-      type: sphere.LayerType.WMS,
-      url: 'https://gistdaportal.gistda.or.th/data2/services/L05_Province_GISTDA_50k_nonlabel/MapServer/WMSServer',
-      // zoomRange: { min: 1, max: 12 },
-      zIndex: 6,
-      opacity: 1,
-      id: 'layer_pvBorder',
+  layer_pm25 = new sphere.Layer('0', {
+    type: sphere.LayerType.WMS,
+    url: 'https://gistdaportal.gistda.or.th/data/services/pm_check/pm25_hourly_raster/MapServer/WMSServer',
+    zIndex: 5,
+    opacity: 0.8,
+    id: 'layer_pm25',
+  });
+
+  layer_pvBorder = new sphere.Layer('0', {
+    type: sphere.LayerType.WMS,
+    url: 'https://gistdaportal.gistda.or.th/data2/services/L05_Province_GISTDA_50k_nonlabel/MapServer/WMSServer',
+    zIndex: 6,
+    opacity: 1,
+    id: 'layer_pvBorder',
+  });
+
+  if (pm25) {
+    map?.Layers.add(layer_pm25);
+  } else {
+    map?.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_pm25') {
+        map?.Layers.remove(layer_pm25);
+        return;
+      }
     });
   }
-
-  if (map) {
-    if (pm25) {
-      map.Layers.add(layer_pm25);
-    } else {
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_pm25') {
-          map.Layers.remove(layer_pm25);
-          return;
-        }
-      });
-    }
-    if (boundary) {
-      map.Layers.add(layer_pvBorder);
-    } else {
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_pvBorder') {
-          map.Layers.remove(layer_pvBorder);
-          return;
-        }
-      });
-    }
+  if (boundary) {
+    map?.Layers.add(layer_pvBorder);
+  } else {
+    map?.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_pvBorder') {
+        map?.Layers.remove(layer_pvBorder);
+        return;
+      }
+    });
   }
 
   useEffect(() => {
-    if (map && riceData) {
-      let layer_rice = new sphere.Layer({
-        sources: {
-          rice: {
-            type: 'geojson',
-            data: riceData.result[0].feature_collection,
+    if (!(map && riceData)) return;
+    let layer_rice = new sphere.Layer({
+      sources: {
+        rice: {
+          type: 'geojson',
+          data: riceData.result[0].feature_collection,
+        },
+      },
+      layers: [
+        {
+          id: 'layer_rice',
+          type: 'fill',
+          source: 'rice',
+          zIndex: 4,
+          paint: {
+            'fill-color': [
+              'match',
+              ['get', 'legend'],
+              1,
+              '#096108',
+              2,
+              '#4a8a10',
+              3,
+              '#8bb619',
+              4,
+              '#d4e725',
+              5,
+              '#fce626',
+              6,
+              '#fba81c',
+              7,
+              '#fa7115',
+              8,
+              '#fa290f',
+              '#000',
+            ],
+            'fill-opacity': 0.4,
           },
         },
-        layers: [
-          {
-            id: 'layer_rice',
-            type: 'fill',
-            source: 'rice',
-            zIndex: 4,
-            paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                '#096108',
-                2,
-                '#4a8a10',
-                3,
-                '#8bb619',
-                4,
-                '#d4e725',
-                5,
-                '#fce626',
-                6,
-                '#fba81c',
-                7,
-                '#fa7115',
-                8,
-                '#fa290f',
-                '#000',
-              ],
-              'fill-opacity': 0.4,
-            },
-          },
-        ],
-      });
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_rice') {
-          map.Layers.remove(layer_rice);
-          return;
-        }
-      });
-      if (cropType === 'rice' && isCropShowed) map.Layers.add(layer_rice);
-      console.log(map.Layers.list());
-    }
+      ],
+    });
+    map.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_rice') {
+        map.Layers.remove(layer_rice);
+        return;
+      }
+    });
+    if (cropType === 'rice' && isCropShowed) map.Layers.add(layer_rice);
   }, [cropType, isCropShowed, riceData]);
 
   useEffect(() => {
-    if (map && maizeData) {
-      let layer_maize = new sphere.Layer({
-        sources: {
-          maize: {
-            type: 'geojson',
-            data: maizeData.result[0].feature_collection,
+    if (!(map && maizeData)) return;
+    let layer_maize = new sphere.Layer({
+      sources: {
+        maize: {
+          type: 'geojson',
+          data: maizeData.result[0].feature_collection,
+        },
+      },
+      layers: [
+        {
+          id: 'layer_maize',
+          type: 'fill',
+          source: 'maize',
+          zIndex: 4,
+          paint: {
+            'fill-color': [
+              'match',
+              ['get', 'legend'],
+              0,
+              '#096108',
+              1,
+              '#4a8a10',
+              2,
+              '#8bb619',
+              3,
+              '#d4e725',
+              4,
+              '#fce626',
+              5,
+              '#fba81c',
+              6,
+              '#fa7115',
+              7,
+              '#fa290f',
+              '#000',
+            ],
+            'fill-opacity': 0.4,
           },
         },
-        layers: [
-          {
-            id: 'layer_maize',
-            type: 'fill',
-            source: 'maize',
-            zIndex: 4,
-            paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                0,
-                '#096108',
-                1,
-                '#4a8a10',
-                2,
-                '#8bb619',
-                3,
-                '#d4e725',
-                4,
-                '#fce626',
-                5,
-                '#fba81c',
-                6,
-                '#fa7115',
-                7,
-                '#fa290f',
-                '#000',
-              ],
-              'fill-opacity': 0.4,
-            },
-          },
-        ],
-      });
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_maize') {
-          map.Layers.remove(layer_maize);
-          return;
-        }
-      });
-      if (cropType === 'maize' && isCropShowed) map.Layers.add(layer_maize);
-      console.log(map.Layers.list());
-    }
+      ],
+    });
+    map.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_maize') {
+        map.Layers.remove(layer_maize);
+        return;
+      }
+    });
+    if (cropType === 'maize' && isCropShowed) map.Layers.add(layer_maize);
   }, [cropType, isCropShowed, maizeData]);
 
   useEffect(() => {
-    if (map && sugarcaneData) {
-      let layer_sugarcane = new sphere.Layer({
-        sources: {
-          sugarcane: {
-            type: 'geojson',
-            data: sugarcaneData.result[0].feature_collection,
+    if (!(map && sugarcaneData)) return;
+    let layer_sugarcane = new sphere.Layer({
+      sources: {
+        sugarcane: {
+          type: 'geojson',
+          data: sugarcaneData.result[0].feature_collection,
+        },
+      },
+      layers: [
+        {
+          id: 'layer_sugarcane',
+          type: 'fill',
+          source: 'sugarcane',
+          zIndex: 4,
+          paint: {
+            'fill-color': [
+              'match',
+              ['get', 'legend'],
+              1,
+              '#096108',
+              2,
+              '#1d6909',
+              3,
+              '#33790c',
+              4,
+              '#44860f',
+              5,
+              '#539212',
+              6,
+              '#6ba315',
+              7,
+              '#7baf18',
+              8,
+              '#94bf1b',
+              9,
+              '#accc1e',
+              10,
+              '#bcdc22',
+              11,
+              '#dcec26',
+              12,
+              '#f4f829',
+              13,
+              '#fcfc2a',
+              14,
+              '#fce826',
+              15,
+              '#fbd824',
+              16,
+              '#fbc420',
+              17,
+              '#fbaf1d',
+              18,
+              '#fba01b',
+              19,
+              '#fa9019',
+              20,
+              '#fa7b16',
+              21,
+              '#fa6714',
+              22,
+              '#fa5812',
+              23,
+              '#fa4510',
+              24,
+              '#fa290f',
+              '#000',
+            ],
+            'fill-opacity': 0.4,
           },
         },
-        layers: [
-          {
-            id: 'layer_sugarcane',
-            type: 'fill',
-            source: 'sugarcane',
-            zIndex: 4,
-            paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                '#096108',
-                2,
-                '#1d6909',
-                3,
-                '#33790c',
-                4,
-                '#44860f',
-                5,
-                '#539212',
-                6,
-                '#6ba315',
-                7,
-                '#7baf18',
-                8,
-                '#94bf1b',
-                9,
-                '#accc1e',
-                10,
-                '#bcdc22',
-                11,
-                '#dcec26',
-                12,
-                '#f4f829',
-                13,
-                '#fcfc2a',
-                14,
-                '#fce826',
-                15,
-                '#fbd824',
-                16,
-                '#fbc420',
-                17,
-                '#fbaf1d',
-                18,
-                '#fba01b',
-                19,
-                '#fa9019',
-                20,
-                '#fa7b16',
-                21,
-                '#fa6714',
-                22,
-                '#fa5812',
-                23,
-                '#fa4510',
-                24,
-                '#fa290f',
-                '#000',
-              ],
-              'fill-opacity': 0.4,
-            },
-          },
-        ],
-      });
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_sugarcane') {
-          map.Layers.remove(layer_sugarcane);
-          return;
-        }
-      });
-      if (cropType === 'sugarcane' && isCropShowed)
-        map.Layers.add(layer_sugarcane);
-      console.log(map.Layers.list());
-    }
+      ],
+    });
+    map.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_sugarcane') {
+        map.Layers.remove(layer_sugarcane);
+        return;
+      }
+    });
+    if (cropType === 'sugarcane' && isCropShowed)
+      map.Layers.add(layer_sugarcane);
   }, [cropType, isCropShowed, sugarcaneData]);
 
   useEffect(() => {
-    if (map && cassavaData) {
-      let layer_cassava = new sphere.Layer({
-        sources: {
-          cassava: {
-            type: 'geojson',
-            data: cassavaData.result[0].feature_collection,
+    if (!(map && cassavaData)) return;
+    let layer_cassava = new sphere.Layer({
+      sources: {
+        cassava: {
+          type: 'geojson',
+          data: cassavaData.result[0].feature_collection,
+        },
+      },
+      layers: [
+        {
+          id: 'layer_cassava',
+          type: 'fill',
+          source: 'cassava',
+          zIndex: 4,
+          paint: {
+            'fill-color': [
+              'match',
+              ['get', 'legend'],
+              1,
+              '#096108',
+              2,
+              '#1d6909',
+              3,
+              '#33790c',
+              4,
+              '#44860f',
+              5,
+              '#539212',
+              6,
+              '#6ba315',
+              7,
+              '#7baf18',
+              8,
+              '#94bf1b',
+              9,
+              '#accc1e',
+              10,
+              '#bcdc22',
+              11,
+              '#dcec26',
+              12,
+              '#f4f829',
+              13,
+              '#fcfc2a',
+              14,
+              '#fce826',
+              15,
+              '#fbd824',
+              16,
+              '#fbc420',
+              17,
+              '#fbaf1d',
+              18,
+              '#fba01b',
+              19,
+              '#fa9019',
+              20,
+              '#fa7b16',
+              21,
+              '#fa6714',
+              22,
+              '#fa5812',
+              23,
+              '#fa4510',
+              24,
+              '#fa290f',
+              '#000',
+            ],
+            'fill-opacity': 0.4,
           },
         },
-        layers: [
-          {
-            id: 'layer_cassava',
-            type: 'fill',
-            source: 'cassava',
-            zIndex: 4,
-            paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                '#096108',
-                2,
-                '#1d6909',
-                3,
-                '#33790c',
-                4,
-                '#44860f',
-                5,
-                '#539212',
-                6,
-                '#6ba315',
-                7,
-                '#7baf18',
-                8,
-                '#94bf1b',
-                9,
-                '#accc1e',
-                10,
-                '#bcdc22',
-                11,
-                '#dcec26',
-                12,
-                '#f4f829',
-                13,
-                '#fcfc2a',
-                14,
-                '#fce826',
-                15,
-                '#fbd824',
-                16,
-                '#fbc420',
-                17,
-                '#fbaf1d',
-                18,
-                '#fba01b',
-                19,
-                '#fa9019',
-                20,
-                '#fa7b16',
-                21,
-                '#fa6714',
-                22,
-                '#fa5812',
-                23,
-                '#fa4510',
-                24,
-                '#fa290f',
-                '#000',
-              ],
-              'fill-opacity': 0.4,
-            },
-          },
-        ],
-      });
-      map.Layers.list().forEach((layer) => {
-        if (layer.id === 'layer_cassava') {
-          map.Layers.remove(layer_cassava);
-          return;
-        }
-      });
-      if (cropType === 'cassava' && isCropShowed) map.Layers.add(layer_cassava);
-      console.log(map.Layers.list());
-    }
+      ],
+    });
+    map.Layers.list().forEach((layer) => {
+      if (layer.id === 'layer_cassava') {
+        map.Layers.remove(layer_cassava);
+        return;
+      }
+    });
+    if (cropType === 'cassava' && isCropShowed) map.Layers.add(layer_cassava);
   }, [cropType, isCropShowed, cassavaData]);
 
   useEffect(() => {
@@ -824,8 +815,8 @@ export default function DetailHotspot() {
         <ThemeProvider theme={CheckBoxTheme}>
           <FormLabel>
             <Checkbox
-              defaultChecked
               disabled={!isHotspotLoaded}
+              id='hotspot-checkbox'
               indeterminate={
                 isRiceLoaded === isMaizeLoaded &&
                 isMaizeLoaded === isSugarcaneLoaded &&
@@ -859,7 +850,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsRiceLoaded(!isRiceLoaded);
@@ -880,7 +870,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsMaizeLoaded(!isMaizeLoaded);
@@ -901,7 +890,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsSugarcaneLoaded(!isSugarcaneLoaded);
@@ -922,7 +910,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsOtherCropLoaded(!isOtherCropLoaded);
@@ -943,7 +930,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsForestLoaded(!isForestLoaded);
@@ -964,7 +950,6 @@ export default function DetailHotspot() {
             <div className='flex flex-row items-center'>
               <div>
                 <Checkbox
-                  defaultChecked
                   disabled={!isHotspotLoaded}
                   onChange={() => {
                     setIsOtherLoaded(!isOtherLoaded);

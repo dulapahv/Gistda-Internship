@@ -52,6 +52,12 @@
   "amountHotspotInLandType": "Amount of Hotspot in Land Usage",
   "allHotspotInLandType": "All Amount of Hotspot in Land Usage",
   "landUse": {
+    "rice": "Rice Field",
+    "maize": "Maize and Swidden Fields",
+    "sugarcane": "Sugarcane",
+    "otherCrop": "Other Crops",
+    "forest": "Forest Area",
+    "other": "Other",
     "นาข้าว": "Rice Field",
     "ข้าวโพดและไร่หมุนเวียน": "Maize and Swidden Fields",
     "อ้อย": "Sugarcane",
@@ -69,5 +75,8 @@
   "all": "All",
   "or": "or",
   "back": "Back",
+  "startAnalysis": "Start Analysis",
+  "analyzing": "Analyzing...",
+  "cancelAnalysis": "Cancel Analysis",
   "irr_office": "Irrigation Office"
 }

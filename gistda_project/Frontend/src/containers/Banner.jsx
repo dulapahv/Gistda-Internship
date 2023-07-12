@@ -36,7 +36,7 @@ export default function Banner() {
     i18n.changeLanguage(lng);
   };
 
-  if (map) map.language(i18n.language === 'th' ? 'th' : 'en');
+  map?.language(i18n.language === 'th' ? 'th' : 'en');
 
   return (
     <>

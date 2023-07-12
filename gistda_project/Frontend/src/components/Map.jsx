@@ -8,7 +8,7 @@ export { map, sphere };
 
 export default class Map extends Component {
   initMap() {
-    if (map) map.Layers.setBase(sphere.Layers.STREETS);
+    map?.Layers.setBase(sphere.Layers.STREETS);
   }
 
   render() {
