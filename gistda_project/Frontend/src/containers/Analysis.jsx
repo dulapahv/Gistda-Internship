@@ -4,7 +4,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Bar, Doughnut, Line, Radar } from 'react-chartjs-2';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
   ArcElement,
   BarElement,
@@ -82,6 +82,7 @@ ChartJS.register(
   LineElement,
   Filler
 );
+
 ChartJS.defaults.color =
   JSON.parse(localStorage.getItem('theme')) === 'dark' ? '#fff' : '#000';
 ChartJS.defaults.font.family = 'kanit';
@@ -147,6 +148,7 @@ export default function Analysis() {
 
   const hotspotChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
@@ -228,7 +230,7 @@ export default function Analysis() {
       },
       title: {
         display: true,
-        text: 'Area each crop type in and around the area',
+        text: t('luArea'),
         font: {
           size: 20,
         },
@@ -262,7 +264,7 @@ export default function Analysis() {
       },
       title: {
         display: true,
-        text: 'Irrigation Office of Each Crop Area',
+        text: t('irrOfficeArea'),
         font: {
           size: 20,
         },
@@ -286,38 +288,6 @@ export default function Analysis() {
           var index = context.dataIndex;
           var value = context.dataset.data[index];
           return value > 0;
-        },
-      },
-    },
-  };
-
-  const qolIndexChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: 'Quality of Life Index',
-        font: {
-          size: 20,
-        },
-      },
-      tooltip: {
-        titleFont: {
-          size: 16,
-        },
-        bodyFont: {
-          size: 16,
-        },
-      },
-      datalabels: {
-        font: {
-          size: 14,
-        },
-        formatter: (value, context) => {
-          return value;
         },
       },
     },
@@ -702,7 +672,7 @@ export default function Analysis() {
 
   useEffect(() => {
     if (!(riceData && riceData.result[0].feature_collection.features)) return;
-    setRiceArea(turf.area(riceData.result[0].feature_collection) * 0.000625);
+    setRiceArea(turf.area(riceData.result[0].feature_collection) / 1600);
     countCropIrrOffice(
       riceData.result[0].feature_collection.features,
       riceIrrOfficeCount
@@ -734,7 +704,7 @@ export default function Analysis() {
 
   useEffect(() => {
     if (!(maizeData && maizeData.result[0].feature_collection.features)) return;
-    setMaizeArea(turf.area(maizeData.result[0].feature_collection) * 0.000625);
+    setMaizeArea(turf.area(maizeData.result[0].feature_collection) / 1600);
     countCropIrrOffice(
       maizeData.result[0].feature_collection.features,
       maizeIrrOfficeCount
@@ -768,7 +738,7 @@ export default function Analysis() {
     if (!(sugarcaneData && sugarcaneData.result[0].feature_collection.features))
       return;
     setSugarcaneArea(
-      turf.area(sugarcaneData.result[0].feature_collection) * 0.000625
+      turf.area(sugarcaneData.result[0].feature_collection) / 1600
     );
     countCropIrrOffice(
       sugarcaneData.result[0].feature_collection.features,
@@ -802,9 +772,7 @@ export default function Analysis() {
   useEffect(() => {
     if (!(cassavaData && cassavaData.result[0].feature_collection.features))
       return;
-    setCassavaArea(
-      turf.area(cassavaData.result[0].feature_collection) * 0.000625
-    );
+    setCassavaArea(turf.area(cassavaData.result[0].feature_collection) / 1600);
     countCropIrrOffice(
       cassavaData.result[0].feature_collection.features,
       cassavaIrrOfficeCount
@@ -889,7 +857,7 @@ export default function Analysis() {
     ],
     datasets: [
       {
-        label: t('amountHotspotInLandType'),
+        label: t('spot'),
         data: [
           hotspotRiceCount,
           hotspotMaizeCount,
@@ -936,80 +904,132 @@ export default function Analysis() {
     currentDate = currentDate.add(1, 'day');
   }
 
+  function calculatePercentageChange(landUseData) {
+    const landUseDataX = landUseData.map((_, i) => i);
+    const landUseDataY = landUseData.map((_, i) => landUseData[i]);
+    const landUseDataXY = landUseDataX.map(
+      (_, i) => landUseDataX[i] * landUseDataY[i]
+    );
+    const landUseDataXX = landUseDataX.map(
+      (_, i) => landUseDataX[i] * landUseDataX[i]
+    );
+    const landUseDataSumX = landUseDataX.reduce((a, b) => a + b, 0);
+    const landUseDataSumY = landUseDataY.reduce((a, b) => a + b, 0);
+    const landUseDataSumXY = landUseDataXY.reduce((a, b) => a + b, 0);
+    const landUseDataSumXX = landUseDataXX.reduce((a, b) => a + b, 0);
+    const landUseDataM =
+      (landUseData.length * landUseDataSumXY -
+        landUseDataSumX * landUseDataSumY) /
+      (landUseData.length * landUseDataSumXX -
+        landUseDataSumX * landUseDataSumX);
+    const landUseDataB =
+      (landUseDataSumY - landUseDataM * landUseDataSumX) / landUseData.length;
+    const landUseDataLine = landUseDataX.map(
+      (x) => landUseDataM * x + landUseDataB
+    );
+
+    return (
+      ((landUseDataLine[landUseDataLine.length - 1] - landUseDataLine[0]) /
+        landUseDataLine[0]) *
+      100
+    );
+  }
+
+  const riceHistory = generateLandUseDataset(
+    'A101',
+    t('landUse.rice'),
+    luColor.rice,
+    startDate,
+    hotspotData
+  );
+
+  const maizeHistory = generateLandUseDataset(
+    'A202',
+    t('landUse.maize'),
+    luColor.maize,
+    startDate,
+    hotspotData
+  );
+
+  const sugarcaneHistory = generateLandUseDataset(
+    'A203',
+    t('landUse.sugarcane'),
+    luColor.sugarcane,
+    startDate,
+    hotspotData
+  );
+
+  const otherCropHistory = generateLandUseDataset(
+    'A999',
+    t('landUse.otherCrop'),
+    luColor.otherCrop,
+    startDate,
+    hotspotData
+  );
+
+  const forestHistory = generateLandUseDataset(
+    'F000',
+    t('landUse.forest'),
+    luColor.forest,
+    startDate,
+    hotspotData
+  );
+
+  const otherHistory = generateLandUseDataset(
+    'O000',
+    t('landUse.other'),
+    luColor.other,
+    startDate,
+    hotspotData
+  );
+
+  const percentageChangedRice = calculatePercentageChange(riceHistory);
+  const percentageChangedMaize = calculatePercentageChange(maizeHistory);
+  const percentageChangedSugarcane =
+    calculatePercentageChange(sugarcaneHistory);
+  const percentageChangedOtherCrop =
+    calculatePercentageChange(otherCropHistory);
+  const percentageChangedForest = calculatePercentageChange(forestHistory);
+  const percentageChangedOther = calculatePercentageChange(otherHistory);
+
   const hotspotHistoryData = {
     labels: dateArray,
     datasets: [
       {
         label: t('landUse.rice'),
-        data: generateLandUseDataset(
-          'A101',
-          t('landUse.rice'),
-          luColor.rice,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.rice,
-        backgroundColor: hexToRGBA(luColor.rice, 0.5),
+        data: riceHistory,
+        borderColor: hexToRGBA(luColor.rice, 0.5),
+        backgroundColor: luColor.rice,
       },
       {
         label: t('landUse.maize'),
-        data: generateLandUseDataset(
-          'A202',
-          t('landUse.maize'),
-          luColor.maize,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.maize,
-        backgroundColor: hexToRGBA(luColor.maize, 0.5),
+        data: maizeHistory,
+        borderColor: hexToRGBA(luColor.maize, 0.5),
+        backgroundColor: luColor.maize,
       },
       {
         label: t('landUse.sugarcane'),
-        data: generateLandUseDataset(
-          'A203',
-          t('landUse.sugarcane'),
-          luColor.sugarcane,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.sugarcane,
-        backgroundColor: hexToRGBA(luColor.sugarcane, 0.5),
+        data: sugarcaneHistory,
+        borderColor: hexToRGBA(luColor.sugarcane, 0.5),
+        backgroundColor: luColor.sugarcane,
       },
       {
         label: t('landUse.otherCrop'),
-        data: generateLandUseDataset(
-          'A999',
-          t('landUse.otherCrop'),
-          luColor.otherCrop,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.otherCrop,
-        backgroundColor: hexToRGBA(luColor.otherCrop, 0.5),
+        data: otherCropHistory,
+        borderColor: hexToRGBA(luColor.otherCrop, 0.5),
+        backgroundColor: luColor.otherCrop,
       },
       {
         label: t('landUse.forest'),
-        data: generateLandUseDataset(
-          'F000',
-          t('landUse.forest'),
-          luColor.forest,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.forest,
-        backgroundColor: hexToRGBA(luColor.forest, 0.5),
+        data: forestHistory,
+        borderColor: hexToRGBA(luColor.forest, 0.5),
+        backgroundColor: luColor.forest,
       },
       {
         label: t('landUse.other'),
-        data: generateLandUseDataset(
-          'O000',
-          t('landUse.other'),
-          luColor.other,
-          startDate,
-          hotspotData
-        ),
-        borderColor: luColor.other,
-        backgroundColor: hexToRGBA(luColor.other, 0.5),
+        data: otherHistory,
+        borderColor: hexToRGBA(luColor.other, 0.5),
+        backgroundColor: luColor.other,
       },
     ],
   };
@@ -1110,24 +1130,44 @@ export default function Analysis() {
               </Button>
             </ThemeProvider>
           </div>
-          <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-            {drawArea > 0 && (
-              <>
-                {t('area')}:{' '}
-                {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                {t('sqm')}
-              </>
-            )}
-          </h1>
+          {drawArea > 0 && (
+            <>
+              <div className='stats shadow'>
+                <div className='stat bg-[#6a6a6a]'>
+                  <div className='stat-title font-kanit text-white'>
+                    {t('area')}
+                  </div>
+                  <div className='stat-value font-kanit text-white'>
+                    {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    {t('sqm')}
+                  </div>
+                  <div className='stat-desc font-kanit text-gray-300'>
+                    {t('or')}{' '}
+                    {(drawArea / 1600)
+                      .toFixed(3)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    {t('rai').toLowerCase()}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
           {hotspotCount > 0 && (
             <>
-              <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-                {t('amountHotspotInLandType')}: {hotspotCount}{' '}
-                {t('spot').toLowerCase()}
-                {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
-              </h1>
+              <div className='stats shadow'>
+                <div className='stat bg-[#6a6a6a]'>
+                  <div className='stat-title font-kanit text-white'>
+                    {t('amountHotspotInLandType')}
+                  </div>
+                  <div className='stat-value font-kanit text-white'>
+                    {hotspotCount} {t('spot').toLowerCase()}
+                    {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
+                  </div>
+                  <div className='stat-desc font-kanit'></div>
+                </div>
+              </div>
               <div className='flex justify-center'>
-                <div className='w-4/6'>
+                <div className='h-96 w-full'>
                   <Doughnut
                     data={hotspotLuData}
                     options={hotspotChartOptions}
@@ -1140,6 +1180,50 @@ export default function Analysis() {
                   options={hotspotHistoryChartOptions}
                 />
               </div>
+              <div className='stats stats-vertical lg:stats-horizontal shadow'>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↗︎{calculatePercentageChange(riceHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↘︎{calculatePercentageChange(maizeHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↘︎{calculatePercentageChange(sugarcaneHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↘︎{calculatePercentageChange(otherCropHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↘︎{calculatePercentageChange(forestHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+                <div className='stat'>
+                  <div className='stat-title'>Rice</div>
+                  <div className='stat-value'>
+                    ↘︎{calculatePercentageChange(otherCropHistory).toFixed(2)}%
+                  </div>
+                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                </div>
+              </div>
             </>
           )}
           {(riceArea > 0 ||
@@ -1147,13 +1231,29 @@ export default function Analysis() {
             sugarcaneArea > 0 ||
             cassavaArea > 0) && (
             <>
-              <h1 className='font-kanit text-[#212121] dark:text-white text-xl'>
-                พื้นที่เพาะปลูก:{' '}
-                {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
-                  .toFixed(3)
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                {t('rai')}
-              </h1>
+              <div className='stats shadow'>
+                <div className='stat bg-[#6a6a6a]'>
+                  <div className='stat-title font-kanit text-white'>
+                    {t('agriArea')}
+                  </div>
+                  <div className='stat-value font-kanit text-white'>
+                    {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
+                      .toFixed(3)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    {t('rai')}
+                  </div>
+                  <div className='stat-desc font-kanit text-gray-300'>
+                    {t('or')}{' '}
+                    {(
+                      (riceArea + maizeArea + sugarcaneArea + cassavaArea) *
+                      1600
+                    )
+                      .toFixed(3)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    {t('sqm')}
+                  </div>
+                </div>
+              </div>
               <div className='flex flex-col justify-center'>
                 <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
                 <div className='h-[1200px]'>
@@ -1178,9 +1278,7 @@ export default function Analysis() {
             <form className='flex flex-col space-y-4'>
               <ThemeProvider theme={selectTheme}>
                 <FormControl fullWidth variant='filled' required>
-                  <InputLabel id='demo-simple-select-label'>
-                    {t('province')}
-                  </InputLabel>
+                  <InputLabel>{t('province')}</InputLabel>
                   <Select
                     id='province'
                     value={province}
@@ -1202,9 +1300,7 @@ export default function Analysis() {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth variant='filled'>
-                  <InputLabel id='demo-simple-select-label'>
-                    {t('district')}
-                  </InputLabel>
+                  <InputLabel>{t('district')}</InputLabel>
                   <Select
                     id='district'
                     value={district}

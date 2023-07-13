@@ -78,5 +78,9 @@
   "startAnalysis": "Start Analysis",
   "analyzing": "Analyzing...",
   "cancelAnalysis": "Cancel Analysis",
-  "irr_office": "Irrigation Office"
+  "irr_office": "Irrigation Office",
+  "hotspotHistory": "15 Days Hotspot History",
+  "agriArea": "Agricultural Area",
+  "luArea": "Area each crop type is in and around the area",
+  "irrOfficeArea": "สำนักชลประทานของแต่ละพื้นที่การเพาะปลูก"
 }
