@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
   ArcElement,
   BarElement,
@@ -26,10 +26,11 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import CancelIcon from '@mui/icons-material/Cancel';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import CircularProgress from '@mui/material/CircularProgress';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -37,7 +38,7 @@ import apList from './amphoe.json';
 import tbList from './tambon.json';
 import pvList from './province.json';
 import { map, sphere } from '../components';
-import { getLastCropDate, getLastDateCrop, getMonth, getDate } from '.';
+import { getDate, getLastCropDate, getLastDateCrop, getMonth } from '.';
 
 const baseURL = 'http://localhost:3001/';
 
@@ -60,6 +61,9 @@ const buttonTheme = createTheme({
       main: '#F390B0',
       dark: '#FF99BA',
       contrastText: '#ffffff',
+    },
+    secondary: {
+      main: '#fff',
     },
   },
   typography: {
@@ -103,6 +107,82 @@ const agriColor = {
   cassava: '#fb6584',
 };
 
+const riceAgeColor = [
+  '#a8eaea',
+  '#8ad6d6',
+  '#6cc2c2',
+  '#56c0c0',
+  '#45adad',
+  '#369999',
+  '#278585',
+  '#196a6a',
+];
+
+const maizeAgeColor = [
+  '#ffc96b',
+  '#ffd27a',
+  '#ffbf46',
+  '#fbce5c',
+  '#e4b254',
+  '#c8964c',
+  '#a87843',
+  '#8a5a3b',
+];
+
+const sugarcaneAgeColor = [
+  '#fff3e6',
+  '#ffe1c2',
+  '#ffcf9e',
+  '#ffbd7a',
+  '#ffab56',
+  '#fba046',
+  '#f4923d',
+  '#ea8135',
+  '#e0712d',
+  '#d66125',
+  '#ce511d',
+  '#c64115',
+  '#bd310d',
+  '#b42105',
+  '#ab1100',
+  '#9a1000',
+  '#891000',
+  '#781000',
+  '#671000',
+  '#561000',
+  '#451000',
+  '#340f06',
+  '#230f06',
+  '#120f06',
+];
+
+const cassavaAgeColor = [
+  '#ffe4eb',
+  '#ffcbd6',
+  '#ffb2c1',
+  '#ff99ab',
+  '#ff8096',
+  '#ff6780',
+  '#fb6584',
+  '#f04d77',
+  '#e5356a',
+  '#d81d5d',
+  '#cc1554',
+  '#bf0d4a',
+  '#b30041',
+  '#a00039',
+  '#910032',
+  '#82002a',
+  '#730022',
+  '#64001a',
+  '#550012',
+  '#46000a',
+  '#370002',
+  '#270002',
+  '#180002',
+  '#080002',
+];
+
 const hexToRGBA = (hex, alpha) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -124,6 +204,8 @@ let riceIrrOfficeCount = new Array(17).fill(0);
 let maizeIrrOfficeCount = new Array(14).fill(0);
 let sugarcaneIrrOfficeCount = new Array(14).fill(0);
 let cassavaIrrOfficeCount = new Array(14).fill(0);
+
+let timeoutId;
 
 export default function Analysis() {
   const { t, i18n } = useTranslation();
@@ -191,6 +273,11 @@ export default function Analysis() {
   const hotspotHistoryChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scale: {
+      ticks: {
+        precision: 0,
+      },
+    },
     plugins: {
       legend: {
         display: true,
@@ -250,6 +337,146 @@ export default function Analysis() {
         formatter: (value, context) => {
           return value + ' ' + t('rai');
         },
+      },
+    },
+  };
+
+  const riceAgeChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: t('crop.rice'),
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + ' ' + t('rai');
+        },
+        rotation: '-90',
+        align: '-88',
+      },
+    },
+  };
+
+  const maizeAgeChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: t('crop.maize'),
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + ' ' + t('rai');
+        },
+        rotation: '-90',
+        align: '-88',
+      },
+    },
+  };
+
+  const sugarcaneAgeChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: t('crop.sugarcane'),
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + ' ' + t('rai');
+        },
+        rotation: '-90',
+        align: '-88',
+      },
+    },
+  };
+
+  const cassavaAgeChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: t('crop.cassava'),
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        formatter: (value, context) => {
+          return value + ' ' + t('rai');
+        },
+        rotation: '-90',
+        align: '-88',
       },
     },
   };
@@ -335,6 +562,11 @@ export default function Analysis() {
   };
 
   const handleSearchButton = () => {
+    timeoutId = setTimeout(() => {
+      setShowResult(true);
+      setIsLoading(false);
+    }, 4000);
+    setDrawArea(0);
     resetHotspotCount();
     setIsLoading(true);
 
@@ -367,10 +599,10 @@ export default function Analysis() {
         `tb_idn='${subDistrict}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
       ];
     } else if (district !== 0) {
       coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
@@ -379,10 +611,10 @@ export default function Analysis() {
         `ap_idn='${district}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
       ];
     } else {
       coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
@@ -391,10 +623,10 @@ export default function Analysis() {
         `pv_idn='${province}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
       ];
     }
 
@@ -415,6 +647,10 @@ export default function Analysis() {
   };
 
   function handleDraw(geom) {
+    timeoutId = setTimeout(() => {
+      setShowResult(true);
+      setIsLoading(false);
+    }, 6000);
     const cropNames = ['rice', 'maize', 'sugarcane', 'cassava'];
     const month = getMonth();
     const lastCropDate = getLastCropDate();
@@ -447,7 +683,7 @@ export default function Analysis() {
     });
 
     cropNames.forEach((cropName) => {
-      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
       )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
       fetchData({
@@ -479,6 +715,7 @@ export default function Analysis() {
       controller.abort();
       setController(null);
     }
+    clearTimeout(timeoutId);
     setRiceArea(0);
     setMaizeArea(0);
     setSugarcaneArea(0);
@@ -538,8 +775,6 @@ export default function Analysis() {
       });
     }
 
-    map.Overlays.add(shape);
-
     if (points.length > 0) {
       const bbox = turf.bbox(geojson);
       const zoomTemp = {
@@ -550,8 +785,8 @@ export default function Analysis() {
       };
       const pt = district !== 0 ? 200 : 100;
       const pb = district !== 0 ? 200 : 100;
+      map.Overlays.add(shape);
       map.bound(zoomTemp, { padding: { top: pt, bottom: pb } });
-      map.Event.bind(sphere.EventName.LayerChange, function () {});
     } else {
       console.log('No valid coordinates found.');
     }
@@ -672,134 +907,280 @@ export default function Analysis() {
 
   useEffect(() => {
     if (!(riceData && riceData.result[0].feature_collection.features)) return;
-    setRiceArea(turf.area(riceData.result[0].feature_collection) / 1600);
-    countCropIrrOffice(
-      riceData.result[0].feature_collection.features,
-      riceIrrOfficeCount
-    );
-    let layer_crop_rice = new sphere.Layer({
-      sources: {
-        rice: {
-          type: 'geojson',
-          data: riceData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_crop_rice',
-          type: 'fill',
-          source: 'rice',
-          zIndex: 4,
-          paint: {
-            'fill-color': agriColor.rice,
-            'fill-opacity': 0.5,
+    setTimeout(() => {
+      setRiceArea(turf.area(riceData.result[0].feature_collection) / 1600);
+      countCropIrrOffice(
+        riceData.result[0].feature_collection.features,
+        riceIrrOfficeCount
+      );
+      let layer_crop_rice = new sphere.Layer({
+        sources: {
+          rice: {
+            type: 'geojson',
+            data: riceData.result[0].feature_collection,
           },
         },
-      ],
-    });
-    map.Layers.add(layer_crop_rice);
-    setIsLoading(false);
-    setShowResult(true);
+        layers: [
+          {
+            id: 'layer_crop_rice',
+            type: 'fill',
+            source: 'rice',
+            zIndex: 4,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                1,
+                riceAgeColor[0],
+                2,
+                riceAgeColor[1],
+                3,
+                riceAgeColor[2],
+                4,
+                riceAgeColor[3],
+                5,
+                riceAgeColor[4],
+                6,
+                riceAgeColor[5],
+                7,
+                riceAgeColor[6],
+                8,
+                riceAgeColor[7],
+                '#000',
+              ],
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      map.Layers.add(layer_crop_rice);
+    }, 1000);
   }, [riceData]);
 
   useEffect(() => {
     if (!(maizeData && maizeData.result[0].feature_collection.features)) return;
-    setMaizeArea(turf.area(maizeData.result[0].feature_collection) / 1600);
-    countCropIrrOffice(
-      maizeData.result[0].feature_collection.features,
-      maizeIrrOfficeCount
-    );
-    let layer_crop_maize = new sphere.Layer({
-      sources: {
-        maize: {
-          type: 'geojson',
-          data: maizeData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_crop_maize',
-          type: 'fill',
-          source: 'maize',
-          zIndex: 4,
-          paint: {
-            'fill-color': agriColor.maize,
-            'fill-opacity': 0.5,
+    setTimeout(() => {
+      setMaizeArea(turf.area(maizeData.result[0].feature_collection) / 1600);
+      countCropIrrOffice(
+        maizeData.result[0].feature_collection.features,
+        maizeIrrOfficeCount
+      );
+      let layer_crop_maize = new sphere.Layer({
+        sources: {
+          maize: {
+            type: 'geojson',
+            data: maizeData.result[0].feature_collection,
           },
         },
-      ],
-    });
-    map.Layers.add(layer_crop_maize);
-    setIsLoading(false);
-    setShowResult(true);
+        layers: [
+          {
+            id: 'layer_crop_maize',
+            type: 'fill',
+            source: 'maize',
+            zIndex: 4,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                0,
+                maizeAgeColor[0],
+                1,
+                maizeAgeColor[1],
+                2,
+                maizeAgeColor[2],
+                3,
+                maizeAgeColor[3],
+                4,
+                maizeAgeColor[4],
+                5,
+                maizeAgeColor[5],
+                6,
+                maizeAgeColor[6],
+                7,
+                maizeAgeColor[7],
+                '#000',
+              ],
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      map.Layers.add(layer_crop_maize);
+    }, 1000);
   }, [maizeData]);
 
   useEffect(() => {
     if (!(sugarcaneData && sugarcaneData.result[0].feature_collection.features))
       return;
-    setSugarcaneArea(
-      turf.area(sugarcaneData.result[0].feature_collection) / 1600
-    );
-    countCropIrrOffice(
-      sugarcaneData.result[0].feature_collection.features,
-      sugarcaneIrrOfficeCount
-    );
-    let layer_crop_sugarcane = new sphere.Layer({
-      sources: {
-        sugarcane: {
-          type: 'geojson',
-          data: sugarcaneData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_crop_sugarcane',
-          type: 'fill',
-          source: 'sugarcane',
-          zIndex: 4,
-          paint: {
-            'fill-color': agriColor.sugarcane,
-            'fill-opacity': 0.5,
+    setTimeout(() => {
+      setSugarcaneArea(
+        turf.area(sugarcaneData.result[0].feature_collection) / 1600
+      );
+      countCropIrrOffice(
+        sugarcaneData.result[0].feature_collection.features,
+        sugarcaneIrrOfficeCount
+      );
+      let layer_crop_sugarcane = new sphere.Layer({
+        sources: {
+          sugarcane: {
+            type: 'geojson',
+            data: sugarcaneData.result[0].feature_collection,
           },
         },
-      ],
-    });
-    map.Layers.add(layer_crop_sugarcane);
-    setIsLoading(false);
-    setShowResult(true);
+        layers: [
+          {
+            id: 'layer_crop_sugarcane',
+            type: 'fill',
+            source: 'sugarcane',
+            zIndex: 4,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                1,
+                sugarcaneAgeColor[0],
+                2,
+                sugarcaneAgeColor[1],
+                3,
+                sugarcaneAgeColor[2],
+                4,
+                sugarcaneAgeColor[3],
+                5,
+                sugarcaneAgeColor[4],
+                6,
+                sugarcaneAgeColor[5],
+                7,
+                sugarcaneAgeColor[6],
+                8,
+                sugarcaneAgeColor[7],
+                9,
+                sugarcaneAgeColor[8],
+                10,
+                sugarcaneAgeColor[9],
+                11,
+                sugarcaneAgeColor[10],
+                12,
+                sugarcaneAgeColor[11],
+                13,
+                sugarcaneAgeColor[12],
+                14,
+                sugarcaneAgeColor[13],
+                15,
+                sugarcaneAgeColor[14],
+                16,
+                sugarcaneAgeColor[15],
+                17,
+                sugarcaneAgeColor[16],
+                18,
+                sugarcaneAgeColor[17],
+                19,
+                sugarcaneAgeColor[18],
+                20,
+                sugarcaneAgeColor[19],
+                21,
+                sugarcaneAgeColor[20],
+                22,
+                sugarcaneAgeColor[21],
+                23,
+                sugarcaneAgeColor[22],
+                24,
+                sugarcaneAgeColor[23],
+                '#000',
+              ],
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      map.Layers.add(layer_crop_sugarcane);
+    }, 1000);
   }, [sugarcaneData]);
 
   useEffect(() => {
     if (!(cassavaData && cassavaData.result[0].feature_collection.features))
       return;
-    setCassavaArea(turf.area(cassavaData.result[0].feature_collection) / 1600);
-    countCropIrrOffice(
-      cassavaData.result[0].feature_collection.features,
-      cassavaIrrOfficeCount
-    );
-    let layer_crop_cassava = new sphere.Layer({
-      sources: {
-        cassava: {
-          type: 'geojson',
-          data: cassavaData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_crop_cassava',
-          type: 'fill',
-          source: 'cassava',
-          zIndex: 4,
-          paint: {
-            'fill-color': agriColor.cassava,
-            'fill-opacity': 0.5,
+    setTimeout(() => {
+      setCassavaArea(
+        turf.area(cassavaData.result[0].feature_collection) / 1600
+      );
+      countCropIrrOffice(
+        cassavaData.result[0].feature_collection.features,
+        cassavaIrrOfficeCount
+      );
+      let layer_crop_cassava = new sphere.Layer({
+        sources: {
+          cassava: {
+            type: 'geojson',
+            data: cassavaData.result[0].feature_collection,
           },
         },
-      ],
-    });
-    map.Layers.add(layer_crop_cassava);
-    setIsLoading(false);
-    setShowResult(true);
+        layers: [
+          {
+            id: 'layer_crop_cassava',
+            type: 'fill',
+            source: 'cassava',
+            zIndex: 4,
+            paint: {
+              'fill-color': [
+                'match',
+                ['get', 'legend'],
+                1,
+                cassavaAgeColor[0],
+                2,
+                cassavaAgeColor[1],
+                3,
+                cassavaAgeColor[2],
+                4,
+                cassavaAgeColor[3],
+                5,
+                cassavaAgeColor[4],
+                6,
+                cassavaAgeColor[5],
+                7,
+                cassavaAgeColor[6],
+                8,
+                cassavaAgeColor[7],
+                9,
+                cassavaAgeColor[8],
+                10,
+                cassavaAgeColor[9],
+                11,
+                cassavaAgeColor[10],
+                12,
+                cassavaAgeColor[11],
+                13,
+                cassavaAgeColor[12],
+                14,
+                cassavaAgeColor[13],
+                15,
+                cassavaAgeColor[14],
+                16,
+                cassavaAgeColor[15],
+                17,
+                cassavaAgeColor[16],
+                18,
+                cassavaAgeColor[17],
+                19,
+                cassavaAgeColor[18],
+                20,
+                cassavaAgeColor[19],
+                21,
+                cassavaAgeColor[20],
+                22,
+                cassavaAgeColor[21],
+                23,
+                cassavaAgeColor[22],
+                24,
+                cassavaAgeColor[23],
+                '#000',
+              ],
+              'fill-opacity': 0.5,
+            },
+          },
+        ],
+      });
+      map.Layers.add(layer_crop_cassava);
+    }, 1000);
   }, [cassavaData]);
 
   useEffect(() => {
@@ -872,13 +1253,7 @@ export default function Analysis() {
     ],
   };
 
-  const generateLandUseDataset = (
-    landUseCode,
-    label,
-    luColor,
-    startDay,
-    hotspotData
-  ) => {
+  const genLUData = (landUseCode, label, luColor, startDay, hotspotData) => {
     return Array.from(
       {
         length: 16,
@@ -904,38 +1279,48 @@ export default function Analysis() {
     currentDate = currentDate.add(1, 'day');
   }
 
-  function calculatePercentageChange(landUseData) {
-    const landUseDataX = landUseData.map((_, i) => i);
-    const landUseDataY = landUseData.map((_, i) => landUseData[i]);
-    const landUseDataXY = landUseDataX.map(
-      (_, i) => landUseDataX[i] * landUseDataY[i]
-    );
-    const landUseDataXX = landUseDataX.map(
-      (_, i) => landUseDataX[i] * landUseDataX[i]
-    );
-    const landUseDataSumX = landUseDataX.reduce((a, b) => a + b, 0);
-    const landUseDataSumY = landUseDataY.reduce((a, b) => a + b, 0);
-    const landUseDataSumXY = landUseDataXY.reduce((a, b) => a + b, 0);
-    const landUseDataSumXX = landUseDataXX.reduce((a, b) => a + b, 0);
+  function calcLinReg(landUseData) {
+    const n = landUseData.length; // Get the length of the landUseData array
+
+    // Calculate the sum of the indices (x values)
+    const landUseDataSumX = (n * (n - 1)) / 2;
+
+    // Calculate the sum of the land use data values (y values)
+    const landUseDataSumY = landUseData.reduce((a, b) => a + b, 0);
+
+    // Calculate the sum of the products of the indices and land use data values (x * y)
+    const landUseDataSumXY = landUseData
+      .map((y, i) => y * i)
+      .reduce((a, b) => a + b, 0);
+
+    // Calculate the sum of the squared indices (x^2)
+    const landUseDataSumXX = landUseData
+      .map((_, i) => i * i)
+      .reduce((a, b) => a + b, 0);
+
+    // Calculate the slope of the linear regression line (m)
     const landUseDataM =
-      (landUseData.length * landUseDataSumXY -
-        landUseDataSumX * landUseDataSumY) /
-      (landUseData.length * landUseDataSumXX -
-        landUseDataSumX * landUseDataSumX);
-    const landUseDataB =
-      (landUseDataSumY - landUseDataM * landUseDataSumX) / landUseData.length;
-    const landUseDataLine = landUseDataX.map(
-      (x) => landUseDataM * x + landUseDataB
+      (n * landUseDataSumXY - landUseDataSumX * landUseDataSumY) /
+      (n * landUseDataSumXX - landUseDataSumX * landUseDataSumX);
+
+    // Calculate the y-intercept of the linear regression line (b)
+    const landUseDataB = (landUseDataSumY - landUseDataM * landUseDataSumX) / n;
+
+    // Generate the predicted values on the regression line
+    const landUseDataLine = landUseData.map(
+      (_, i) => landUseDataM * i + landUseDataB
     );
 
-    return (
-      ((landUseDataLine[landUseDataLine.length - 1] - landUseDataLine[0]) /
-        landUseDataLine[0]) *
-      100
-    );
+    // Calculate the percentage change between the first and last predicted values on the regression line
+    const percentageChange =
+      ((landUseDataLine[n - 1] - landUseDataLine[0]) /
+        Math.abs(landUseDataLine[0])) *
+      100;
+
+    return percentageChange; // Return the calculated percentage change
   }
 
-  const riceHistory = generateLandUseDataset(
+  const riceHistory = genLUData(
     'A101',
     t('landUse.rice'),
     luColor.rice,
@@ -943,7 +1328,7 @@ export default function Analysis() {
     hotspotData
   );
 
-  const maizeHistory = generateLandUseDataset(
+  const maizeHistory = genLUData(
     'A202',
     t('landUse.maize'),
     luColor.maize,
@@ -951,7 +1336,7 @@ export default function Analysis() {
     hotspotData
   );
 
-  const sugarcaneHistory = generateLandUseDataset(
+  const sugarcaneHistory = genLUData(
     'A203',
     t('landUse.sugarcane'),
     luColor.sugarcane,
@@ -959,7 +1344,7 @@ export default function Analysis() {
     hotspotData
   );
 
-  const otherCropHistory = generateLandUseDataset(
+  const otherCropHistory = genLUData(
     'A999',
     t('landUse.otherCrop'),
     luColor.otherCrop,
@@ -967,7 +1352,7 @@ export default function Analysis() {
     hotspotData
   );
 
-  const forestHistory = generateLandUseDataset(
+  const forestHistory = genLUData(
     'F000',
     t('landUse.forest'),
     luColor.forest,
@@ -975,7 +1360,7 @@ export default function Analysis() {
     hotspotData
   );
 
-  const otherHistory = generateLandUseDataset(
+  const otherHistory = genLUData(
     'O000',
     t('landUse.other'),
     luColor.other,
@@ -983,14 +1368,12 @@ export default function Analysis() {
     hotspotData
   );
 
-  const percentageChangedRice = calculatePercentageChange(riceHistory);
-  const percentageChangedMaize = calculatePercentageChange(maizeHistory);
-  const percentageChangedSugarcane =
-    calculatePercentageChange(sugarcaneHistory);
-  const percentageChangedOtherCrop =
-    calculatePercentageChange(otherCropHistory);
-  const percentageChangedForest = calculatePercentageChange(forestHistory);
-  const percentageChangedOther = calculatePercentageChange(otherHistory);
+  const percentageChangedRice = calcLinReg(riceHistory);
+  const percentageChangedMaize = calcLinReg(maizeHistory);
+  const percentageChangedSugarcane = calcLinReg(sugarcaneHistory);
+  const percentageChangedOtherCrop = calcLinReg(otherCropHistory);
+  const percentageChangedForest = calcLinReg(forestHistory);
+  const percentageChangedOther = calcLinReg(otherHistory);
 
   const hotspotHistoryData = {
     labels: dateArray,
@@ -1052,6 +1435,166 @@ export default function Analysis() {
         ],
         backgroundColor: Object.values(agriColor),
         borderWidth: 0,
+      },
+    ],
+  };
+
+  const riceAgeData = {
+    labels: [
+      '1-15 มี.ค. 66 / 16 สัปดาห์',
+      '16-31 มี.ค. 66 / 14 สัปดาห์',
+      '1-15 เม.ย. 66 / 12 สัปดาห์',
+      '16-30 เม.ย. 66 / 10 สัปดาห์',
+      '1-15 พ.ค. 66 / 8 สัปดาห์',
+      '16-31 พ.ค. 66 / 6 สัปดาห์',
+      '1-15 มิ.ย. 66 / 4 สัปดาห์',
+      '16-30 มิ.ย. 66 / 2 สัปดาห์',
+    ],
+    datasets: [
+      {
+        label: t('crop.rice'),
+        data: Array.from(
+          {
+            length: 8,
+          },
+          (_, i) =>
+            riceData?.result[0].feature_collection.features?.reduce(
+              (sum, item) =>
+                item.properties.legend === i + 1
+                  ? Number((sum + item.properties.rai).toFixed(3))
+                  : sum,
+              0
+            )
+        ),
+        backgroundColor: riceAgeColor.toReversed(),
+      },
+    ],
+  };
+
+  const maizeAgeData = {
+    labels: [
+      '1-15 มี.ค. 66 / 16 สัปดาห์',
+      '16-31 มี.ค. 66 / 14 สัปดาห์',
+      '1-15 เม.ย. 66 / 12 สัปดาห์',
+      '16-30 เม.ย. 66 / 10 สัปดาห์',
+      '1-15 พ.ค. 66 / 8 สัปดาห์',
+      '16-31 พ.ค. 66 / 6 สัปดาห์',
+      '1-15 มิ.ย. 66 / 4 สัปดาห์',
+      '16-30 มิ.ย. 66 / 2 สัปดาห์',
+    ],
+    datasets: [
+      {
+        label: t('crop.maize'),
+        data: Array.from(
+          {
+            length: 8,
+          },
+          (_, i) =>
+            maizeData?.result[0].feature_collection.features?.reduce(
+              (sum, item) =>
+                item.properties.legend === i
+                  ? Number((sum + item.properties.rai).toFixed(3))
+                  : sum,
+              0
+            )
+        ),
+        backgroundColor: maizeAgeColor.toReversed(),
+      },
+    ],
+  };
+
+  const sugarcaneAgeData = {
+    labels: [
+      '01-15 ก.ค. 2565',
+      '16-31 ก.ค. 2565',
+      '01-15 ส.ค. 2565',
+      '16-31 ส.ค. 2565',
+      '01-15 ก.ย. 2565',
+      '16-30 ก.ย. 2565',
+      '01-15 ต.ค. 2565',
+      '16-31 ต.ค. 2565',
+      '01-15 พ.ย. 2565',
+      '16-30 พ.ย. 2565',
+      '01-15 ธ.ค. 2565',
+      '16-31 ธ.ค. 2565',
+      '01-15 ม.ค. 2566',
+      '16-31 ม.ค. 2566',
+      '01-15 ก.พ. 2566',
+      '16-28 ก.พ. 2566',
+      '01-15 มี.ค. 2566',
+      '16-31 มี.ค. 2566',
+      '01-15 เม.ย. 2566',
+      '16-30 เม.ย. 2566',
+      '01-15 พ.ค. 2566',
+      '16-31 พ.ค. 2566',
+      '01-15 มิ.ย. 2566',
+      '16-30 มิ.ย. 2566',
+    ],
+    datasets: [
+      {
+        label: t('crop.sugarcane'),
+        data: Array.from(
+          {
+            length: 24,
+          },
+          (_, i) =>
+            sugarcaneData?.result[0].feature_collection.features?.reduce(
+              (sum, item) =>
+                item.properties.legend === i + 1
+                  ? Number((sum + item.properties.rai).toFixed(3))
+                  : sum,
+              0
+            )
+        ),
+        backgroundColor: sugarcaneAgeColor.toReversed(),
+      },
+    ],
+  };
+
+  const cassavaAgeData = {
+    labels: [
+      '01-15 ก.ค. 2565',
+      '16-31 ก.ค. 2565',
+      '01-15 ส.ค. 2565',
+      '16-31 ส.ค. 2565',
+      '01-15 ก.ย. 2565',
+      '16-30 ก.ย. 2565',
+      '01-15 ต.ค. 2565',
+      '16-31 ต.ค. 2565',
+      '01-15 พ.ย. 2565',
+      '16-30 พ.ย. 2565',
+      '01-15 ธ.ค. 2565',
+      '16-31 ธ.ค. 2565',
+      '01-15 ม.ค. 2566',
+      '16-31 ม.ค. 2566',
+      '01-15 ก.พ. 2566',
+      '16-28 ก.พ. 2566',
+      '01-15 มี.ค. 2566',
+      '16-31 มี.ค. 2566',
+      '01-15 เม.ย. 2566',
+      '16-30 เม.ย. 2566',
+      '01-15 พ.ค. 2566',
+      '16-31 พ.ค. 2566',
+      '01-15 มิ.ย. 2566',
+      '16-30 มิ.ย. 2566',
+    ],
+    datasets: [
+      {
+        label: t('crop.cassava'),
+        data: Array.from(
+          {
+            length: 24,
+          },
+          (_, i) =>
+            cassavaData?.result[0].feature_collection.features?.reduce(
+              (sum, item) =>
+                item.properties.legend === i + 1
+                  ? Number((sum + item.properties.rai).toFixed(3))
+                  : sum,
+              0
+            )
+        ),
+        backgroundColor: cassavaAgeColor.toReversed(),
       },
     ],
   };
@@ -1119,7 +1662,7 @@ export default function Analysis() {
     <>
       {showResult ? (
         <div className='flex flex-col w-full space-y-4'>
-          <div>
+          <div className='flex justify-between'>
             <ThemeProvider theme={buttonTheme}>
               <Button
                 variant='contained'
@@ -1129,19 +1672,68 @@ export default function Analysis() {
                 {t('back')}
               </Button>
             </ThemeProvider>
+            <ThemeProvider theme={buttonTheme}>
+              <IconButton
+                color='secondary'
+                size='small'
+                onClick={() => {
+                  document
+                    .getElementById('visualHeader')
+                    ?.classList.toggle('xl:h-screen');
+                  document
+                    .getElementById('visualHeader')
+                    ?.classList.toggle('xl:mb-44');
+                  document
+                    .getElementById('visual1')
+                    ?.classList.toggle('xl:flex-row');
+                  document
+                    .getElementById('visual2')
+                    ?.classList.toggle('xl:w-3/5');
+                  document
+                    .getElementById('visual2')
+                    ?.classList.toggle('xl:order-2');
+                  document
+                    .getElementById('visual3')
+                    ?.classList.toggle('xl:rounded-none');
+                  document
+                    .getElementById('visual3')
+                    ?.classList.toggle('xl:rounded-tr-lg');
+                  document
+                    .getElementById('visual4')
+                    ?.classList.toggle('xl:rounded-none');
+                  document
+                    .getElementById('visual4')
+                    ?.classList.toggle('xl:rounded-none');
+                  document
+                    .getElementById('overviewPage')
+                    ?.classList.toggle('xl:order-1');
+                  document
+                    .getElementById('overviewPage')
+                    ?.classList.toggle('xl:w-2/5');
+                  document
+                    .getElementById('analysisPage')
+                    ?.classList.toggle('xl:order-1');
+                  document
+                    .getElementById('analysisPage')
+                    ?.classList.toggle('xl:w-2/5');
+                }}
+              >
+                <AspectRatioIcon />
+              </IconButton>
+            </ThemeProvider>
           </div>
           {drawArea > 0 && (
             <>
-              <div className='stats shadow'>
-                <div className='stat bg-[#6a6a6a]'>
+              <div className='stats shadow bg-[#f7b142]'>
+                <div className='stat'>
                   <div className='stat-title font-kanit text-white'>
                     {t('area')}
                   </div>
-                  <div className='stat-value font-kanit text-white'>
+                  <div className='stat-value text-white'>
                     {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    {t('sqm')}
+                    <span className='font-kanit'>{t('sqm')}</span>
                   </div>
-                  <div className='stat-desc font-kanit text-gray-300'>
+                  <div className='stat-desc font-kanit text-gray-100'>
                     {t('or')}{' '}
                     {(drawArea / 1600)
                       .toFixed(3)
@@ -1155,73 +1747,110 @@ export default function Analysis() {
           {hotspotCount > 0 && (
             <>
               <div className='stats shadow'>
-                <div className='stat bg-[#6a6a6a]'>
+                <div className='stat bg-[#826954]'>
                   <div className='stat-title font-kanit text-white'>
                     {t('amountHotspotInLandType')}
                   </div>
-                  <div className='stat-value font-kanit text-white'>
-                    {hotspotCount} {t('spot').toLowerCase()}
-                    {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
+                  <div className='stat-value text-white'>
+                    {hotspotCount}{' '}
+                    <span className='font-kanit'>
+                      {t('spot').toLowerCase()}
+                      {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
+                    </span>
                   </div>
                   <div className='stat-desc font-kanit'></div>
                 </div>
               </div>
               <div className='flex justify-center'>
-                <div className='h-96 w-full'>
+                <div className='h-[500px] w-full'>
                   <Doughnut
                     data={hotspotLuData}
                     options={hotspotChartOptions}
                   />
                 </div>
               </div>
-              <div className='h-96'>
+              <div className='h-[500px]'>
                 <Line
                   data={hotspotHistoryData}
                   options={hotspotHistoryChartOptions}
                 />
               </div>
               <div className='stats stats-vertical lg:stats-horizontal shadow'>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↗︎{calculatePercentageChange(riceHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.rice}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.rice')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedRice.toFixed(2))
+                      ? (percentageChangedRice.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                        Math.abs(percentageChangedRice).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↘︎{calculatePercentageChange(maizeHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.maize}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.maize')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedMaize.toFixed(2))
+                      ? (percentageChangedMaize.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                        Math.abs(percentageChangedMaize).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↘︎{calculatePercentageChange(sugarcaneHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.sugarcane}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.sugarcane')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedSugarcane.toFixed(2))
+                      ? (percentageChangedSugarcane.toFixed(2) > 0
+                          ? '↗︎'
+                          : '↘︎') +
+                        Math.abs(percentageChangedSugarcane).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↘︎{calculatePercentageChange(otherCropHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.otherCrop}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.otherCrop')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedOtherCrop.toFixed(2))
+                      ? (percentageChangedOtherCrop.toFixed(2) > 0
+                          ? '↗︎'
+                          : '↘︎') +
+                        Math.abs(percentageChangedOtherCrop).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↘︎{calculatePercentageChange(forestHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.forest}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.forest')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedForest.toFixed(2))
+                      ? (percentageChangedForest.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                        Math.abs(percentageChangedForest).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
-                <div className='stat'>
-                  <div className='stat-title'>Rice</div>
-                  <div className='stat-value'>
-                    ↘︎{calculatePercentageChange(otherCropHistory).toFixed(2)}%
+                <div className={`stat bg-[${luColor.other}]`}>
+                  <div className='stat-title text-white font-kanit'>
+                    {t('landUse.other')}
                   </div>
-                  <div className='stat-desc'>↗︎ ↘︎ Jan 1st - Feb 1st</div>
+                  <div className='stat-value text-white'>
+                    {!isNaN(percentageChangedOther.toFixed(2))
+                      ? (percentageChangedOther.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                        Math.abs(percentageChangedOther).toFixed(2) +
+                        '%'
+                      : '-'}
+                  </div>
                 </div>
               </div>
             </>
@@ -1232,17 +1861,17 @@ export default function Analysis() {
             cassavaArea > 0) && (
             <>
               <div className='stats shadow'>
-                <div className='stat bg-[#6a6a6a]'>
+                <div className='stat bg-[#6fb289]'>
                   <div className='stat-title font-kanit text-white'>
                     {t('agriArea')}
                   </div>
-                  <div className='stat-value font-kanit text-white'>
+                  <div className='stat-value text-white'>
                     {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
                       .toFixed(3)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    {t('rai')}
+                    <span className='font-kanit'>{t('rai')}</span>
                   </div>
-                  <div className='stat-desc font-kanit text-gray-300'>
+                  <div className='stat-desc font-kanit text-gray-100'>
                     {t('or')}{' '}
                     {(
                       (riceArea + maizeArea + sugarcaneArea + cassavaArea) *
@@ -1255,7 +1884,36 @@ export default function Analysis() {
                 </div>
               </div>
               <div className='flex flex-col justify-center'>
-                <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
+                <div className='h-96'>
+                  <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
+                </div>
+                {riceArea > 0 && (
+                  <div className='h-96'>
+                    <Bar data={riceAgeData} options={riceAgeChartOptions} />
+                  </div>
+                )}
+                {maizeArea > 0 && (
+                  <div className='h-96'>
+                    <Bar data={maizeAgeData} options={maizeAgeChartOptions} />
+                  </div>
+                )}
+                {sugarcaneArea > 0 && (
+                  <div className='h-96'>
+                    <Bar
+                      data={sugarcaneAgeData}
+                      options={sugarcaneAgeChartOptions}
+                    />
+                  </div>
+                )}
+                {cassavaArea > 0 && (
+                  <div className='h-96'>
+                    <Bar
+                      data={cassavaAgeData}
+                      options={cassavaAgeChartOptions}
+                    />
+                  </div>
+                )}
+
                 <div className='h-[1200px]'>
                   <Bar data={irr_officeData} options={irrOfficeChartOptions} />
                 </div>
@@ -1377,7 +2035,9 @@ export default function Analysis() {
                     {isLoading ? t('analyzing') : t('startAnalysis')}
                   </Button>
                   <div className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
-                    {isLoading && <CircularProgress />}
+                    {isLoading && (
+                      <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
+                    )}
                   </div>
                 </div>
                 {isLoading && (

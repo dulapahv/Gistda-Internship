@@ -131,7 +131,10 @@ export default function Visual() {
   }
 
   return (
-    <div className='px-5 h-fit xl:h-screen xl:mb-44 min-h-[820px]'>
+    <div
+      className='px-5 h-fit xl:h-screen xl:mb-44 min-h-[820px]'
+      id='visualHeader'
+    >
       <Header
         text={page === 'overviewPage' ? 'overviewTitle' : 'analysisTitle'}
       />
@@ -157,12 +160,21 @@ export default function Visual() {
             </ThemeProvider>
           </div>
         </div>
-        <div className='flex flex-col xl:flex-row mb-4 bg-white rounded-lg dark:bg-[#444444] h-full'>
-          <div className='xl:w-3/5 relative flex-grow order-1 xl:order-2 aspect-square'>
+        <div
+          className='flex flex-col xl:flex-row mb-4 bg-white rounded-lg dark:bg-[#444444] h-full'
+          id='visual1'
+        >
+          <div
+            className='xl:w-3/5 relative flex-grow order-1 xl:order-2 aspect-square'
+            id='visual2'
+          >
             {!isMapLoaded && (
               <ThemeProvider theme={LinearProgressTheme}>
                 <div className='w-full absolute z-10 pt-[0.4px]'>
-                  <LinearProgress className='rounded-t-lg xl:rounded-none xl:rounded-tr-lg' />
+                  <LinearProgress
+                    className='rounded-t-lg xl:rounded-none xl:rounded-tr-lg'
+                    id='visual3'
+                  />
                 </div>
               </ThemeProvider>
             )}
@@ -186,7 +198,7 @@ export default function Visual() {
               </div>
             </>
           ) : (
-            <h1 className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2'>
+            <h1 className='xl:w-2/5 p-4 order-2 xl:order-1 mb-2' id='visual4'>
               <div>
                 <ThemeProvider theme={skeletonTheme}>
                   <Stack

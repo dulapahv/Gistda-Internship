@@ -18,7 +18,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import BorderClearIcon from '@mui/icons-material/BorderClear';
-import CircularProgress from '@mui/material/CircularProgress';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -102,15 +101,6 @@ const skeletonTheme = createTheme({
   },
 });
 
-const circularProgressTheme = createTheme({
-  palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
-    primary: {
-      main: '#F390B0',
-    },
-  },
-});
-
 const hexToRGBA = (hex, alpha) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -164,10 +154,6 @@ export default function DetailHotspot() {
   const [isCropLoaded, setIsCropLoaded] = useState(false);
   const [date, setDate] = React.useState(dayjs('2023-03-06'));
   const [hotspotData, setHotspotData] = useState();
-  const [riceData, setRiceData] = useState('');
-  const [maizeData, setMaizeData] = useState();
-  const [sugarcaneData, setSugarcaneData] = useState();
-  const [cassavaData, setCassavaData] = useState();
   const [isCropShowed, setIsCropShowed] = useState(false);
   const [cropType, setCropType] = useState('rice');
   const [isHotspotShowed, setIsHotspotShowed] = useState(false);
@@ -254,313 +240,10 @@ export default function DetailHotspot() {
   }
 
   useEffect(() => {
-    if (!(map && riceData)) return;
-    let layer_rice = new sphere.Layer({
-      sources: {
-        rice: {
-          type: 'geojson',
-          data: riceData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_rice',
-          type: 'fill',
-          source: 'rice',
-          zIndex: 4,
-          paint: {
-            'fill-color': [
-              'match',
-              ['get', 'legend'],
-              1,
-              '#096108',
-              2,
-              '#4a8a10',
-              3,
-              '#8bb619',
-              4,
-              '#d4e725',
-              5,
-              '#fce626',
-              6,
-              '#fba81c',
-              7,
-              '#fa7115',
-              8,
-              '#fa290f',
-              '#000',
-            ],
-            'fill-opacity': 0.4,
-          },
-        },
-      ],
-    });
-    map.Layers.list().forEach((layer) => {
-      if (layer.id === 'layer_rice') {
-        map.Layers.remove(layer_rice);
-        return;
-      }
-    });
-    if (cropType === 'rice' && isCropShowed) map.Layers.add(layer_rice);
-  }, [cropType, isCropShowed, riceData]);
-
-  useEffect(() => {
-    if (!(map && maizeData)) return;
-    let layer_maize = new sphere.Layer({
-      sources: {
-        maize: {
-          type: 'geojson',
-          data: maizeData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_maize',
-          type: 'fill',
-          source: 'maize',
-          zIndex: 4,
-          paint: {
-            'fill-color': [
-              'match',
-              ['get', 'legend'],
-              0,
-              '#096108',
-              1,
-              '#4a8a10',
-              2,
-              '#8bb619',
-              3,
-              '#d4e725',
-              4,
-              '#fce626',
-              5,
-              '#fba81c',
-              6,
-              '#fa7115',
-              7,
-              '#fa290f',
-              '#000',
-            ],
-            'fill-opacity': 0.4,
-          },
-        },
-      ],
-    });
-    map.Layers.list().forEach((layer) => {
-      if (layer.id === 'layer_maize') {
-        map.Layers.remove(layer_maize);
-        return;
-      }
-    });
-    if (cropType === 'maize' && isCropShowed) map.Layers.add(layer_maize);
-  }, [cropType, isCropShowed, maizeData]);
-
-  useEffect(() => {
-    if (!(map && sugarcaneData)) return;
-    let layer_sugarcane = new sphere.Layer({
-      sources: {
-        sugarcane: {
-          type: 'geojson',
-          data: sugarcaneData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_sugarcane',
-          type: 'fill',
-          source: 'sugarcane',
-          zIndex: 4,
-          paint: {
-            'fill-color': [
-              'match',
-              ['get', 'legend'],
-              1,
-              '#096108',
-              2,
-              '#1d6909',
-              3,
-              '#33790c',
-              4,
-              '#44860f',
-              5,
-              '#539212',
-              6,
-              '#6ba315',
-              7,
-              '#7baf18',
-              8,
-              '#94bf1b',
-              9,
-              '#accc1e',
-              10,
-              '#bcdc22',
-              11,
-              '#dcec26',
-              12,
-              '#f4f829',
-              13,
-              '#fcfc2a',
-              14,
-              '#fce826',
-              15,
-              '#fbd824',
-              16,
-              '#fbc420',
-              17,
-              '#fbaf1d',
-              18,
-              '#fba01b',
-              19,
-              '#fa9019',
-              20,
-              '#fa7b16',
-              21,
-              '#fa6714',
-              22,
-              '#fa5812',
-              23,
-              '#fa4510',
-              24,
-              '#fa290f',
-              '#000',
-            ],
-            'fill-opacity': 0.4,
-          },
-        },
-      ],
-    });
-    map.Layers.list().forEach((layer) => {
-      if (layer.id === 'layer_sugarcane') {
-        map.Layers.remove(layer_sugarcane);
-        return;
-      }
-    });
-    if (cropType === 'sugarcane' && isCropShowed)
-      map.Layers.add(layer_sugarcane);
-  }, [cropType, isCropShowed, sugarcaneData]);
-
-  useEffect(() => {
-    if (!(map && cassavaData)) return;
-    let layer_cassava = new sphere.Layer({
-      sources: {
-        cassava: {
-          type: 'geojson',
-          data: cassavaData.result[0].feature_collection,
-        },
-      },
-      layers: [
-        {
-          id: 'layer_cassava',
-          type: 'fill',
-          source: 'cassava',
-          zIndex: 4,
-          paint: {
-            'fill-color': [
-              'match',
-              ['get', 'legend'],
-              1,
-              '#096108',
-              2,
-              '#1d6909',
-              3,
-              '#33790c',
-              4,
-              '#44860f',
-              5,
-              '#539212',
-              6,
-              '#6ba315',
-              7,
-              '#7baf18',
-              8,
-              '#94bf1b',
-              9,
-              '#accc1e',
-              10,
-              '#bcdc22',
-              11,
-              '#dcec26',
-              12,
-              '#f4f829',
-              13,
-              '#fcfc2a',
-              14,
-              '#fce826',
-              15,
-              '#fbd824',
-              16,
-              '#fbc420',
-              17,
-              '#fbaf1d',
-              18,
-              '#fba01b',
-              19,
-              '#fa9019',
-              20,
-              '#fa7b16',
-              21,
-              '#fa6714',
-              22,
-              '#fa5812',
-              23,
-              '#fa4510',
-              24,
-              '#fa290f',
-              '#000',
-            ],
-            'fill-opacity': 0.4,
-          },
-        },
-      ],
-    });
-    map.Layers.list().forEach((layer) => {
-      if (layer.id === 'layer_cassava') {
-        map.Layers.remove(layer_cassava);
-        return;
-      }
-    });
-    if (cropType === 'cassava' && isCropShowed) map.Layers.add(layer_cassava);
-  }, [cropType, isCropShowed, cassavaData]);
-
-  useEffect(() => {
     month = date.format('MM');
     lastDate = date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
     tempDateCrop = date.format('YYYY-MM') + '-' + lastDate;
     if (tempDateCrop === lastDateCrop && cropType === lastCropType) return;
-    // setLastDateCrop(tempDateCrop);
-    // if (cropType === 'rice') {
-    //   setLastCropType('rice');
-    //   const riceQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-    //   fetchData({
-    //     query: riceQuery,
-    //     setData: setRiceData,
-    //     type: 1,
-    //   });
-    // } else if (cropType === 'maize') {
-    //   setLastCropType('maize');
-    //   const maizeQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-    //   fetchData({
-    //     query: maizeQuery,
-    //     setData: setMaizeData,
-    //     type: 1,
-    //   });
-    // } else if (cropType === 'sugarcane') {
-    //   setLastCropType('sugarcane');
-    //   const sugarcaneQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-    //   fetchData({
-    //     query: sugarcaneQuery,
-    //     setData: setSugarcaneData,
-    //     type: 1,
-    //   });
-    // } else {
-    //   setLastCropType('cassava');
-    //   const cassavaQuery = `data=${cropType}_2023${month}${lastDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${tempDateCrop}' LIMIT 5000) AS subquery`;
-    //   fetchData({
-    //     query: cassavaQuery,
-    //     setData: setCassavaData,
-    //     type: 1,
-    //   });
-    // }
   }, [date, cropType]);
 
   useEffect(() => {
@@ -577,7 +260,6 @@ export default function DetailHotspot() {
   }, [date]);
 
   if (hotspotData && isHotspotLoaded && map) {
-    map.Overlays.clear();
     dots = [];
     let dot;
     hotspotData.result.forEach((item) => {
@@ -805,9 +487,7 @@ export default function DetailHotspot() {
         </ThemeProvider>
         {!isCropLoaded && (
           <div className='absolute inset-0 flex items-center justify-center'>
-            <ThemeProvider theme={circularProgressTheme}>
-              <CircularProgress />
-            </ThemeProvider>
+            <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
           </div>
         )}
       </div>
@@ -971,9 +651,7 @@ export default function DetailHotspot() {
         </ThemeProvider>
         {!isHotspotLoaded && (
           <div className='absolute inset-0 flex items-center justify-center'>
-            <ThemeProvider theme={circularProgressTheme}>
-              <CircularProgress />
-            </ThemeProvider>
+            <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
           </div>
         )}
       </div>
