@@ -108,79 +108,70 @@ const agriColor = {
 };
 
 const riceAgeColor = [
-  '#a8eaea',
-  '#8ad6d6',
-  '#6cc2c2',
-  '#56c0c0',
-  '#45adad',
-  '#369999',
-  '#278585',
-  '#196a6a',
+  '#0d3353',
+  '#19516e',
+  '#276f89',
+  '#358da5',
+  '#42abbe',
+  '#50c9d9',
+  '#6ed2e2',
+  '#8cdbeb',
 ];
-
 const maizeAgeColor = [
-  '#ffc96b',
-  '#ffd27a',
-  '#ffbf46',
-  '#fbce5c',
-  '#e4b254',
-  '#c8964c',
-  '#a87843',
-  '#8a5a3b',
+  '#85552f',
+  '#a3743c',
+  '#c1924a',
+  '#e0b05a',
+  '#ffd26b',
+  '#f6d268',
+  '#eeda66',
+  '#e6e265',
 ];
-
 const sugarcaneAgeColor = [
-  '#fff3e6',
-  '#ffe1c2',
-  '#ffcf9e',
-  '#ffbd7a',
-  '#ffab56',
-  '#fba046',
-  '#f4923d',
-  '#ea8135',
-  '#e0712d',
-  '#d66125',
-  '#ce511d',
-  '#c64115',
-  '#bd310d',
-  '#b42105',
-  '#ab1100',
-  '#9a1000',
-  '#891000',
-  '#781000',
-  '#671000',
-  '#561000',
-  '#451000',
-  '#340f06',
-  '#230f06',
-  '#120f06',
+  '#0f0903',
+  '#231107',
+  '#36130c',
+  '#4a1e0f',
+  '#5e2a11',
+  '#723715',
+  '#87421b',
+  '#9c4e23',
+  '#b15b2c',
+  '#c86737',
+  '#df7544',
+  '#f38451',
+  '#ff9360',
+  '#ffa171',
+  '#ffb183',
+  '#ffbf95',
+  '#ffdca9',
+  '#ffe9bd',
 ];
-
 const cassavaAgeColor = [
-  '#ffe4eb',
-  '#ffcbd6',
-  '#ffb2c1',
-  '#ff99ab',
-  '#ff8096',
-  '#ff6780',
-  '#fb6584',
-  '#f04d77',
-  '#e5356a',
-  '#d81d5d',
-  '#cc1554',
-  '#bf0d4a',
-  '#b30041',
-  '#a00039',
-  '#910032',
-  '#82002a',
-  '#730022',
-  '#64001a',
-  '#550012',
-  '#46000a',
-  '#370002',
-  '#270002',
-  '#180002',
-  '#080002',
+  '#070001',
+  '#190002',
+  '#2c0003',
+  '#3f0004',
+  '#520006',
+  '#640017',
+  '#770019',
+  '#89001b',
+  '#9c001d',
+  '#ae001f',
+  '#c10021',
+  '#d4002d',
+  '#e71f3a',
+  '#f43a49',
+  '#ff5461',
+  '#ff6e77',
+  '#ff889d',
+  '#ff8da8',
+  '#ff92b3',
+  '#ff97be',
+  '#ffa2ce',
+  '#ffaedf',
+  '#ffb9ef',
+  '#ffc4ff',
 ];
 
 const hexToRGBA = (hex, alpha) => {
@@ -190,6 +181,29 @@ const hexToRGBA = (hex, alpha) => {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+function getFortnightRange(date, range) {
+  if (!date) return;
+
+  const adjust = parseInt(date.format('DD')) > 15 ? 1 : 0;
+
+  const dateRanges = [];
+  for (let i = 0; i < range; i++) {
+    const startDay = (i + adjust) % 2 === 0 ? 1 : 16;
+    const endDay =
+      (i + adjust) % 2 === 0
+        ? 15
+        : dayjs(date)
+            .subtract(14 * i, 'day')
+            .endOf('month')
+            .format('DD');
+    const monthYear = dayjs(date)
+      .subtract(15 * i, 'day')
+      .format('MM/YY');
+    dateRanges.push(`${startDay}-${endDay}/${monthYear}`);
+  }
+  return dateRanges.reverse();
+}
 
 let {
   hotspotRiceCount = 0,
@@ -273,6 +287,20 @@ export default function Analysis() {
   const hotspotHistoryChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('spot'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('date'),
+        },
+      },
+    },
     scale: {
       ticks: {
         precision: 0,
@@ -311,6 +339,21 @@ export default function Analysis() {
 
   const cropTypeAreaChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('ประเภทพืช'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -344,6 +387,20 @@ export default function Analysis() {
   const riceAgeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('เริ่มปลูก (อายุ)'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -379,6 +436,20 @@ export default function Analysis() {
   const maizeAgeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('เริ่มปลูก (เก็บเกี่ยว)'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -414,6 +485,20 @@ export default function Analysis() {
   const sugarcaneAgeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('เริ่มปลูก'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -449,6 +534,20 @@ export default function Analysis() {
   const cassavaAgeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('เริ่มปลูก'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -485,6 +584,20 @@ export default function Analysis() {
     indexAxis: 'y',
     maintainAspectRatio: false,
     responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: t('irrOffice'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('rai'),
+        },
+      },
+    },
     plugins: {
       legend: {
         display: true,
@@ -1440,16 +1553,9 @@ export default function Analysis() {
   };
 
   const riceAgeData = {
-    labels: [
-      '1-15 มี.ค. 66 / 16 สัปดาห์',
-      '16-31 มี.ค. 66 / 14 สัปดาห์',
-      '1-15 เม.ย. 66 / 12 สัปดาห์',
-      '16-30 เม.ย. 66 / 10 สัปดาห์',
-      '1-15 พ.ค. 66 / 8 สัปดาห์',
-      '16-31 พ.ค. 66 / 6 สัปดาห์',
-      '1-15 มิ.ย. 66 / 4 สัปดาห์',
-      '16-30 มิ.ย. 66 / 2 สัปดาห์',
-    ],
+    labels: getFortnightRange(getDate(), 8).map(
+      (fortnight, index) => `${fortnight} (${(8 - index) * 2} ${t('week')})`
+    ),
     datasets: [
       {
         label: t('crop.rice'),
@@ -1466,22 +1572,15 @@ export default function Analysis() {
               0
             )
         ),
-        backgroundColor: riceAgeColor.toReversed(),
+        backgroundColor: riceAgeColor,
       },
     ],
   };
-
+  const tempDate = getFortnightRange(getDate().add(3, 'month'), 8);
   const maizeAgeData = {
-    labels: [
-      '1-15 มี.ค. 66 / 16 สัปดาห์',
-      '16-31 มี.ค. 66 / 14 สัปดาห์',
-      '1-15 เม.ย. 66 / 12 สัปดาห์',
-      '16-30 เม.ย. 66 / 10 สัปดาห์',
-      '1-15 พ.ค. 66 / 8 สัปดาห์',
-      '16-31 พ.ค. 66 / 6 สัปดาห์',
-      '1-15 มิ.ย. 66 / 4 สัปดาห์',
-      '16-30 มิ.ย. 66 / 2 สัปดาห์',
-    ],
+    labels: getFortnightRange(getDate(), 8).map(
+      (fortnight, index) => `${fortnight} (${tempDate[index]})`
+    ),
     datasets: [
       {
         label: t('crop.maize'),
@@ -1498,38 +1597,13 @@ export default function Analysis() {
               0
             )
         ),
-        backgroundColor: maizeAgeColor.toReversed(),
+        backgroundColor: maizeAgeColor,
       },
     ],
   };
 
   const sugarcaneAgeData = {
-    labels: [
-      '01-15 ก.ค. 2565',
-      '16-31 ก.ค. 2565',
-      '01-15 ส.ค. 2565',
-      '16-31 ส.ค. 2565',
-      '01-15 ก.ย. 2565',
-      '16-30 ก.ย. 2565',
-      '01-15 ต.ค. 2565',
-      '16-31 ต.ค. 2565',
-      '01-15 พ.ย. 2565',
-      '16-30 พ.ย. 2565',
-      '01-15 ธ.ค. 2565',
-      '16-31 ธ.ค. 2565',
-      '01-15 ม.ค. 2566',
-      '16-31 ม.ค. 2566',
-      '01-15 ก.พ. 2566',
-      '16-28 ก.พ. 2566',
-      '01-15 มี.ค. 2566',
-      '16-31 มี.ค. 2566',
-      '01-15 เม.ย. 2566',
-      '16-30 เม.ย. 2566',
-      '01-15 พ.ค. 2566',
-      '16-31 พ.ค. 2566',
-      '01-15 มิ.ย. 2566',
-      '16-30 มิ.ย. 2566',
-    ],
+    labels: getFortnightRange(getDate(), 24),
     datasets: [
       {
         label: t('crop.sugarcane'),
@@ -1546,38 +1620,13 @@ export default function Analysis() {
               0
             )
         ),
-        backgroundColor: sugarcaneAgeColor.toReversed(),
+        backgroundColor: sugarcaneAgeColor,
       },
     ],
   };
 
   const cassavaAgeData = {
-    labels: [
-      '01-15 ก.ค. 2565',
-      '16-31 ก.ค. 2565',
-      '01-15 ส.ค. 2565',
-      '16-31 ส.ค. 2565',
-      '01-15 ก.ย. 2565',
-      '16-30 ก.ย. 2565',
-      '01-15 ต.ค. 2565',
-      '16-31 ต.ค. 2565',
-      '01-15 พ.ย. 2565',
-      '16-30 พ.ย. 2565',
-      '01-15 ธ.ค. 2565',
-      '16-31 ธ.ค. 2565',
-      '01-15 ม.ค. 2566',
-      '16-31 ม.ค. 2566',
-      '01-15 ก.พ. 2566',
-      '16-28 ก.พ. 2566',
-      '01-15 มี.ค. 2566',
-      '16-31 มี.ค. 2566',
-      '01-15 เม.ย. 2566',
-      '16-30 เม.ย. 2566',
-      '01-15 พ.ค. 2566',
-      '16-31 พ.ค. 2566',
-      '01-15 มิ.ย. 2566',
-      '16-30 มิ.ย. 2566',
-    ],
+    labels: getFortnightRange(getDate(), 24),
     datasets: [
       {
         label: t('crop.cassava'),
@@ -1594,7 +1643,7 @@ export default function Analysis() {
               0
             )
         ),
-        backgroundColor: cassavaAgeColor.toReversed(),
+        backgroundColor: cassavaAgeColor,
       },
     ],
   };
@@ -1676,249 +1725,91 @@ export default function Analysis() {
               <IconButton
                 color='secondary'
                 size='small'
-                onClick={() => {
-                  document
-                    .getElementById('visualHeader')
-                    ?.classList.toggle('xl:h-screen');
-                  document
-                    .getElementById('visualHeader')
-                    ?.classList.toggle('xl:mb-44');
-                  document
-                    .getElementById('visual1')
-                    ?.classList.toggle('xl:flex-row');
-                  document
-                    .getElementById('visual2')
-                    ?.classList.toggle('xl:w-3/5');
-                  document
-                    .getElementById('visual2')
-                    ?.classList.toggle('xl:order-2');
-                  document
-                    .getElementById('visual3')
-                    ?.classList.toggle('xl:rounded-none');
-                  document
-                    .getElementById('visual3')
-                    ?.classList.toggle('xl:rounded-tr-lg');
-                  document
-                    .getElementById('visual4')
-                    ?.classList.toggle('xl:rounded-none');
-                  document
-                    .getElementById('visual4')
-                    ?.classList.toggle('xl:rounded-none');
-                  document
-                    .getElementById('overviewPage')
-                    ?.classList.toggle('xl:order-1');
-                  document
-                    .getElementById('overviewPage')
-                    ?.classList.toggle('xl:w-2/5');
-                  document
-                    .getElementById('analysisPage')
-                    ?.classList.toggle('xl:order-1');
-                  document
-                    .getElementById('analysisPage')
-                    ?.classList.toggle('xl:w-2/5');
-                }}
+                onClick={() => window.my_modal.showModal()}
               >
                 <AspectRatioIcon />
               </IconButton>
             </ThemeProvider>
           </div>
-          {drawArea > 0 && (
-            <>
-              <div className='stats shadow bg-[#f7b142]'>
-                <div className='stat'>
-                  <div className='stat-title font-kanit text-white'>
-                    {t('area')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    <span className='font-kanit'>{t('sqm')}</span>
-                  </div>
-                  <div className='stat-desc font-kanit text-gray-100'>
-                    {t('or')}{' '}
-                    {(drawArea / 1600)
-                      .toFixed(3)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    {t('rai').toLowerCase()}
-                  </div>
-                </div>
-              </div>
-            </>
+          <dialog id='my_modal' className='modal'>
+            <form
+              method='dialog'
+              className='modal-box max-w-none space-y-4 bg-[#444444]'
+            >
+              {drawArea > 0 && drawAreaAnalysis(t, drawArea)}
+              {hotSpotCountAnalysis(
+                t,
+                hotspotCount,
+                i18n,
+                hotspotLuData,
+                hotspotChartOptions,
+                hotspotHistoryData,
+                hotspotHistoryChartOptions,
+                percentageChangedRice,
+                percentageChangedMaize,
+                percentageChangedSugarcane,
+                percentageChangedOtherCrop,
+                percentageChangedForest,
+                percentageChangedOther
+              )}
+              {CropAreaAnalysis(
+                t,
+                riceArea,
+                maizeArea,
+                sugarcaneArea,
+                cassavaArea,
+                cropAreaData,
+                cropTypeAreaChartOptions,
+                riceAgeData,
+                riceAgeChartOptions,
+                maizeAgeData,
+                maizeAgeChartOptions,
+                sugarcaneAgeData,
+                sugarcaneAgeChartOptions,
+                cassavaAgeData,
+                cassavaAgeChartOptions,
+                irr_officeData,
+                irrOfficeChartOptions
+              )}
+            </form>
+            <form method='dialog' className='modal-backdrop'>
+              <button>close</button>
+            </form>
+          </dialog>
+          {drawArea > 0 && drawAreaAnalysis(t, drawArea)}
+          {hotSpotCountAnalysis(
+            t,
+            hotspotCount,
+            i18n,
+            hotspotLuData,
+            hotspotChartOptions,
+            hotspotHistoryData,
+            hotspotHistoryChartOptions,
+            percentageChangedRice,
+            percentageChangedMaize,
+            percentageChangedSugarcane,
+            percentageChangedOtherCrop,
+            percentageChangedForest,
+            percentageChangedOther
           )}
-          {hotspotCount > 0 && (
-            <>
-              <div className='stats shadow'>
-                <div className='stat bg-[#826954]'>
-                  <div className='stat-title font-kanit text-white'>
-                    {t('amountHotspotInLandType')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {hotspotCount}{' '}
-                    <span className='font-kanit'>
-                      {t('spot').toLowerCase()}
-                      {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
-                    </span>
-                  </div>
-                  <div className='stat-desc font-kanit'></div>
-                </div>
-              </div>
-              <div className='flex justify-center'>
-                <div className='h-[500px] w-full'>
-                  <Doughnut
-                    data={hotspotLuData}
-                    options={hotspotChartOptions}
-                  />
-                </div>
-              </div>
-              <div className='h-[500px]'>
-                <Line
-                  data={hotspotHistoryData}
-                  options={hotspotHistoryChartOptions}
-                />
-              </div>
-              <div className='stats stats-vertical lg:stats-horizontal shadow'>
-                <div className={`stat bg-[${luColor.rice}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.rice')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedRice.toFixed(2))
-                      ? (percentageChangedRice.toFixed(2) > 0 ? '↗︎' : '↘︎') +
-                        Math.abs(percentageChangedRice).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={`stat bg-[${luColor.maize}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.maize')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedMaize.toFixed(2))
-                      ? (percentageChangedMaize.toFixed(2) > 0 ? '↗︎' : '↘︎') +
-                        Math.abs(percentageChangedMaize).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={`stat bg-[${luColor.sugarcane}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.sugarcane')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedSugarcane.toFixed(2))
-                      ? (percentageChangedSugarcane.toFixed(2) > 0
-                          ? '↗︎'
-                          : '↘︎') +
-                        Math.abs(percentageChangedSugarcane).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={`stat bg-[${luColor.otherCrop}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.otherCrop')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedOtherCrop.toFixed(2))
-                      ? (percentageChangedOtherCrop.toFixed(2) > 0
-                          ? '↗︎'
-                          : '↘︎') +
-                        Math.abs(percentageChangedOtherCrop).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={`stat bg-[${luColor.forest}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.forest')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedForest.toFixed(2))
-                      ? (percentageChangedForest.toFixed(2) > 0 ? '↗︎' : '↘︎') +
-                        Math.abs(percentageChangedForest).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={`stat bg-[${luColor.other}]`}>
-                  <div className='stat-title text-white font-kanit'>
-                    {t('landUse.other')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {!isNaN(percentageChangedOther.toFixed(2))
-                      ? (percentageChangedOther.toFixed(2) > 0 ? '↗︎' : '↘︎') +
-                        Math.abs(percentageChangedOther).toFixed(2) +
-                        '%'
-                      : '-'}
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-          {(riceArea > 0 ||
-            maizeArea > 0 ||
-            sugarcaneArea > 0 ||
-            cassavaArea > 0) && (
-            <>
-              <div className='stats shadow'>
-                <div className='stat bg-[#6fb289]'>
-                  <div className='stat-title font-kanit text-white'>
-                    {t('agriArea')}
-                  </div>
-                  <div className='stat-value text-white'>
-                    {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
-                      .toFixed(3)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    <span className='font-kanit'>{t('rai')}</span>
-                  </div>
-                  <div className='stat-desc font-kanit text-gray-100'>
-                    {t('or')}{' '}
-                    {(
-                      (riceArea + maizeArea + sugarcaneArea + cassavaArea) *
-                      1600
-                    )
-                      .toFixed(3)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    {t('sqm')}
-                  </div>
-                </div>
-              </div>
-              <div className='flex flex-col justify-center'>
-                <div className='h-96'>
-                  <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
-                </div>
-                {riceArea > 0 && (
-                  <div className='h-96'>
-                    <Bar data={riceAgeData} options={riceAgeChartOptions} />
-                  </div>
-                )}
-                {maizeArea > 0 && (
-                  <div className='h-96'>
-                    <Bar data={maizeAgeData} options={maizeAgeChartOptions} />
-                  </div>
-                )}
-                {sugarcaneArea > 0 && (
-                  <div className='h-96'>
-                    <Bar
-                      data={sugarcaneAgeData}
-                      options={sugarcaneAgeChartOptions}
-                    />
-                  </div>
-                )}
-                {cassavaArea > 0 && (
-                  <div className='h-96'>
-                    <Bar
-                      data={cassavaAgeData}
-                      options={cassavaAgeChartOptions}
-                    />
-                  </div>
-                )}
-
-                <div className='h-[1200px]'>
-                  <Bar data={irr_officeData} options={irrOfficeChartOptions} />
-                </div>
-              </div>
-            </>
+          {CropAreaAnalysis(
+            t,
+            riceArea,
+            maizeArea,
+            sugarcaneArea,
+            cassavaArea,
+            cropAreaData,
+            cropTypeAreaChartOptions,
+            riceAgeData,
+            riceAgeChartOptions,
+            maizeAgeData,
+            maizeAgeChartOptions,
+            sugarcaneAgeData,
+            sugarcaneAgeChartOptions,
+            cassavaAgeData,
+            cassavaAgeChartOptions,
+            irr_officeData,
+            irrOfficeChartOptions
           )}
         </div>
       ) : (
@@ -2081,4 +1972,238 @@ export default function Analysis() {
       }
     });
   }
+}
+function CropAreaAnalysis(
+  t,
+  riceArea,
+  maizeArea,
+  sugarcaneArea,
+  cassavaArea,
+  cropAreaData,
+  cropTypeAreaChartOptions,
+  riceAgeData,
+  riceAgeChartOptions,
+  maizeAgeData,
+  maizeAgeChartOptions,
+  sugarcaneAgeData,
+  sugarcaneAgeChartOptions,
+  cassavaAgeData,
+  cassavaAgeChartOptions,
+  irr_officeData,
+  irrOfficeChartOptions
+) {
+  return (
+    <>
+      <div className='stats shadow bg-[#6fb289] w-full'>
+        <div className='stat'>
+          <div className='stat-title font-kanit text-white'>
+            {t('agriArea')}
+          </div>
+          {riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 ? (
+            <>
+              <div className='stat-value text-white'>
+                {(riceArea + maizeArea + sugarcaneArea + cassavaArea)
+                  .toFixed(3)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                <span className='font-kanit'>{t('rai')}</span>
+              </div>
+              <div className='stat-desc font-kanit text-gray-100'>
+                {t('or')}{' '}
+                {((riceArea + maizeArea + sugarcaneArea + cassavaArea) * 1600)
+                  .toFixed(3)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {t('sqm')}
+              </div>
+            </>
+          ) : (
+            <div className='stat-value text-white'>{t('noAgriArea')}</div>
+          )}
+        </div>
+      </div>
+      <div className='flex flex-col justify-center'>
+        {riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
+          <div className='h-96'>
+            <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
+          </div>
+        )}
+        {riceArea > 0 && (
+          <div className='h-96'>
+            <Bar data={riceAgeData} options={riceAgeChartOptions} />
+          </div>
+        )}
+        {maizeArea > 0 && (
+          <div className='h-96'>
+            <Bar data={maizeAgeData} options={maizeAgeChartOptions} />
+          </div>
+        )}
+        {sugarcaneArea > 0 && (
+          <div className='h-96'>
+            <Bar data={sugarcaneAgeData} options={sugarcaneAgeChartOptions} />
+          </div>
+        )}
+        {cassavaArea > 0 && (
+          <div className='h-96'>
+            <Bar data={cassavaAgeData} options={cassavaAgeChartOptions} />
+          </div>
+        )}
+        {riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
+          <div className='h-[1200px]'>
+            <Bar data={irr_officeData} options={irrOfficeChartOptions} />
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+function hotSpotCountAnalysis(
+  t,
+  hotspotCount,
+  i18n,
+  hotspotLuData,
+  hotspotChartOptions,
+  hotspotHistoryData,
+  hotspotHistoryChartOptions,
+  percentageChangedRice,
+  percentageChangedMaize,
+  percentageChangedSugarcane,
+  percentageChangedOtherCrop,
+  percentageChangedForest,
+  percentageChangedOther
+) {
+  return (
+    <>
+      <div className='stats shadow bg-[#826954] w-full'>
+        <div className='stat'>
+          <div className='stat-title font-kanit text-white'>
+            {t('amountHotspotInLandType')}
+          </div>
+          <div className='stat-value text-white'>
+            {hotspotCount > 0 ? (
+              <>
+                {hotspotCount}{' '}
+                <span className='font-kanit'>
+                  {t('spot').toLowerCase()}
+                  {hotspotCount > 1 && i18n.language === 'en' ? 's' : ''}
+                </span>
+              </>
+            ) : (
+              t('noHotspot')
+            )}
+          </div>
+          <div className='stat-desc font-kanit'></div>
+        </div>
+      </div>
+      {hotspotCount > 0 && (
+        <>
+          <div className='flex justify-center'>
+            <div className='h-[500px] w-full'>
+              <Doughnut data={hotspotLuData} options={hotspotChartOptions} />
+            </div>
+          </div>
+          <div className='h-[500px]'>
+            <Line
+              data={hotspotHistoryData}
+              options={hotspotHistoryChartOptions}
+            />
+          </div>
+          <div className='stats stats-vertical lg:stats-horizontal shadow w-full'>
+            <div className={`stat bg-[${luColor.rice}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.rice')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedRice.toFixed(2))
+                  ? (percentageChangedRice.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedRice).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+            <div className={`stat bg-[${luColor.maize}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.maize')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedMaize.toFixed(2))
+                  ? (percentageChangedMaize.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedMaize).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+            <div className={`stat bg-[${luColor.sugarcane}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.sugarcane')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedSugarcane.toFixed(2))
+                  ? (percentageChangedSugarcane.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedSugarcane).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+            <div className={`stat bg-[${luColor.otherCrop}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.otherCrop')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedOtherCrop.toFixed(2))
+                  ? (percentageChangedOtherCrop.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedOtherCrop).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+            <div className={`stat bg-[${luColor.forest}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.forest')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedForest.toFixed(2))
+                  ? (percentageChangedForest.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedForest).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+            <div className={`stat bg-[${luColor.other}]`}>
+              <div className='stat-title text-white font-kanit'>
+                {t('landUse.other')}
+              </div>
+              <div className='stat-value text-white'>
+                {!isNaN(percentageChangedOther.toFixed(2))
+                  ? (percentageChangedOther.toFixed(2) > 0 ? '↗︎' : '↘︎') +
+                    Math.abs(percentageChangedOther).toFixed(2) +
+                    '%'
+                  : '-'}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
+function drawAreaAnalysis(t, drawArea) {
+  return (
+    <>
+      <div className='stats shadow bg-[#f7b142] w-full'>
+        <div className='stat'>
+          <div className='stat-title font-kanit text-white'>{t('area')}</div>
+          <div className='stat-value text-white'>
+            {drawArea.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+            <span className='font-kanit'>{t('sqm')}</span>
+          </div>
+          <div className='stat-desc font-kanit text-gray-100'>
+            {t('or')}{' '}
+            {(drawArea / 1600).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+            {t('rai').toLowerCase()}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

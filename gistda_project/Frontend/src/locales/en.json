@@ -33,6 +33,7 @@
   "date": "Date",
   "time": "Time",
   "month": "Month",
+  "week": "Week",
   "months": {
     "jan": "January",
     "feb": "February",
