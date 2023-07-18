@@ -1842,7 +1842,7 @@ export default function Analysis() {
                     {pvList.map((province) => (
                       <MenuItem key={province.ch_id} value={province.ch_id}>
                         {i18n.language === 'th'
-                          ? province.changwat_t.replace('จ.', '')
+                          ? province.changwat_t?.replace('จ.', '')
                           : province.changwat_e}
                       </MenuItem>
                     ))}
@@ -1870,8 +1870,8 @@ export default function Analysis() {
                           <MenuItem key={district.am_id} value={district.am_id}>
                             {i18n.language === 'th'
                               ? district.amphoe_t
-                                  .replace('อ.', '')
-                                  .replace('เขต', '')
+                                  ?.replace('อ.', '')
+                                  ?.replace('เขต', '')
                               : district.amphoe_e}
                           </MenuItem>
                         )
@@ -1904,8 +1904,8 @@ export default function Analysis() {
                           >
                             {i18n.language === 'th'
                               ? subDistrict.tambon_t
-                                  .replace('ต.', '')
-                                  .replace('แขวง', '')
+                                  ?.replace('ต.', '')
+                                  ?.replace('แขวง', '')
                               : subDistrict.tambon_e}
                           </MenuItem>
                         )

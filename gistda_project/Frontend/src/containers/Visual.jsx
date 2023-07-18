@@ -120,7 +120,7 @@ export default function Visual() {
               polygon: true,
               trash: true,
               combine_features: true,
-              uncombine_features: false,
+              uncombine_features: true,
             },
           };
           var drawPanel = new window.MapboxDraw(drawOptions);
