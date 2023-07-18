@@ -241,7 +241,10 @@ export default function DetailHotspot() {
 
   useEffect(() => {
     month = date.format('MM');
-    lastDate = date.format('DD') < 16 ? '15' : date.endOf('month').format('DD');
+    lastDate =
+      parseInt(date.format('DD')) < 16
+        ? '15'
+        : date.endOf('month').format('DD');
     tempDateCrop = date.format('YYYY-MM') + '-' + lastDate;
     if (tempDateCrop === lastDateCrop && cropType === lastCropType) return;
   }, [date, cropType]);
@@ -260,6 +263,7 @@ export default function DetailHotspot() {
   }, [date]);
 
   if (hotspotData && isHotspotLoaded && map) {
+    map.Overlays.clear();
     dots = [];
     let dot;
     hotspotData.result.forEach((item) => {

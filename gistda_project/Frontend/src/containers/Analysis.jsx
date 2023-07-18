@@ -174,37 +174,6 @@ const cassavaAgeColor = [
   '#ffc4ff',
 ];
 
-const hexToRGBA = (hex, alpha) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
-
-function getFortnightRange(date, range) {
-  if (!date) return;
-
-  const adjust = parseInt(date.format('DD')) > 15 ? 1 : 0;
-
-  const dateRanges = [];
-  for (let i = 0; i < range; i++) {
-    const startDay = (i + adjust) % 2 === 0 ? 1 : 16;
-    const endDay =
-      (i + adjust) % 2 === 0
-        ? 15
-        : dayjs(date)
-            .subtract(14 * i, 'day')
-            .endOf('month')
-            .format('DD');
-    const monthYear = dayjs(date)
-      .subtract(15 * i, 'day')
-      .format('MM/YY');
-    dateRanges.push(`${startDay}-${endDay}/${monthYear}`);
-  }
-  return dateRanges.reverse();
-}
-
 let {
   hotspotRiceCount = 0,
   hotspotMaizeCount = 0,
@@ -678,7 +647,7 @@ export default function Analysis() {
     timeoutId = setTimeout(() => {
       setShowResult(true);
       setIsLoading(false);
-    }, 4000);
+    }, 5000);
     setDrawArea(0);
     resetHotspotCount();
     setIsLoading(true);
@@ -712,10 +681,10 @@ export default function Analysis() {
         `tb_idn='${subDistrict}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
       ];
     } else if (district !== 0) {
       coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
@@ -724,10 +693,10 @@ export default function Analysis() {
         `ap_idn='${district}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
       ];
     } else {
       coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
@@ -736,10 +705,10 @@ export default function Analysis() {
         `pv_idn='${province}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
       ];
     }
 
@@ -759,7 +728,7 @@ export default function Analysis() {
     });
   };
 
-  function handleDraw(geom) {
+  const handleDraw = (geom) => {
     timeoutId = setTimeout(() => {
       setShowResult(true);
       setIsLoading(false);
@@ -796,7 +765,7 @@ export default function Analysis() {
     });
 
     cropNames.forEach((cropName) => {
-      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_build_object('type', 'FeatureCollection', 'features', json_agg(features)) AS feature_collection FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
       )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
       fetchData({
@@ -821,7 +790,7 @@ export default function Analysis() {
         },
       });
     });
-  }
+  };
 
   const cancelSearch = () => {
     if (controller) {
@@ -896,8 +865,11 @@ export default function Analysis() {
         maxLon: subDistrict !== 0 ? bbox[2] + 0.015 : bbox[2],
         maxLat: subDistrict !== 0 ? bbox[3] + 0.015 : bbox[3],
       };
-      const pt = district !== 0 ? 200 : 100;
-      const pb = district !== 0 ? 200 : 100;
+
+      setDrawArea(turf.area(turf.bboxPolygon(bbox)) / 1600);
+
+      const pt = district !== 0 ? 200 : 125;
+      const pb = district !== 0 ? 200 : 125;
       map.Overlays.add(shape);
       map.bound(zoomTemp, { padding: { top: pt, bottom: pb } });
     } else {
@@ -906,131 +878,19 @@ export default function Analysis() {
   }, [coordinates]);
 
   useEffect(() => {
-    if (!hotspotData) return;
-    resetHotspotCount();
-    hotspotData.result.forEach((hotspot) => {
-      switch (hotspot.lu_hp) {
-        case 'A101':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.rice, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotRiceCount += 1;
-          break;
-        case 'A202':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.maize, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotMaizeCount += 1;
-          break;
-        case 'A203':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.sugarcane, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotSugarcaneCount += 1;
-          break;
-        case 'A999':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.otherCrop, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotOtherCropCount += 1;
-          break;
-        case 'F000':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.forest, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotForestCount += 1;
-          break;
-        case 'O000':
-          map.Overlays.add(
-            new sphere.Dot(
-              {
-                lon: JSON.parse(hotspot.longitude),
-                lat: JSON.parse(hotspot.latitude),
-              },
-              {
-                lineWidth: 20,
-                draggable: false,
-                lineColor: hexToRGBA(luColor.other, 0.5),
-                data: hotspot.lu_hp,
-              }
-            )
-          );
-          hotspotOtherCount += 1;
-          break;
-        default:
-          break;
-      }
-    });
-  }, [hotspotData]);
-
-  useEffect(() => {
-    if (!(riceData && riceData.result[0].feature_collection.features)) return;
+    if (!(riceData && riceData.result[0].features)) return;
     setTimeout(() => {
-      setRiceArea(turf.area(riceData.result[0].feature_collection) / 1600);
-      countCropIrrOffice(
-        riceData.result[0].feature_collection.features,
-        riceIrrOfficeCount
-      );
+      const geojson = {
+        type: 'FeatureCollection',
+        features: riceData.result[0].features,
+      };
+      setRiceArea(turf.area(geojson) / 1600);
+      countCropIrrOffice(riceData.result[0].features, riceIrrOfficeCount);
       let layer_crop_rice = new sphere.Layer({
         sources: {
           rice: {
             type: 'geojson',
-            data: riceData.result[0].feature_collection,
+            data: geojson,
           },
         },
         layers: [
@@ -1040,49 +900,30 @@ export default function Analysis() {
             source: 'rice',
             zIndex: 4,
             paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                riceAgeColor[0],
-                2,
-                riceAgeColor[1],
-                3,
-                riceAgeColor[2],
-                4,
-                riceAgeColor[3],
-                5,
-                riceAgeColor[4],
-                6,
-                riceAgeColor[5],
-                7,
-                riceAgeColor[6],
-                8,
-                riceAgeColor[7],
-                '#000',
-              ],
+              'fill-color': getFillColorExpression(riceAgeColor, 1, 8),
               'fill-opacity': 0.5,
             },
           },
         ],
       });
       map.Layers.add(layer_crop_rice);
-    }, 1000);
+    }, 2000);
   }, [riceData]);
 
   useEffect(() => {
-    if (!(maizeData && maizeData.result[0].feature_collection.features)) return;
+    if (!(maizeData && maizeData.result[0].features)) return;
     setTimeout(() => {
-      setMaizeArea(turf.area(maizeData.result[0].feature_collection) / 1600);
-      countCropIrrOffice(
-        maizeData.result[0].feature_collection.features,
-        maizeIrrOfficeCount
-      );
+      const geojson = {
+        type: 'FeatureCollection',
+        features: maizeData.result[0].features,
+      };
+      setMaizeArea(turf.area(geojson) / 1600);
+      countCropIrrOffice(maizeData.result[0].features, maizeIrrOfficeCount);
       let layer_crop_maize = new sphere.Layer({
         sources: {
           maize: {
             type: 'geojson',
-            data: maizeData.result[0].feature_collection,
+            data: geojson,
           },
         },
         layers: [
@@ -1092,52 +933,33 @@ export default function Analysis() {
             source: 'maize',
             zIndex: 4,
             paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                0,
-                maizeAgeColor[0],
-                1,
-                maizeAgeColor[1],
-                2,
-                maizeAgeColor[2],
-                3,
-                maizeAgeColor[3],
-                4,
-                maizeAgeColor[4],
-                5,
-                maizeAgeColor[5],
-                6,
-                maizeAgeColor[6],
-                7,
-                maizeAgeColor[7],
-                '#000',
-              ],
+              'fill-color': getFillColorExpression(maizeAgeColor, 0, 7),
               'fill-opacity': 0.5,
             },
           },
         ],
       });
       map.Layers.add(layer_crop_maize);
-    }, 1000);
+    }, 2000);
   }, [maizeData]);
 
   useEffect(() => {
-    if (!(sugarcaneData && sugarcaneData.result[0].feature_collection.features))
-      return;
+    if (!(sugarcaneData && sugarcaneData.result[0].features)) return;
     setTimeout(() => {
-      setSugarcaneArea(
-        turf.area(sugarcaneData.result[0].feature_collection) / 1600
-      );
+      const geojson = {
+        type: 'FeatureCollection',
+        features: sugarcaneData.result[0].features,
+      };
+      setSugarcaneArea(turf.area(geojson) / 1600);
       countCropIrrOffice(
-        sugarcaneData.result[0].feature_collection.features,
+        sugarcaneData.result[0].features,
         sugarcaneIrrOfficeCount
       );
       let layer_crop_sugarcane = new sphere.Layer({
         sources: {
           sugarcane: {
             type: 'geojson',
-            data: sugarcaneData.result[0].feature_collection,
+            data: geojson,
           },
         },
         layers: [
@@ -1147,84 +969,30 @@ export default function Analysis() {
             source: 'sugarcane',
             zIndex: 4,
             paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                sugarcaneAgeColor[0],
-                2,
-                sugarcaneAgeColor[1],
-                3,
-                sugarcaneAgeColor[2],
-                4,
-                sugarcaneAgeColor[3],
-                5,
-                sugarcaneAgeColor[4],
-                6,
-                sugarcaneAgeColor[5],
-                7,
-                sugarcaneAgeColor[6],
-                8,
-                sugarcaneAgeColor[7],
-                9,
-                sugarcaneAgeColor[8],
-                10,
-                sugarcaneAgeColor[9],
-                11,
-                sugarcaneAgeColor[10],
-                12,
-                sugarcaneAgeColor[11],
-                13,
-                sugarcaneAgeColor[12],
-                14,
-                sugarcaneAgeColor[13],
-                15,
-                sugarcaneAgeColor[14],
-                16,
-                sugarcaneAgeColor[15],
-                17,
-                sugarcaneAgeColor[16],
-                18,
-                sugarcaneAgeColor[17],
-                19,
-                sugarcaneAgeColor[18],
-                20,
-                sugarcaneAgeColor[19],
-                21,
-                sugarcaneAgeColor[20],
-                22,
-                sugarcaneAgeColor[21],
-                23,
-                sugarcaneAgeColor[22],
-                24,
-                sugarcaneAgeColor[23],
-                '#000',
-              ],
+              'fill-color': getFillColorExpression(sugarcaneAgeColor, 1, 24),
               'fill-opacity': 0.5,
             },
           },
         ],
       });
       map.Layers.add(layer_crop_sugarcane);
-    }, 1000);
+    }, 2000);
   }, [sugarcaneData]);
 
   useEffect(() => {
-    if (!(cassavaData && cassavaData.result[0].feature_collection.features))
-      return;
+    if (!(cassavaData && cassavaData.result[0].features)) return;
     setTimeout(() => {
-      setCassavaArea(
-        turf.area(cassavaData.result[0].feature_collection) / 1600
-      );
-      countCropIrrOffice(
-        cassavaData.result[0].feature_collection.features,
-        cassavaIrrOfficeCount
-      );
+      const geojson = {
+        type: 'FeatureCollection',
+        features: cassavaData.result[0].features,
+      };
+      setCassavaArea(turf.area(geojson) / 1600);
+      countCropIrrOffice(cassavaData.result[0].features, cassavaIrrOfficeCount);
       let layer_crop_cassava = new sphere.Layer({
         sources: {
           cassava: {
             type: 'geojson',
-            data: cassavaData.result[0].feature_collection,
+            data: geojson,
           },
         },
         layers: [
@@ -1234,67 +1002,192 @@ export default function Analysis() {
             source: 'cassava',
             zIndex: 4,
             paint: {
-              'fill-color': [
-                'match',
-                ['get', 'legend'],
-                1,
-                cassavaAgeColor[0],
-                2,
-                cassavaAgeColor[1],
-                3,
-                cassavaAgeColor[2],
-                4,
-                cassavaAgeColor[3],
-                5,
-                cassavaAgeColor[4],
-                6,
-                cassavaAgeColor[5],
-                7,
-                cassavaAgeColor[6],
-                8,
-                cassavaAgeColor[7],
-                9,
-                cassavaAgeColor[8],
-                10,
-                cassavaAgeColor[9],
-                11,
-                cassavaAgeColor[10],
-                12,
-                cassavaAgeColor[11],
-                13,
-                cassavaAgeColor[12],
-                14,
-                cassavaAgeColor[13],
-                15,
-                cassavaAgeColor[14],
-                16,
-                cassavaAgeColor[15],
-                17,
-                cassavaAgeColor[16],
-                18,
-                cassavaAgeColor[17],
-                19,
-                cassavaAgeColor[18],
-                20,
-                cassavaAgeColor[19],
-                21,
-                cassavaAgeColor[20],
-                22,
-                cassavaAgeColor[21],
-                23,
-                cassavaAgeColor[22],
-                24,
-                cassavaAgeColor[23],
-                '#000',
-              ],
+              'fill-color': getFillColorExpression(cassavaAgeColor, 1, 24),
               'fill-opacity': 0.5,
             },
           },
         ],
       });
       map.Layers.add(layer_crop_cassava);
-    }, 1000);
+    }, 2000);
   }, [cassavaData]);
+
+  useEffect(() => {
+    if (!hotspotData) return;
+    hotspotData.result.forEach((hotspot) => {
+      switch (hotspot.lu_hp) {
+        case 'A101':
+          hotspotRiceCount += 1;
+          break;
+        case 'A202':
+          hotspotMaizeCount += 1;
+          break;
+        case 'A203':
+          hotspotSugarcaneCount += 1;
+          break;
+        case 'A999':
+          hotspotOtherCropCount += 1;
+          break;
+        case 'F000':
+          hotspotForestCount += 1;
+          break;
+        case 'O000':
+          hotspotOtherCount += 1;
+          break;
+        default:
+          break;
+      }
+    });
+
+    let layer_hotspot = new sphere.Layer({
+      sources: {
+        hotspot: {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: Array.from(hotspotData.result, (hotspot) => {
+              return {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [
+                    JSON.parse(hotspot.longitude),
+                    JSON.parse(hotspot.latitude),
+                  ],
+                },
+                properties: {
+                  lu_hp: hotspot.lu_hp,
+                },
+              };
+            }),
+          },
+        },
+      },
+      layers: [
+        {
+          id: 'layer_hotspot_heat',
+          type: 'heatmap',
+          source: 'hotspot',
+          maxzoom: 10,
+          zIndex: 6,
+          paint: {
+            // Increase the heatmap weight based on frequency and property magnitude
+            // 7,1,9,0 = if zoom is 7 or less, use 1 as heatmap-opacity, if zoom is 9 or greater, use 0, and interpolate linearly in between
+            // 'heatmap-weight': [
+            //   'interpolate',
+            //   ['linear'],
+            //   ['get', 'lu_hp'],
+            //   0,
+            //   0,
+            //   6,
+            //   1,
+            // ],
+            // Increase the heatmap color weight weight by zoom level
+            // heatmap-intensity is a multiplier on top of heatmap-weight
+            'heatmap-intensity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              5,
+              1,
+              10,
+              4,
+            ],
+            // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+            // Begin color ramp at 0-stop with a 0-transparancy color
+            // to create a blur-like effect.
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0,
+              'rgba(33,102,172,0)',
+              0.2,
+              'rgb(103,169,207)',
+              0.4,
+              'rgb(209,229,240)',
+              0.6,
+              'rgb(253,219,199)',
+              0.8,
+              'rgb(239,138,98)',
+              1,
+              'rgb(178,24,43)',
+            ],
+            // Adjust the heatmap radius by zoom level
+            'heatmap-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0,
+              1,
+              6,
+              23,
+            ],
+            // Transition from heatmap to circle layer by zoom level
+            'heatmap-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              8.5,
+              1,
+              10,
+              0,
+            ],
+          },
+        },
+        {
+          id: 'layer_hotspot_point',
+          type: 'circle',
+          source: 'hotspot',
+          minzoom: 8,
+          zIndex: 6,
+          paint: {
+            // Size circle radius by earthquake magnitude and zoom level
+            'circle-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              8,
+              1,
+              16,
+              50,
+            ],
+            // Color circle by lu_hp
+            'circle-color': [
+              'match',
+              ['get', 'lu_hp'],
+              'A101',
+              luColor.rice,
+              'A202',
+              luColor.maize,
+              'A203',
+              luColor.sugarcane,
+              'A999',
+              luColor.otherCrop,
+              'F000',
+              luColor.forest,
+              'O000',
+              luColor.other,
+              '#000',
+            ],
+            'circle-stroke-color': '#fff',
+            'circle-stroke-width': 1, // 2
+            // Transition from heatmap to circle layer by zoom level
+            'circle-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              8,
+              0,
+              8.5,
+              0.75,
+            ],
+          },
+        },
+      ],
+    });
+    map.Layers.add(layer_hotspot);
+  }, [hotspotData]);
 
   useEffect(() => {
     const handleDrawCreate = (e) => {
@@ -1392,7 +1285,7 @@ export default function Analysis() {
     currentDate = currentDate.add(1, 'day');
   }
 
-  function calcLinReg(landUseData) {
+  const calcLinReg = (landUseData) => {
     const n = landUseData.length; // Get the length of the landUseData array
 
     // Calculate the sum of the indices (x values)
@@ -1431,7 +1324,7 @@ export default function Analysis() {
       100;
 
     return percentageChange; // Return the calculated percentage change
-  }
+  };
 
   const riceHistory = genLUData(
     'A101',
@@ -1564,7 +1457,7 @@ export default function Analysis() {
             length: 8,
           },
           (_, i) =>
-            riceData?.result[0].feature_collection.features?.reduce(
+            riceData?.result[0].features?.reduce(
               (sum, item) =>
                 item.properties.legend === i + 1
                   ? Number((sum + item.properties.rai).toFixed(3))
@@ -1589,7 +1482,7 @@ export default function Analysis() {
             length: 8,
           },
           (_, i) =>
-            maizeData?.result[0].feature_collection.features?.reduce(
+            maizeData?.result[0].features?.reduce(
               (sum, item) =>
                 item.properties.legend === i
                   ? Number((sum + item.properties.rai).toFixed(3))
@@ -1612,7 +1505,7 @@ export default function Analysis() {
             length: 24,
           },
           (_, i) =>
-            sugarcaneData?.result[0].feature_collection.features?.reduce(
+            sugarcaneData?.result[0].features?.reduce(
               (sum, item) =>
                 item.properties.legend === i + 1
                   ? Number((sum + item.properties.rai).toFixed(3))
@@ -1635,7 +1528,7 @@ export default function Analysis() {
             length: 24,
           },
           (_, i) =>
-            cassavaData?.result[0].feature_collection.features?.reduce(
+            cassavaData?.result[0].features?.reduce(
               (sum, item) =>
                 item.properties.legend === i + 1
                   ? Number((sum + item.properties.rai).toFixed(3))
@@ -1734,7 +1627,7 @@ export default function Analysis() {
           <dialog id='my_modal' className='modal'>
             <form
               method='dialog'
-              className='modal-box max-w-none space-y-4 bg-[#444444]'
+              className='modal-box max-w-none space-y-8 bg-[#444444]'
             >
               {drawArea > 0 && drawAreaAnalysis(t, drawArea)}
               {hotSpotCountAnalysis(
@@ -1770,6 +1663,16 @@ export default function Analysis() {
                 cassavaAgeChartOptions,
                 irr_officeData,
                 irrOfficeChartOptions
+              )}
+              {cropBurnDatePrediction(
+                riceArea,
+                maizeArea,
+                sugarcaneArea,
+                cassavaArea,
+                riceAgeData,
+                maizeAgeData,
+                sugarcaneAgeData,
+                cassavaAgeData
               )}
             </form>
             <form method='dialog' className='modal-backdrop'>
@@ -1810,6 +1713,16 @@ export default function Analysis() {
             cassavaAgeChartOptions,
             irr_officeData,
             irrOfficeChartOptions
+          )}
+          {cropBurnDatePrediction(
+            riceArea,
+            maizeArea,
+            sugarcaneArea,
+            cassavaArea,
+            riceAgeData,
+            maizeAgeData,
+            sugarcaneAgeData,
+            cassavaAgeData
           )}
         </div>
       ) : (
@@ -1954,26 +1867,27 @@ export default function Analysis() {
       )}
     </>
   );
-
-  function resetHotspotCount() {
-    hotspotRiceCount =
-      hotspotMaizeCount =
-      hotspotSugarcaneCount =
-      hotspotOtherCropCount =
-      hotspotForestCount =
-      hotspotOtherCount =
-        0;
-  }
-
-  function countCropIrrOffice(data, targetArray) {
-    data.forEach((d) => {
-      if (d.properties.office_cod) {
-        targetArray[parseInt(d.properties.office_cod) - 1]++;
-      }
-    });
-  }
 }
-function CropAreaAnalysis(
+
+const resetHotspotCount = () => {
+  hotspotRiceCount =
+    hotspotMaizeCount =
+    hotspotSugarcaneCount =
+    hotspotOtherCropCount =
+    hotspotForestCount =
+    hotspotOtherCount =
+      0;
+};
+
+const countCropIrrOffice = (data, targetArray) => {
+  data.forEach((d) => {
+    if (d.properties.office_cod) {
+      targetArray[parseInt(d.properties.office_cod) - 1]++;
+    }
+  });
+};
+
+const CropAreaAnalysis = (
   t,
   riceArea,
   maizeArea,
@@ -1991,7 +1905,7 @@ function CropAreaAnalysis(
   cassavaAgeChartOptions,
   irr_officeData,
   irrOfficeChartOptions
-) {
+) => {
   return (
     <>
       <div className='stats shadow bg-[#6fb289] w-full'>
@@ -2054,9 +1968,9 @@ function CropAreaAnalysis(
       </div>
     </>
   );
-}
+};
 
-function hotSpotCountAnalysis(
+const hotSpotCountAnalysis = (
   t,
   hotspotCount,
   i18n,
@@ -2070,7 +1984,7 @@ function hotSpotCountAnalysis(
   percentageChangedOtherCrop,
   percentageChangedForest,
   percentageChangedOther
-) {
+) => {
   return (
     <>
       <div className='stats shadow bg-[#826954] w-full'>
@@ -2185,9 +2099,9 @@ function hotSpotCountAnalysis(
       )}
     </>
   );
-}
+};
 
-function drawAreaAnalysis(t, drawArea) {
+const drawAreaAnalysis = (t, drawArea) => {
   return (
     <>
       <div className='stats shadow bg-[#f7b142] w-full'>
@@ -2206,4 +2120,136 @@ function drawAreaAnalysis(t, drawArea) {
       </div>
     </>
   );
-}
+};
+
+const getFillColorExpression = (colors, start, end) => {
+  const expression = ['match', ['get', 'legend']];
+  for (let i = start; i <= end; i++) {
+    expression.push(i);
+    expression.push(colors[i - 1]);
+  }
+  expression.push('#000');
+  return expression;
+};
+
+const hexToRGBA = (hex, alpha) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+const getFortnightRange = (date, range) => {
+  if (!date) return;
+
+  const adjust = parseInt(date.format('DD')) > 15 ? 1 : 0;
+
+  const dateRanges = [];
+  for (let i = 0; i < range; i++) {
+    const startDay = (i + adjust) % 2 === 0 ? 1 : 16;
+    const endDay =
+      (i + adjust) % 2 === 0
+        ? 15
+        : dayjs(date)
+            .subtract(14 * i, 'day')
+            .endOf('month')
+            .format('DD');
+    const monthYear = dayjs(date)
+      .subtract(15 * i, 'day')
+      .format('MM/YY');
+    dateRanges.push(`${startDay}-${endDay}/${monthYear}`);
+  }
+  return dateRanges.reverse();
+};
+
+const getHarvestDate = (cropData, growthPeriod) => {
+  const maxHotspotIndex = cropData.datasets[0].data.indexOf(
+    Math.max(...cropData.datasets[0].data)
+  );
+  if (maxHotspotIndex === -1) return '-';
+  const dateLabel = cropData.labels[maxHotspotIndex]?.split(' ')[0];
+  return (
+    dateLabel?.split('-')[0] +
+    '-' +
+    dayjs(dateLabel?.split('-')[1], 'DD/MM/YY')
+      .add(growthPeriod, 'month')
+      .format('DD/MM/YY')
+  );
+};
+
+const cropBurnDatePrediction = (
+  riceArea,
+  maizeArea,
+  sugarcaneArea,
+  cassavaArea,
+  riceAgeData,
+  maizeAgeData,
+  sugarcaneAgeData,
+  cassavaAgeData
+) => {
+  return (
+    riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
+      <div className='flex justify-center'>
+        <div className='stats shadow'>
+          <div className={`stat bg-[${agriColor.rice}]`}>
+            <div className='stat-title text-white'>
+              Date with possible high hotspot in rice area
+            </div>
+            <div className='stat-value text-white'>
+              {getHarvestDate(riceAgeData, 4)}
+            </div>
+            <div className='stat-desc text-gray-100'>
+              {riceAgeData.datasets[0].data.indexOf(
+                Math.max(...riceAgeData.datasets[0].data)
+              ) !== -1 &&
+                'Assuming rice takes 4 months to grow from seedling to harvest'}
+            </div>
+          </div>
+          <div className={`stat bg-[${agriColor.maize}]`}>
+            <div className='stat-title text-white'>
+              Date with possible high hotspot in maize area
+            </div>
+            <div className='stat-value text-white'>
+              {getHarvestDate(maizeAgeData, 2)}
+            </div>
+            <div className='stat-desc text-gray-100'>
+              {maizeAgeData.datasets[0].data.indexOf(
+                Math.max(...maizeAgeData.datasets[0].data)
+              ) !== -1 &&
+                'Assuming maize takes 2 months to grow from seedling to harvest'}
+            </div>
+          </div>
+          <div className={`stat bg-[${agriColor.sugarcane}]`}>
+            <div className='stat-title text-white'>
+              Date with possible high hotspot in sugarcane area
+            </div>
+            <div className='stat-value text-white'>
+              {getHarvestDate(sugarcaneAgeData, 12)}
+            </div>
+            <div className='stat-desc text-gray-100'>
+              {sugarcaneAgeData.datasets[0].data.indexOf(
+                Math.max(...sugarcaneAgeData.datasets[0].data)
+              ) !== -1 &&
+                'Assuming sugarcane takes 12 months to grow from seedling to harvest'}
+            </div>
+          </div>
+          <div className={`stat bg-[${agriColor.cassava}]`}>
+            <div className='stat-title text-white'>
+              Date with possible high hotspot in cassava area
+            </div>
+            <div className='stat-value text-white'>
+              {getHarvestDate(cassavaAgeData, 12)}
+            </div>
+            <div className='stat-desc text-gray-100'>
+              {cassavaAgeData.datasets[0].data.indexOf(
+                Math.max(...cassavaAgeData.datasets[0].data)
+              ) !== -1 &&
+                'Assuming cassava takes 12 months to grow from seedling to harvest'}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  );
+};
