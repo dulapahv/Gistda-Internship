@@ -250,7 +250,7 @@ export default function Visual() {
                       height={120}
                       width='100%'
                     />
-                    {Array.from({ length: 6 }).map((_, index) => (
+                    {Array.from({ length: 4 }).map((_, index) => (
                       <Skeleton
                         key={index}
                         variant='rounded'

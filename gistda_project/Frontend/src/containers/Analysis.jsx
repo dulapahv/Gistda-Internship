@@ -602,6 +602,22 @@ export default function Analysis() {
     },
   };
 
+  const luName = {
+    A101: t('landUse.rice'),
+    A202: t('landUse.maize'),
+    A203: t('landUse.sugarcane'),
+    A999: t('landUse.otherCrop'),
+    F000: t('landUse.forest'),
+    O000: t('landUse.other'),
+  };
+
+  const agriName = {
+    A0102: t('crop.rice'),
+    A0203: t('crop.maize'),
+    A0204: t('crop.sugarcane'),
+    A0205: t('crop.cassava'),
+  };
+
   const fetchData = async ({ query, setData }) => {
     const newController = new AbortController();
     prevControllerRef.current = newController;
@@ -666,12 +682,12 @@ export default function Analysis() {
       const from2 = getDate().subtract(15, 'day').format('DD-MM-YY');
       const to2 = dayjs(from2, 'DD-MM-YY').endOf('month').format('DD-MM-YY');
 
-      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,pv_en,ap_en,pv_idn,th_date,th_time&where=acq_date BETWEEN '${from1}' AND '${to1}' AND TO_BE_REPLACED UNION ALL SELECT latitude, longitude, lu_hp, pv_tn, ap_tn, pv_en, ap_en, pv_idn, th_date, th_time FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND TO_BE_REPLACED`;
+      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from1}' AND '${to1}' AND TO_BE_REPLACED UNION ALL SELECT latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND TO_BE_REPLACED`;
     } else {
       const from = getDate().subtract(15, 'day').format('DD-MM-YY');
       const to = getDate().format('DD-MM-YY');
 
-      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,pv_en,ap_en,pv_idn,th_date,th_time&where=acq_date BETWEEN '${from}' AND '${to}' AND TO_BE_REPLACED`;
+      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from}' AND '${to}' AND TO_BE_REPLACED`;
     }
 
     if (subDistrict !== 0) {
@@ -681,10 +697,10 @@ export default function Analysis() {
         `tb_idn='${subDistrict}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
       ];
     } else if (district !== 0) {
       coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
@@ -693,10 +709,10 @@ export default function Analysis() {
         `ap_idn='${district}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
       ];
     } else {
       coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
@@ -705,10 +721,10 @@ export default function Analysis() {
         `pv_idn='${province}'`
       );
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
       ];
     }
 
@@ -745,16 +761,16 @@ export default function Analysis() {
       const from2 = getDate().subtract(15, 'day').format('DD-MM-YY');
       const to2 = dayjs(from2, 'DD-MM-YY').endOf('month').format('DD-MM-YY');
 
-      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,pv_en,ap_en,pv_idn,th_date,th_time&where=acq_date BETWEEN '${from1}' AND '${to1}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from1}' AND '${to1}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
-      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))UNION ALL SELECT latitude, longitude, lu_hp, pv_tn, ap_tn, pv_en, ap_en, pv_idn, th_date, th_time FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))UNION ALL SELECT latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
       )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))`;
     } else {
       const from = getDate().subtract(15, 'day').format('DD-MM-YY');
       const to = getDate().format('DD-MM-YY');
 
-      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,pv_en,ap_en,pv_idn,th_date,th_time&where=acq_date BETWEEN '${from}' AND '${to}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from}' AND '${to}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
       )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))`;
     }
@@ -765,7 +781,7 @@ export default function Analysis() {
     });
 
     cropNames.forEach((cropName) => {
-      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      const query = `data=${cropName}_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend, 'rai', rai, 'office_cod', office_cod, 'p_name', p_name, 'a_name', a_name, 't_name', t_name, 'start_date', start_date, 'crop_type', crop_type, 'proj_name', proj_name)) AS features&where=data_date = '${lastDateCrop}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
       )}'), 4326), ST_SetSRID(geom, 4326))) AS subquery`;
       fetchData({
@@ -866,7 +882,7 @@ export default function Analysis() {
         maxLat: subDistrict !== 0 ? bbox[3] + 0.015 : bbox[3],
       };
 
-      setDrawArea(turf.area(turf.bboxPolygon(bbox)) / 1600);
+      setDrawArea(shape.size());
 
       const pt = district !== 0 ? 200 : 125;
       const pb = district !== 0 ? 200 : 125;
@@ -1051,8 +1067,8 @@ export default function Analysis() {
                 geometry: {
                   type: 'Point',
                   coordinates: [
-                    JSON.parse(hotspot.longitude),
-                    JSON.parse(hotspot.latitude),
+                    parseFloat(hotspot.longitude),
+                    parseFloat(hotspot.latitude),
                   ],
                 },
                 properties: {
@@ -1149,8 +1165,8 @@ export default function Analysis() {
               ['zoom'],
               8,
               1,
-              16,
-              50,
+              22,
+              100,
             ],
             // Color circle by lu_hp
             'circle-color': [
@@ -1188,6 +1204,141 @@ export default function Analysis() {
     });
     map.Layers.add(layer_hotspot);
   }, [hotspotData]);
+
+  map.Event.bind(sphere.EventName.Click, function (location) {
+    const baseEps = 0.001;
+    const zoomDifference = 14.5 - map.zoom();
+    const eps = baseEps * Math.pow(2, zoomDifference);
+    hotspotData?.result.forEach((hotspot) => {
+      if (
+        Math.abs(location.lon - parseFloat(hotspot.longitude)) < eps &&
+        Math.abs(location.lat - parseFloat(hotspot.latitude)) < eps
+      ) {
+        const popup = new sphere.Popup(
+          { lon: hotspot.longitude, lat: hotspot.latitude },
+          {
+            html: `<div class="popup-container"><div class="popup-title">${t(
+              'hotspot'
+            )}<span class="popup-title-highlight">
+                      ${luName[hotspot.lu_hp]}</span>
+                      </div>
+                      <div class="popup-detail"><span class="popup-detail-highlight">${t(
+                        'date'
+                      )}: </span>${dayjs(hotspot.th_date, 'DD-MM-YY').format(
+              'DD/MM/YYYY'
+            )}
+                      <span class="popup-detail-highlight">${t(
+                        'time'
+                      )}: </span>${
+              String(hotspot.th_time).length === 4
+                ? String(hotspot.th_time).slice(0, 2) +
+                  ':' +
+                  String(hotspot.th_time).slice(2, 4)
+                : '0' +
+                  String(hotspot.th_time).slice(0, 1) +
+                  ':' +
+                  String(hotspot.th_time).slice(1, 3)
+            }
+                      <span class="popup-detail-highlight">${t(
+                        'province'
+                      )}: </span>${
+              i18n.language === 'th' ? hotspot.pv_tn : hotspot.pv_en
+            }
+                      <span class="popup-detail-highlight">${t(
+                        'district'
+                      )}: </span>${
+              i18n.language === 'th' ? hotspot.ap_tn : hotspot.ap_en
+            }
+                      <span class="popup-detail-highlight">${t(
+                        'subDistrict'
+                      )}: </span>${
+              i18n.language === 'th' ? hotspot.tb_tn : hotspot.tb_en
+            }
+                      <span class="popup-detail-highlight">${t(
+                        'village'
+                      )}: </span>${hotspot.village ? hotspot.village : '-'}
+                      <span class="popup-detail-highlight">${t(
+                        'confidence'
+                      )}: </span>${hotspot.confidence}
+                      <span class="popup-detail-highlight">${t(
+                        'latitude'
+                      )}: </span>${hotspot.latitude}
+                      <span class="popup-detail-highlight">${t(
+                        'longitude'
+                      )}: </span>${hotspot.longitude}
+                    </div>
+                  </div>`,
+          }
+        );
+        map.Overlays.add(popup);
+      }
+    });
+    const cropDataArray = [riceData, maizeData, sugarcaneData, cassavaData];
+    cropDataArray.forEach((cropData) => {
+      cropData?.result[0].features?.forEach((feature) => {
+        if (
+          turf.booleanPointInPolygon(
+            turf.point([location.lon, location.lat]),
+            feature.geometry
+          )
+        ) {
+          const popup = new sphere.Popup(
+            { lon: location.lon, lat: location.lat },
+            {
+              html: `<div class="popup-container"><div class="popup-title">${t(
+                'cropType'
+              )}<span class="popup-title-highlight">
+                        ${agriName[feature.properties.crop_type]}</span>
+                        </div>
+                        <div class="popup-detail"><span class="popup-detail-highlight">${t(
+                          'plantedDate'
+                        )}</span>${
+                ': ' +
+                dayjs(feature.properties.start_date, 'YYYY-MM-DD').format(
+                  'DD/MM/YYYY'
+                )
+              }
+                        <span class="popup-detail-highlight">${t(
+                          'rai'
+                        )}: </span>${feature.properties.rai}
+                        <span class="popup-detail-highlight">${t(
+                          'province'
+                        )}: </span>${feature.properties.p_name}
+                        <span class="popup-detail-highlight">${t(
+                          'district'
+                        )}: </span>${feature.properties.a_name}
+                        <span class="popup-detail-highlight">${t(
+                          'subDistrict'
+                        )}: </span>${feature.properties.t_name}
+                        <span class="popup-detail-highlight">${t(
+                          'project'
+                        )}: </span>${
+                feature.properties.proj_name
+                  ? feature.properties.proj_name
+                  : '-'
+              }
+                        <span class="popup-detail-highlight">${t(
+                          'irr_office'
+                        )}: </span>${
+                feature.properties.office_cod
+                  ? feature.properties.office_cod
+                  : '-'
+              }
+                        <span class="popup-detail-highlight">${t(
+                          'latitude'
+                        )}: </span>${location.lat}
+                        <span class="popup-detail-highlight">${t(
+                          'longitude'
+                        )}: </span>${location.lon}
+                      </div>
+                    </div>`,
+            }
+          );
+          map.Overlays.add(popup);
+        }
+      });
+    });
+  });
 
   useEffect(() => {
     const handleDrawCreate = (e) => {

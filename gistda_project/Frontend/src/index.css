@@ -2,12 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400&display=swap');
+
 * {
-  /* outline: 1px solid #f00 !important; */
+  //outline: 1px solid #f00 !important;
 }
 
 #root {
   white-space: pre-line;
+}
+
+.popup-container {
+  background-color: #f0f0f0;
+  border: 2px solid #f999ba;
+  padding: 10px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 300px;
+  filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
+  pointer-events: auto;
+}
+
+.popup-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  pointer-events: auto;
+}
+
+.popup-title-highlight {
+  font-size: 36px;
+  line-height: 1.2;
+  pointer-events: auto;
+}
+
+.popup-detail {
+  font-family: 'Kanit', sans-serif;
+  font-size: 16px;
+  pointer-events: auto;
+}
+
+.popup-detail-highlight {
+  font-weight: bold;
+  pointer-events: auto;
 }
 
 /* Light Theme */
