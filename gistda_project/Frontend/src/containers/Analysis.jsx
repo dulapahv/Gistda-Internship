@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { Bar, Doughnut, Line, PolarArea } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
   ArcElement,
@@ -146,6 +146,12 @@ const sugarcaneAgeColor = [
   '#ffbf95',
   '#ffdca9',
   '#ffe9bd',
+  '#fff4d1',
+  '#ffefd2',
+  '#ffead3',
+  '#ffe6d4',
+  '#ffe1d5',
+  '#ffddd6',
 ];
 const cassavaAgeColor = [
   '#070001',
@@ -319,7 +325,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('ประเภทพืช'),
+          text: t('cropType'),
         },
       },
     },
@@ -353,6 +359,40 @@ export default function Analysis() {
     },
   };
 
+  const cropPercentageChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+      },
+      title: {
+        display: true,
+        text: t('luPercentage'),
+        font: {
+          size: 20,
+        },
+      },
+      tooltip: {
+        titleFont: {
+          size: 16,
+        },
+        bodyFont: {
+          size: 16,
+        },
+      },
+      datalabels: {
+        font: {
+          size: 14,
+        },
+        align: 'end',
+        formatter: (value, context) => {
+          return value + '%';
+        },
+      },
+    },
+  };
+
   const riceAgeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -366,7 +406,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('เริ่มปลูก (อายุ)'),
+          text: t('ricePlantedDate'),
         },
       },
     },
@@ -415,7 +455,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('เริ่มปลูก (เก็บเกี่ยว)'),
+          text: t('maizePlantedDate'),
         },
       },
     },
@@ -464,7 +504,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('เริ่มปลูก'),
+          text: t('plantedDate'),
         },
       },
     },
@@ -513,7 +553,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('เริ่มปลูก'),
+          text: t('plantedDate'),
         },
       },
     },
@@ -563,7 +603,7 @@ export default function Analysis() {
       x: {
         title: {
           display: true,
-          text: t('rai'),
+          text: t('percentage'),
         },
       },
     },
@@ -923,7 +963,7 @@ export default function Analysis() {
         ],
       });
       map.Layers.add(layer_crop_rice);
-    }, 2000);
+    }, 1000);
   }, [riceData]);
 
   useEffect(() => {
@@ -956,7 +996,7 @@ export default function Analysis() {
         ],
       });
       map.Layers.add(layer_crop_maize);
-    }, 2000);
+    }, 1000);
   }, [maizeData]);
 
   useEffect(() => {
@@ -992,7 +1032,7 @@ export default function Analysis() {
         ],
       });
       map.Layers.add(layer_crop_sugarcane);
-    }, 2000);
+    }, 1000);
   }, [sugarcaneData]);
 
   useEffect(() => {
@@ -1025,7 +1065,7 @@ export default function Analysis() {
         ],
       });
       map.Layers.add(layer_crop_cassava);
-    }, 2000);
+    }, 1000);
   }, [cassavaData]);
 
   useEffect(() => {
@@ -1217,57 +1257,10 @@ export default function Analysis() {
         const popup = new sphere.Popup(
           { lon: hotspot.longitude, lat: hotspot.latitude },
           {
-            html: `<div class="popup-container"><div class="popup-title">${t(
-              'hotspot'
-            )}<span class="popup-title-highlight">
-                      ${luName[hotspot.lu_hp]}</span>
-                      </div>
-                      <div class="popup-detail"><span class="popup-detail-highlight">${t(
-                        'date'
-                      )}: </span>${dayjs(hotspot.th_date, 'DD-MM-YY').format(
-              'DD/MM/YYYY'
-            )}
-                      <span class="popup-detail-highlight">${t(
-                        'time'
-                      )}: </span>${
-              String(hotspot.th_time).length === 4
-                ? String(hotspot.th_time).slice(0, 2) +
-                  ':' +
-                  String(hotspot.th_time).slice(2, 4)
-                : '0' +
-                  String(hotspot.th_time).slice(0, 1) +
-                  ':' +
-                  String(hotspot.th_time).slice(1, 3)
-            }
-                      <span class="popup-detail-highlight">${t(
-                        'province'
-                      )}: </span>${
-              i18n.language === 'th' ? hotspot.pv_tn : hotspot.pv_en
-            }
-                      <span class="popup-detail-highlight">${t(
-                        'district'
-                      )}: </span>${
-              i18n.language === 'th' ? hotspot.ap_tn : hotspot.ap_en
-            }
-                      <span class="popup-detail-highlight">${t(
-                        'subDistrict'
-                      )}: </span>${
-              i18n.language === 'th' ? hotspot.tb_tn : hotspot.tb_en
-            }
-                      <span class="popup-detail-highlight">${t(
-                        'village'
-                      )}: </span>${hotspot.village ? hotspot.village : '-'}
-                      <span class="popup-detail-highlight">${t(
-                        'confidence'
-                      )}: </span>${hotspot.confidence}
-                      <span class="popup-detail-highlight">${t(
-                        'latitude'
-                      )}: </span>${hotspot.latitude}
-                      <span class="popup-detail-highlight">${t(
-                        'longitude'
-                      )}: </span>${hotspot.longitude}
-                    </div>
-                  </div>`,
+            loadDetail: (element) =>
+              popupHotspotDetail(element, hotspot, location),
+            size: { width: 300 },
+            closable: true,
           }
         );
         map.Overlays.add(popup);
@@ -1285,53 +1278,10 @@ export default function Analysis() {
           const popup = new sphere.Popup(
             { lon: location.lon, lat: location.lat },
             {
-              html: `<div class="popup-container"><div class="popup-title">${t(
-                'cropType'
-              )}<span class="popup-title-highlight">
-                        ${agriName[feature.properties.crop_type]}</span>
-                        </div>
-                        <div class="popup-detail"><span class="popup-detail-highlight">${t(
-                          'plantedDate'
-                        )}</span>${
-                ': ' +
-                dayjs(feature.properties.start_date, 'YYYY-MM-DD').format(
-                  'DD/MM/YYYY'
-                )
-              }
-                        <span class="popup-detail-highlight">${t(
-                          'rai'
-                        )}: </span>${feature.properties.rai}
-                        <span class="popup-detail-highlight">${t(
-                          'province'
-                        )}: </span>${feature.properties.p_name}
-                        <span class="popup-detail-highlight">${t(
-                          'district'
-                        )}: </span>${feature.properties.a_name}
-                        <span class="popup-detail-highlight">${t(
-                          'subDistrict'
-                        )}: </span>${feature.properties.t_name}
-                        <span class="popup-detail-highlight">${t(
-                          'project'
-                        )}: </span>${
-                feature.properties.proj_name
-                  ? feature.properties.proj_name
-                  : '-'
-              }
-                        <span class="popup-detail-highlight">${t(
-                          'irr_office'
-                        )}: </span>${
-                feature.properties.office_cod
-                  ? feature.properties.office_cod
-                  : '-'
-              }
-                        <span class="popup-detail-highlight">${t(
-                          'latitude'
-                        )}: </span>${location.lat}
-                        <span class="popup-detail-highlight">${t(
-                          'longitude'
-                        )}: </span>${location.lon}
-                      </div>
-                    </div>`,
+              loadDetail: (element) =>
+                popupCropDetail(element, feature, location),
+              size: { width: 300 },
+              closable: true,
             }
           );
           map.Overlays.add(popup);
@@ -1339,6 +1289,94 @@ export default function Analysis() {
       });
     });
   });
+
+  const popupHotspotDetail = (element, hotspot, location) => {
+    element.className = 'popup-container';
+    element.innerHTML = `<div class="popup-title">${t(
+      'hotspot'
+    )}</div><span class="popup-title popup-title-highlight">${
+      luName[hotspot.lu_hp]
+    }</span>
+<div class="popup-detail"><span class="popup-detail-highlight">${t(
+      'date'
+    )}: </span>${dayjs(hotspot.th_date, 'DD-MM-YY').format('DD/MM/YYYY')}
+              <span class="popup-detail-highlight">${t('time')}: </span>${
+      String(hotspot.th_time).length === 4
+        ? String(hotspot.th_time).slice(0, 2) +
+          ':' +
+          String(hotspot.th_time).slice(2, 4)
+        : '0' +
+          String(hotspot.th_time).slice(0, 1) +
+          ':' +
+          String(hotspot.th_time).slice(1, 3)
+    }
+              <span class="popup-detail-highlight">${t('province')}: </span>${
+      i18n.language === 'th' ? hotspot.pv_tn : hotspot.pv_en
+    }
+              <span class="popup-detail-highlight">${t('district')}: </span>${
+      i18n.language === 'th' ? hotspot.ap_tn : hotspot.ap_en
+    }
+              <span class="popup-detail-highlight">${t(
+                'subDistrict'
+              )}: </span>${
+      i18n.language === 'th' ? hotspot.tb_tn : hotspot.tb_en
+    }
+              <span class="popup-detail-highlight">${t('village')}: </span>${
+      hotspot.village ? hotspot.village : '-'
+    }
+              <span class="popup-detail-highlight">${t('confidence')}: </span>${
+      hotspot.confidence
+    }
+              <span class="popup-detail-highlight">${t('lat')}: </span>${
+      hotspot.latitude
+    }
+              <span class="popup-detail-highlight">${t('lon')}: </span>${
+      hotspot.longitude
+    }
+          </div>`;
+  };
+
+  const popupCropDetail = (element, feature, location) => {
+    element.className = 'popup-container';
+    element.innerHTML = `<div class="popup-title">${t(
+      'cropType'
+    )}</div><span class="popup-title popup-title-highlight">${
+      agriName[feature.properties.crop_type]
+    }</span>
+<div class="popup-detail"><span class="popup-detail-highlight">${t(
+      'plantedDate'
+    )}</span>${
+      ': ' +
+      dayjs(feature.properties.start_date, 'YYYY-MM-DD').format('DD/MM/YYYY')
+    }
+                <span class="popup-detail-highlight">${t('rai')}: </span>${
+      feature.properties.rai
+    }
+                <span class="popup-detail-highlight">${t('province')}: </span>${
+      feature.properties.p_name
+    }
+                <span class="popup-detail-highlight">${t('district')}: </span>${
+      feature.properties.a_name
+    }
+                <span class="popup-detail-highlight">${t(
+                  'subDistrict'
+                )}: </span>${feature.properties.t_name}
+                <span class="popup-detail-highlight">${t('project')}: </span>${
+      feature.properties.proj_name ? feature.properties.proj_name : '-'
+    }
+                <span class="popup-detail-highlight">${t(
+                  'irr_office'
+                )}: </span>${
+      feature.properties.office_cod ? feature.properties.office_cod : '-'
+    }
+                <span class="popup-detail-highlight">${t('lat')}: </span>${
+      location.lat
+    }
+                <span class="popup-detail-highlight">${t('lon')}: </span>${
+      location.lon
+    }
+              </div>`;
+  };
 
   useEffect(() => {
     const handleDrawCreate = (e) => {
@@ -1692,6 +1730,55 @@ export default function Analysis() {
     ],
   };
 
+  const cropPercentageData = {
+    labels: [
+      t('crop.rice'),
+      t('crop.maize'),
+      t('crop.sugarcane'),
+      t('crop.cassava'),
+    ],
+    datasets: [
+      {
+        label: '',
+        data: Array.from(
+          {
+            length: 4,
+          },
+          (_, i) => {
+            if (i === 0) {
+              return (
+                (riceArea /
+                  (riceArea + maizeArea + sugarcaneArea + cassavaArea)) *
+                100
+              ).toFixed(3);
+            } else if (i === 1) {
+              return (
+                (maizeArea /
+                  (riceArea + maizeArea + sugarcaneArea + cassavaArea)) *
+                100
+              ).toFixed(3);
+            } else if (i === 2) {
+              return (
+                (sugarcaneArea /
+                  (riceArea + maizeArea + sugarcaneArea + cassavaArea)) *
+                100
+              ).toFixed(3);
+            } else if (i === 3) {
+              return (
+                (cassavaArea /
+                  (riceArea + maizeArea + sugarcaneArea + cassavaArea)) *
+                100
+              ).toFixed(3);
+            }
+            return 0;
+          }
+        ),
+        backgroundColor: Object.values(agriColor),
+        borderWidth: 0,
+      },
+    ],
+  };
+
   const cropTypes = [
     {
       label: t('crop.rice'),
@@ -1780,7 +1867,7 @@ export default function Analysis() {
               method='dialog'
               className='modal-box max-w-none space-y-8 bg-[#444444]'
             >
-              {drawArea > 0 && drawAreaAnalysis(t, drawArea)}
+              {drawArea > 0 && areaSizeMeasurement(t, drawArea)}
               {hotSpotCountAnalysis(
                 t,
                 hotspotCount,
@@ -1804,6 +1891,8 @@ export default function Analysis() {
                 cassavaArea,
                 cropAreaData,
                 cropTypeAreaChartOptions,
+                cropPercentageData,
+                cropPercentageChartOptions,
                 riceAgeData,
                 riceAgeChartOptions,
                 maizeAgeData,
@@ -1830,7 +1919,7 @@ export default function Analysis() {
               <button>close</button>
             </form>
           </dialog>
-          {drawArea > 0 && drawAreaAnalysis(t, drawArea)}
+          {drawArea > 0 && areaSizeMeasurement(t, drawArea)}
           {hotSpotCountAnalysis(
             t,
             hotspotCount,
@@ -1854,6 +1943,8 @@ export default function Analysis() {
             cassavaArea,
             cropAreaData,
             cropTypeAreaChartOptions,
+            cropPercentageData,
+            cropPercentageChartOptions,
             riceAgeData,
             riceAgeChartOptions,
             maizeAgeData,
@@ -2046,6 +2137,8 @@ const CropAreaAnalysis = (
   cassavaArea,
   cropAreaData,
   cropTypeAreaChartOptions,
+  cropPercentageData,
+  cropPercentageChartOptions,
   riceAgeData,
   riceAgeChartOptions,
   maizeAgeData,
@@ -2089,6 +2182,14 @@ const CropAreaAnalysis = (
         {riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
           <div className='h-96'>
             <Bar data={cropAreaData} options={cropTypeAreaChartOptions} />
+          </div>
+        )}
+        {riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
+          <div className='h-[500px] w-full'>
+            <PolarArea
+              data={cropPercentageData}
+              options={cropPercentageChartOptions}
+            />
           </div>
         )}
         {riceArea > 0 && (
@@ -2252,7 +2353,7 @@ const hotSpotCountAnalysis = (
   );
 };
 
-const drawAreaAnalysis = (t, drawArea) => {
+const areaSizeMeasurement = (t, drawArea) => {
   return (
     <>
       <div className='stats shadow bg-[#f7b142] w-full'>
@@ -2275,9 +2376,9 @@ const drawAreaAnalysis = (t, drawArea) => {
 
 const getFillColorExpression = (colors, start, end) => {
   const expression = ['match', ['get', 'legend']];
-  for (let i = start; i <= end; i++) {
+  for (let i = start, j = 0; i <= end; i++, j++) {
     expression.push(i);
-    expression.push(colors[i - 1]);
+    expression.push(colors[j]);
   }
   expression.push('#000');
   return expression;
@@ -2342,10 +2443,10 @@ const cropBurnDatePrediction = (
   return (
     riceArea + maizeArea + sugarcaneArea + cassavaArea > 0 && (
       <div className='flex justify-center'>
-        <div className='stats shadow'>
+        <div className='stats stats-vertical shadow w-full'>
           <div className={`stat bg-[${agriColor.rice}]`}>
             <div className='stat-title text-white'>
-              Date with possible high hotspot in rice area
+              Date with possible highest heat concentration in rice area
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(riceAgeData, 4)}
@@ -2354,12 +2455,12 @@ const cropBurnDatePrediction = (
               {riceAgeData.datasets[0].data.indexOf(
                 Math.max(...riceAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming rice takes 4 months to grow from seedling to harvest'}
+                'Assuming rice takes approximately 4 months to grow and harvest'}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.maize}]`}>
             <div className='stat-title text-white'>
-              Date with possible high hotspot in maize area
+              Date with possible highest heat concentration in maize area
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(maizeAgeData, 2)}
@@ -2368,12 +2469,12 @@ const cropBurnDatePrediction = (
               {maizeAgeData.datasets[0].data.indexOf(
                 Math.max(...maizeAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming maize takes 2 months to grow from seedling to harvest'}
+                'Assuming maize takes approximately 2 months to grow and harvest'}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.sugarcane}]`}>
             <div className='stat-title text-white'>
-              Date with possible high hotspot in sugarcane area
+              Date with possible highest heat concentration in sugarcane area
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(sugarcaneAgeData, 12)}
@@ -2382,12 +2483,12 @@ const cropBurnDatePrediction = (
               {sugarcaneAgeData.datasets[0].data.indexOf(
                 Math.max(...sugarcaneAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming sugarcane takes 12 months to grow from seedling to harvest'}
+                'Assuming sugarcane takes approximately 12 months to grow and harvest'}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.cassava}]`}>
             <div className='stat-title text-white'>
-              Date with possible high hotspot in cassava area
+              Date with possible highest heat concentration in cassava area
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(cassavaAgeData, 12)}
@@ -2396,7 +2497,7 @@ const cropBurnDatePrediction = (
               {cassavaAgeData.datasets[0].data.indexOf(
                 Math.max(...cassavaAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming cassava takes 12 months to grow from seedling to harvest'}
+                'Assuming cassava takes approximately 12 months to grow and harvest'}
             </div>
           </div>
         </div>

@@ -83,5 +83,16 @@
   "hotspotHistory": "15 Days Hotspot History",
   "agriArea": "Agricultural Area",
   "luArea": "Area each crop type is in and around the area",
-  "irrOfficeArea": "สำนักชลประทานของแต่ละพื้นที่การเพาะปลูก"
+  "irrOffice": "Irrigation Office",
+  "irrOfficeArea": "Irrigation Office Area",
+  "plantedDate": "Planted Date",
+  "village": "Village",
+  "confidence": "Confidence",
+  "project": "Project",
+  "lat": "Latitude",
+  "lon": "Longitude",
+  "ricePlantedDate": "Planted Date (Age)",
+  "maizePlantedDate": "Planted Date (Harvest Date)",
+  "percentage": "Percentage",
+  "luPercentage": "Percentage of each crop type in the area"
 }
