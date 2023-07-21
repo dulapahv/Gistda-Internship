@@ -94,5 +94,14 @@
   "ricePlantedDate": "Planted Date (Age)",
   "maizePlantedDate": "Planted Date (Harvest Date)",
   "percentage": "Percentage",
-  "luPercentage": "Percentage of each crop type in the area"
+  "luPercentage": "Percentage of each crop type in the area",
+  "noHotspot": "No Hotspot Found",
+  "noAgriArea": "No Agricultural Area Found",
+  "explore": "Explore",
+  "exploring": "Exploring...",
+  "loading": "Loading, please wait...",
+  "clear": "Clear",
+  "justPlanted": "Just Planted",
+  "almostHarvest": "Almost Harvest",
+  "showHideLegend": "Show/Hide Legend"
 }

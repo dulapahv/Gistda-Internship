@@ -63,7 +63,10 @@ const buttonTheme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#fff',
+      main:
+        JSON.parse(localStorage.getItem('theme')) === 'dark'
+          ? '#fff'
+          : '#212121',
     },
   },
   typography: {
@@ -88,7 +91,7 @@ ChartJS.register(
 );
 
 ChartJS.defaults.color =
-  JSON.parse(localStorage.getItem('theme')) === 'dark' ? '#fff' : '#000';
+  JSON.parse(localStorage.getItem('theme')) === 'dark' ? '#fff' : '#212121';
 ChartJS.defaults.font.family = 'kanit';
 
 const luColor = {
@@ -247,6 +250,7 @@ export default function Analysis() {
         font: {
           size: 14,
         },
+        fontColor: '#fff',
         formatter: (value, context) => {
           return value > 0
             ? value +
@@ -785,6 +789,7 @@ export default function Analysis() {
   };
 
   const handleDraw = (geom) => {
+    document.getElementById('page2').click();
     timeoutId = setTimeout(() => {
       setShowResult(true);
       setIsLoading(false);
@@ -862,6 +867,11 @@ export default function Analysis() {
     resetHotspotCount();
     setIsLoading(false);
     setShowResult(false);
+    setRiceData(null);
+    setMaizeData(null);
+    setSugarcaneData(null);
+    setCassavaData(null);
+    setHotspotData(null);
     map.Overlays.clear();
     map.Layers.clear();
   };
@@ -1097,7 +1107,7 @@ export default function Analysis() {
 
     let layer_hotspot = new sphere.Layer({
       sources: {
-        hotspot: {
+        hotspot_analysis_src: {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
@@ -1121,9 +1131,9 @@ export default function Analysis() {
       },
       layers: [
         {
-          id: 'layer_hotspot_heat',
+          id: 'layer_hotspot_heat_analysis',
           type: 'heatmap',
-          source: 'hotspot',
+          source: 'hotspot_analysis_src',
           maxzoom: 10,
           zIndex: 6,
           paint: {
@@ -1192,9 +1202,9 @@ export default function Analysis() {
           },
         },
         {
-          id: 'layer_hotspot_point',
+          id: 'layer_hotspot_point_analysis',
           type: 'circle',
-          source: 'hotspot',
+          source: 'hotspot_analysis_src',
           minzoom: 8,
           zIndex: 6,
           paint: {
@@ -1410,6 +1420,11 @@ export default function Analysis() {
       setCassavaArea(0);
       setDrawArea(0);
       resetHotspotCount();
+      setRiceData(null);
+      setMaizeData(null);
+      setSugarcaneData(null);
+      setCassavaData(null);
+      setHotspotData(null);
       setIsLoading(false);
       setShowResult(false);
     };
@@ -1846,6 +1861,8 @@ export default function Analysis() {
             <ThemeProvider theme={buttonTheme}>
               <Button
                 variant='contained'
+                id='analysisBackBtn'
+                aria-label='back'
                 startIcon={<ArrowBackIosIcon />}
                 onClick={() => setShowResult(false)}
               >
@@ -1865,7 +1882,7 @@ export default function Analysis() {
           <dialog id='my_modal' className='modal'>
             <form
               method='dialog'
-              className='modal-box max-w-none space-y-8 bg-[#444444]'
+              className='modal-box max-w-none space-y-8 bg-[#fff] dark:bg-[#444444]'
             >
               {drawArea > 0 && areaSizeMeasurement(t, drawArea)}
               {hotSpotCountAnalysis(
@@ -2174,7 +2191,9 @@ const CropAreaAnalysis = (
               </div>
             </>
           ) : (
-            <div className='stat-value text-white'>{t('noAgriArea')}</div>
+            <div className='stat-value text-white font-kanit'>
+              {t('noAgriArea')}
+            </div>
           )}
         </div>
       </div>
@@ -2254,7 +2273,7 @@ const hotSpotCountAnalysis = (
                 </span>
               </>
             ) : (
-              t('noHotspot')
+              <span className='font-kanit'>{t('noHotspot')}</span>
             )}
           </div>
           <div className='stat-desc font-kanit'></div>

@@ -7,10 +7,6 @@ import { map, sphere, SphereMap } from './SphereMap';
 export { map, sphere };
 
 export default class Map extends Component {
-  initMap() {
-    map?.Layers.setBase(sphere.Layers.STREETS);
-  }
-
   render() {
     const { mapStyle } = this.props;
     const mapKey = env.API_KEY;
