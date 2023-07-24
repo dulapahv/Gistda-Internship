@@ -22,8 +22,11 @@
       src="https://dulapahv.dev/gistda//env.js"
     ></script>
     <script>
+      if (!('theme' in localStorage)) {
+        localStorage.setItem('theme', 'light');
+      }
       if (
-        localStorage.theme === 'dark' ||
+        JSON.parse(localStorage.theme) === 'dark' ||
         (!('theme' in localStorage) &&
           window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
