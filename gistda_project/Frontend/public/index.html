@@ -22,11 +22,12 @@
       src="https://dulapahv.dev/gistda//env.js"
     ></script>
     <script>
+      if (!('theme' in localStorage)) {
+        localStorage.setItem('theme', 'light');
+      }
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
       } else {
-        document.documentElement.classList.add('light');
         document.documentElement.classList.remove('dark');
       }
     </script>
