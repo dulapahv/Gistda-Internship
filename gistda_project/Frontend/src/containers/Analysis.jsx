@@ -44,7 +44,7 @@ const baseURL = 'http://localhost:3001/';
 
 const selectTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -56,7 +56,7 @@ const selectTheme = createTheme({
 
 const buttonTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
       dark: '#FF99BA',
@@ -64,7 +64,7 @@ const buttonTheme = createTheme({
     },
     secondary: {
       main:
-        JSON.parse(localStorage.getItem('theme')) === 'dark'
+        localStorage.getItem('theme') === 'dark'
           ? '#fff'
           : '#212121',
     },
@@ -91,7 +91,7 @@ ChartJS.register(
 );
 
 ChartJS.defaults.color =
-  JSON.parse(localStorage.getItem('theme')) === 'dark' ? '#fff' : '#212121';
+  localStorage.getItem('theme') === 'dark' ? '#fff' : '#212121';
 ChartJS.defaults.font.family = 'kanit';
 
 const luColor = {

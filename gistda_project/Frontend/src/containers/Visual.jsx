@@ -17,7 +17,7 @@ import { Header, map, Map, sphere } from '../components';
 
 const ToggleButtonGroupTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -30,7 +30,7 @@ const ToggleButtonGroupTheme = createTheme({
 
 const LinearProgressTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -39,7 +39,7 @@ const LinearProgressTheme = createTheme({
 
 const skeletonTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
   },
   typography: {
     fontFamily: ['Kanit', 'sans-serif'].join(','),

@@ -17,16 +17,19 @@
       rel="stylesheet"
     />
     <title>Gistda Project</title>
-    <script id="react-dotenv" src="./env.js"></script>
+    <script
+      id="react-dotenv"
+      src="https://dulapahv.dev/gistda//env.js"
+    ></script>
     <script>
       if (
-        JSON.parse(localStorage.theme) === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
-        document.documentElement.classList.add("dark");
+        document.documentElement.classList.add('dark');
       } else {
-        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.remove('dark');
       }
     </script>
   </head>

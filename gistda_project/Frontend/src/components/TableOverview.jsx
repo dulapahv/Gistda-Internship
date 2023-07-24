@@ -31,7 +31,7 @@ const baseURL = 'http://localhost:3001/';
 
 const tableTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
       dark: '#FF99BA',

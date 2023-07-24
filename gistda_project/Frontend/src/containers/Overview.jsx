@@ -112,7 +112,7 @@ const cassavaAgeColor = [
 
 const buttonTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
       dark: '#FF99BA',
@@ -132,7 +132,7 @@ const buttonTheme = createTheme({
 
 const CheckBoxTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -144,7 +144,7 @@ const CheckBoxTheme = createTheme({
 
 const datePickerTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -156,7 +156,7 @@ const datePickerTheme = createTheme({
 
 const skeletonTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
   },
   typography: {
     fontFamily: ['Kanit', 'sans-serif'].join(','),
@@ -165,7 +165,7 @@ const skeletonTheme = createTheme({
 
 const selectTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },
@@ -177,7 +177,7 @@ const selectTheme = createTheme({
 
 const accordianTheme = createTheme({
   palette: {
-    mode: JSON.parse(localStorage.getItem('theme')),
+    mode: localStorage.getItem('theme'),
     primary: {
       main: '#F390B0',
     },

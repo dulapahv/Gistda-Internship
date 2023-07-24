@@ -23,13 +23,13 @@ const buttonTheme = createTheme({
 export default function Banner() {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
-    const initialValue = JSON.parse(saved);
+    const initialValue = saved;
     return initialValue || 'light';
   });
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    localStorage.setItem('theme', JSON.stringify(theme));
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const changeLanguage = (lng) => {
