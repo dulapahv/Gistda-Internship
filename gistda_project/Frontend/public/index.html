@@ -26,7 +26,7 @@
         localStorage.setItem('theme', 'light');
       }
       if (
-        JSON.parse(localStorage.theme) === 'dark' ||
+        localStorage.theme === 'dark' ||
         (!('theme' in localStorage) &&
           window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
