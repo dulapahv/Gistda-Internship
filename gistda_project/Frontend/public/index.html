@@ -27,11 +27,9 @@
         const prefersDarkMode = window.matchMedia(
           '(prefers-color-scheme: dark)'
         ).matches;
-
         if (!localStorage.getItem(themeKey)) {
           localStorage.setItem(themeKey, 'light');
         }
-
         if (
           localStorage.getItem(themeKey) === 'dark' ||
           (!localStorage.getItem(themeKey) && prefersDarkMode)
