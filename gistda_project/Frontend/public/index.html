@@ -22,13 +22,16 @@
       src="https://dulapahv.dev/gistda//env.js"
     ></script>
     <script>
-      if (!('theme' in localStorage)) {
-        localStorage.theme = 'light';
+      // Check if 'theme' exists in localStorage, if not, set it to 'light'
+      const theme = localStorage.getItem('theme');
+      if (!theme) {
+        localStorage.setItem('theme', 'light');
       }
+
+      // Check if the stored theme is 'dark' or if no theme is set in localStorage but the user's preference is 'dark'
       if (
-        localStorage.theme === 'dark' ||
-        (!('theme' in localStorage) &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches)
+        theme === 'dark' ||
+        (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
         document.documentElement.classList.add('dark');
       } else {
