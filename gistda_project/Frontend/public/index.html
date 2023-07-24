@@ -22,27 +22,18 @@
       src="https://dulapahv.dev/gistda//env.js"
     ></script>
     <script>
-      function detectTheme() {
-        const themeKey = 'theme';
-        const prefersDarkMode = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
-        if (!localStorage.getItem(themeKey)) {
-          localStorage.setItem(themeKey, 'light');
-        }
-        if (
-          localStorage.getItem(themeKey) === 'dark' ||
-          (!localStorage.getItem(themeKey) && prefersDarkMode)
-        ) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+      if (!('theme' in localStorage)) {
+        localStorage.theme = 'light';
       }
-      detectTheme();
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .addListener(detectTheme);
+      if (
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     </script>
   </head>
   <body>
