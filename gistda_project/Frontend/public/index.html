@@ -8,7 +8,6 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <link crossorigin="use-credentials" rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,17 +22,12 @@
       src="https://dulapahv.dev/gistda//env.js"
     ></script>
     <script>
-      // Check if 'theme' exists in localStorage, if not, set it to 'light'
-      const theme = localStorage.getItem('theme');
-      if (!theme) {
+      if (!('theme' in localStorage)) {
         localStorage.setItem('theme', 'light');
       }
 
       // Check if the stored theme is 'dark' or if no theme is set in localStorage but the user's preference is 'dark'
-      if (
-        theme === 'dark' ||
-        (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ) {
+      if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
