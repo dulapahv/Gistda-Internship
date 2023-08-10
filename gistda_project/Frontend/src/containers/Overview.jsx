@@ -244,6 +244,7 @@ export default function DetailHotspot() {
   const [sugarcaneData, setSugarcaneData] = useState();
   const [cassavaData, setCassavaData] = useState();
   const [coordinates, setCoordinates] = useState();
+  const [isDataExist, setIsDataExist] = useState(true);
 
   currentDate = date;
 
@@ -259,6 +260,7 @@ export default function DetailHotspot() {
       .get(`${baseURL}?${query}`)
       .then(function (response) {
         setData(response.data);
+        setIsDataExist(true);
         switch (type) {
           case 2:
             setIsHotspotLoaded(true);
@@ -269,6 +271,9 @@ export default function DetailHotspot() {
       })
       .catch(function (error) {
         console.log(error);
+        if (error.response && error.response.status === 500) {
+          setIsDataExist(false);
+        }
       });
   };
 
@@ -882,8 +887,6 @@ export default function DetailHotspot() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label={t('date')}
-                minDate={dayjs('01-02-23', 'DD-MM-YY')}
-                maxDate={dayjs('31-05-23', 'DD-MM-YY')}
                 value={date}
                 onChange={(newValue) => {
                   setDate(newValue);
@@ -894,382 +897,392 @@ export default function DetailHotspot() {
           </ThemeProvider>
         </div>
       </div>
-      <div className='flex flex-col bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 drop-shadow-md'>
-        <form className='flex flex-col space-y-4 my-2'>
-          <FormLabel>
-            <h1 className='font-kanit text-[#212121] dark:text-white text-lg'>
-              {t('showCropType')}
-            </h1>
-          </FormLabel>
-          <ThemeProvider theme={selectTheme}>
-            <FormControl fullWidth variant='filled' required>
-              <InputLabel>{t('province')}</InputLabel>
-              <Select
-                id='province'
-                value={province}
-                label={t('province')}
-                onChange={(e) => {
-                  setProvince(e.target.value);
-                  setDistrict(0);
-                  setSubDistrict(0);
-                }}
-                disabled={isLoading}
-              >
-                {pvList.map((province) => (
-                  <MenuItem key={province.ch_id} value={province.ch_id}>
-                    {i18n.language === 'th'
-                      ? province.changwat_t?.replace('จ.', '')
-                      : province.changwat_e}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth variant='filled'>
-              <InputLabel>{t('district')}</InputLabel>
-              <Select
-                id='district'
-                value={district}
-                label={t('district')}
-                onChange={(e) => {
-                  setDistrict(e.target.value);
-                  setSubDistrict(0);
-                }}
-                disabled={isLoading}
-              >
-                <MenuItem key={0} value={0}>
-                  {t('all')}
-                </MenuItem>
-                {apList.map(
-                  (district) =>
-                    Number(String(district.am_id).substring(0, 2)) ===
-                      province && (
-                      <MenuItem key={district.am_id} value={district.am_id}>
+      {isDataExist ? (
+        <>
+          <div className='flex flex-col bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 drop-shadow-md'>
+            <form className='flex flex-col space-y-4 my-2'>
+              <FormLabel>
+                <h1 className='font-kanit text-[#212121] dark:text-white text-lg'>
+                  {t('showCropType')}
+                </h1>
+              </FormLabel>
+              <ThemeProvider theme={selectTheme}>
+                <FormControl fullWidth variant='filled' required>
+                  <InputLabel>{t('province')}</InputLabel>
+                  <Select
+                    id='province'
+                    value={province}
+                    label={t('province')}
+                    onChange={(e) => {
+                      setProvince(e.target.value);
+                      setDistrict(0);
+                      setSubDistrict(0);
+                    }}
+                    disabled={isLoading}
+                  >
+                    {pvList.map((province) => (
+                      <MenuItem key={province.ch_id} value={province.ch_id}>
                         {i18n.language === 'th'
-                          ? district.amphoe_t
-                              ?.replace('อ.', '')
-                              ?.replace('เขต', '')
-                          : district.amphoe_e}
+                          ? province.changwat_t?.replace('จ.', '')
+                          : province.changwat_e}
                       </MenuItem>
-                    )
-                )}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth variant='filled'>
-              <InputLabel id='demo-simple-select-label'>
-                {t('subDistrict')}
-              </InputLabel>
-              <Select
-                id='subDistrict'
-                value={subDistrict}
-                label={t('subDistrict')}
-                onChange={(e) => {
-                  setSubDistrict(e.target.value);
-                }}
-                disabled={!district || isLoading}
-              >
-                <MenuItem key={0} value={0}>
-                  {t('all')}
-                </MenuItem>
-                {tbList.map(
-                  (subDistrict) =>
-                    Number(String(subDistrict.ta_id).substring(0, 4)) ===
-                      district && (
-                      <MenuItem
-                        key={subDistrict.ta_id}
-                        value={subDistrict.ta_id}
-                      >
-                        {i18n.language === 'th'
-                          ? subDistrict.tambon_t
-                              ?.replace('ต.', '')
-                              ?.replace('แขวง', '')
-                          : subDistrict.tambon_e}
-                      </MenuItem>
-                    )
-                )}
-              </Select>
-            </FormControl>
-          </ThemeProvider>
-          <ThemeProvider theme={accordianTheme}>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls='panel1a-content'
-                id='panel1a-header'
-                className='font-kanit'
-              >
-                {t('showHideLegend')}
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className='flex flex-col gap-2'>
-                  <div className='flex gap-4 items-center'>
-                    <div className='grow bg-gradient-to-r from-[#0d3353] via-[#42abbe] to-[#8cdbeb] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
-                      <p>{t('almostHarvest')}</p>
-                      <p className='grow font-bold'>{t('crop.rice')}</p>
-                      <p>{t('justPlanted')}</p>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth variant='filled'>
+                  <InputLabel>{t('district')}</InputLabel>
+                  <Select
+                    id='district'
+                    value={district}
+                    label={t('district')}
+                    onChange={(e) => {
+                      setDistrict(e.target.value);
+                      setSubDistrict(0);
+                    }}
+                    disabled={isLoading}
+                  >
+                    <MenuItem key={0} value={0}>
+                      {t('all')}
+                    </MenuItem>
+                    {apList.map(
+                      (district) =>
+                        Number(String(district.am_id).substring(0, 2)) ===
+                          province && (
+                          <MenuItem key={district.am_id} value={district.am_id}>
+                            {i18n.language === 'th'
+                              ? district.amphoe_t
+                                  ?.replace('อ.', '')
+                                  ?.replace('เขต', '')
+                              : district.amphoe_e}
+                          </MenuItem>
+                        )
+                    )}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth variant='filled'>
+                  <InputLabel id='demo-simple-select-label'>
+                    {t('subDistrict')}
+                  </InputLabel>
+                  <Select
+                    id='subDistrict'
+                    value={subDistrict}
+                    label={t('subDistrict')}
+                    onChange={(e) => {
+                      setSubDistrict(e.target.value);
+                    }}
+                    disabled={!district || isLoading}
+                  >
+                    <MenuItem key={0} value={0}>
+                      {t('all')}
+                    </MenuItem>
+                    {tbList.map(
+                      (subDistrict) =>
+                        Number(String(subDistrict.ta_id).substring(0, 4)) ===
+                          district && (
+                          <MenuItem
+                            key={subDistrict.ta_id}
+                            value={subDistrict.ta_id}
+                          >
+                            {i18n.language === 'th'
+                              ? subDistrict.tambon_t
+                                  ?.replace('ต.', '')
+                                  ?.replace('แขวง', '')
+                              : subDistrict.tambon_e}
+                          </MenuItem>
+                        )
+                    )}
+                  </Select>
+                </FormControl>
+              </ThemeProvider>
+              <ThemeProvider theme={accordianTheme}>
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls='panel1a-content'
+                    id='panel1a-header'
+                    className='font-kanit'
+                  >
+                    {t('showHideLegend')}
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className='flex flex-col gap-2'>
+                      <div className='flex gap-4 items-center'>
+                        <div className='grow bg-gradient-to-r from-[#0d3353] via-[#42abbe] to-[#8cdbeb] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
+                          <p>{t('almostHarvest')}</p>
+                          <p className='grow font-bold'>{t('crop.rice')}</p>
+                          <p>{t('justPlanted')}</p>
+                        </div>
+                      </div>
+                      <div className='grow bg-gradient-to-r from-[#85552f] via-[#ffd26b] to-[#e6e265] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
+                        <p>{t('almostHarvest')}</p>
+                        <p className='grow font-bold'>{t('crop.maize')}</p>
+                        <p>{t('justPlanted')}</p>
+                      </div>
+                      <div className='grow bg-gradient-to-r from-[#0f0903] via-[#f38451] to-[#ffddd6] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
+                        <p>{t('almostHarvest')}</p>
+                        <p className='grow font-bold'>{t('crop.sugarcane')}</p>
+                        <p>{t('justPlanted')}</p>
+                      </div>
+                      <div className='grow bg-gradient-to-r from-[#070001] via-[#e71f3a] to-[#ffc4ff] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
+                        <p>{t('almostHarvest')}</p>
+                        <p className='grow font-bold'>{t('crop.cassava')}</p>
+                        <p>{t('justPlanted')}</p>
+                      </div>
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              </ThemeProvider>
+              <ThemeProvider theme={buttonTheme}>
+                <div className='flex gap-4'>
+                  <div className='relative'>
+                    <Button
+                      variant='outlined'
+                      color='error'
+                      startIcon={<ClearIcon />}
+                      size='large'
+                      onClick={handleClearButton}
+                      className='w-full z-10'
+                      disabled={
+                        isLoading ||
+                        !riceData ||
+                        !maizeData ||
+                        !sugarcaneData ||
+                        !cassavaData
+                      }
+                    >
+                      {t('clear')}
+                    </Button>
+                  </div>
+                  <div className='relative w-full'>
+                    <Button
+                      variant='contained'
+                      startIcon={<SearchIcon />}
+                      size='large'
+                      onClick={handleSearchButton}
+                      className='w-full z-10'
+                      disabled={isLoading}
+                    >
+                      {isLoading ? t('exploring') : t('explore')}
+                    </Button>
+                    <div className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
+                      {isLoading && (
+                        <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
+                      )}
                     </div>
                   </div>
-                  <div className='grow bg-gradient-to-r from-[#85552f] via-[#ffd26b] to-[#e6e265] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
-                    <p>{t('almostHarvest')}</p>
-                    <p className='grow font-bold'>{t('crop.maize')}</p>
-                    <p>{t('justPlanted')}</p>
+                </div>
+              </ThemeProvider>
+            </form>
+          </div>
+          <div className=' bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
+            <ThemeProvider theme={CheckBoxTheme}>
+              <FormLabel>
+                <div className='flex items-center'>
+                  <Checkbox
+                    disabled={!isHotspotLoaded}
+                    id='hotspot-checkbox'
+                    indeterminate={
+                      isRiceLoaded === isMaizeLoaded &&
+                      isMaizeLoaded === isSugarcaneLoaded &&
+                      isSugarcaneLoaded === isOtherCropLoaded &&
+                      isOtherCropLoaded === isForestLoaded &&
+                      isForestLoaded === isOtherLoaded
+                        ? false
+                        : true
+                    }
+                    onChange={() => {
+                      setIsHotspotShowed(!isHotspotShowed);
+                      setIsRiceLoaded(!isHotspotShowed);
+                      setIsMaizeLoaded(!isHotspotShowed);
+                      setIsSugarcaneLoaded(!isHotspotShowed);
+                      setIsOtherCropLoaded(!isHotspotShowed);
+                      setIsForestLoaded(!isHotspotShowed);
+                      setIsOtherLoaded(!isHotspotShowed);
+                    }}
+                    checked={
+                      isRiceLoaded &&
+                      isMaizeLoaded &&
+                      isSugarcaneLoaded &&
+                      isOtherCropLoaded &&
+                      isForestLoaded &&
+                      isOtherLoaded
+                    }
+                  />
+                  <h1 className='text-[#212121] dark:text-white text-lg'>
+                    {t('showHotspotInLandType')}
+                  </h1>
+                </div>
+              </FormLabel>
+              <div className='grid grid-cols-2 sm:grid-cols-3 '>
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsRiceLoaded(!isRiceLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isRiceLoaded}
+                    />
                   </div>
-                  <div className='grow bg-gradient-to-r from-[#0f0903] via-[#f38451] to-[#ffddd6] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
-                    <p>{t('almostHarvest')}</p>
-                    <p className='grow font-bold'>{t('crop.sugarcane')}</p>
-                    <p>{t('justPlanted')}</p>
-                  </div>
-                  <div className='grow bg-gradient-to-r from-[#070001] via-[#e71f3a] to-[#ffc4ff] h-8 rounded-full text-center font-kanit flex flex-row items-center px-4'>
-                    <p>{t('almostHarvest')}</p>
-                    <p className='grow font-bold'>{t('crop.cassava')}</p>
-                    <p>{t('justPlanted')}</p>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#fb6584] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.นาข้าว'
+                    )}`}</div>
                   </div>
                 </div>
-              </AccordionDetails>
-            </Accordion>
-          </ThemeProvider>
-          <ThemeProvider theme={buttonTheme}>
-            <div className='flex gap-4'>
-              <div className='relative'>
-                <Button
-                  variant='outlined'
-                  color='error'
-                  startIcon={<ClearIcon />}
-                  size='large'
-                  onClick={handleClearButton}
-                  className='w-full z-10'
-                  disabled={
-                    isLoading ||
-                    !riceData ||
-                    !maizeData ||
-                    !sugarcaneData ||
-                    !cassavaData
-                  }
-                >
-                  {t('clear')}
-                </Button>
-              </div>
-              <div className='relative w-full'>
-                <Button
-                  variant='contained'
-                  startIcon={<SearchIcon />}
-                  size='large'
-                  onClick={handleSearchButton}
-                  className='w-full z-10'
-                  disabled={isLoading}
-                >
-                  {isLoading ? t('exploring') : t('explore')}
-                </Button>
-                <div className='absolute top-0 left-0 flex items-center justify-center w-full h-full'>
-                  {isLoading && (
-                    <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
-                  )}
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsMaizeLoaded(!isMaizeLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isMaizeLoaded}
+                    />
+                  </div>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#48a1e9] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.ข้าวโพดและไร่หมุนเวียน'
+                    )}`}</div>
+                  </div>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsSugarcaneLoaded(!isSugarcaneLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isSugarcaneLoaded}
+                    />
+                  </div>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#fbce5c] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.อ้อย'
+                    )}`}</div>
+                  </div>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsOtherCropLoaded(!isOtherCropLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isOtherCropLoaded}
+                    />
+                  </div>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#56c0c0] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.เกษตรอื่น ๆ'
+                    )}`}</div>
+                  </div>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsForestLoaded(!isForestLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isForestLoaded}
+                    />
+                  </div>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#9c63fd] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.พื้นที่ป่า'
+                    )}`}</div>
+                  </div>
+                </div>
+                <div className='flex flex-row items-center'>
+                  <div>
+                    <Checkbox
+                      disabled={!isHotspotLoaded}
+                      onChange={() => {
+                        setIsOtherLoaded(!isOtherLoaded);
+                        setIsHotspotShowed(false);
+                      }}
+                      checked={isOtherLoaded}
+                    />
+                  </div>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <div>
+                      <div className='bg-[#fba046] rounded-full w-5 h-5'></div>
+                    </div>
+                    <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
+                      'landUse.อื่น ๆ'
+                    )}`}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ThemeProvider>
-        </form>
-      </div>
-      <div className=' bg-white dark:bg-[#2c2c2c] rounded-lg px-4 py-2 gap-y-2 drop-shadow-md'>
-        <ThemeProvider theme={CheckBoxTheme}>
-          <FormLabel>
-            <div className='flex items-center'>
-              <Checkbox
-                disabled={!isHotspotLoaded}
-                id='hotspot-checkbox'
-                indeterminate={
-                  isRiceLoaded === isMaizeLoaded &&
-                  isMaizeLoaded === isSugarcaneLoaded &&
-                  isSugarcaneLoaded === isOtherCropLoaded &&
-                  isOtherCropLoaded === isForestLoaded &&
-                  isForestLoaded === isOtherLoaded
-                    ? false
-                    : true
-                }
-                onChange={() => {
-                  setIsHotspotShowed(!isHotspotShowed);
-                  setIsRiceLoaded(!isHotspotShowed);
-                  setIsMaizeLoaded(!isHotspotShowed);
-                  setIsSugarcaneLoaded(!isHotspotShowed);
-                  setIsOtherCropLoaded(!isHotspotShowed);
-                  setIsForestLoaded(!isHotspotShowed);
-                  setIsOtherLoaded(!isHotspotShowed);
-                }}
-                checked={
-                  isRiceLoaded &&
-                  isMaizeLoaded &&
-                  isSugarcaneLoaded &&
-                  isOtherCropLoaded &&
-                  isForestLoaded &&
-                  isOtherLoaded
-                }
-              />
-              <h1 className='text-[#212121] dark:text-white text-lg'>
-                {t('showHotspotInLandType')}
-              </h1>
-            </div>
-          </FormLabel>
-          <div className='grid grid-cols-2 sm:grid-cols-3 '>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsRiceLoaded(!isRiceLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isRiceLoaded}
-                />
+            </ThemeProvider>
+            {!isHotspotLoaded && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
               </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#fb6584] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.นาข้าว'
-                )}`}</div>
-              </div>
-            </div>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsMaizeLoaded(!isMaizeLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isMaizeLoaded}
-                />
-              </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#48a1e9] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.ข้าวโพดและไร่หมุนเวียน'
-                )}`}</div>
-              </div>
-            </div>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsSugarcaneLoaded(!isSugarcaneLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isSugarcaneLoaded}
-                />
-              </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#fbce5c] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.อ้อย'
-                )}`}</div>
-              </div>
-            </div>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsOtherCropLoaded(!isOtherCropLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isOtherCropLoaded}
-                />
-              </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#56c0c0] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.เกษตรอื่น ๆ'
-                )}`}</div>
-              </div>
-            </div>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsForestLoaded(!isForestLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isForestLoaded}
-                />
-              </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#9c63fd] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.พื้นที่ป่า'
-                )}`}</div>
-              </div>
-            </div>
-            <div className='flex flex-row items-center'>
-              <div>
-                <Checkbox
-                  disabled={!isHotspotLoaded}
-                  onChange={() => {
-                    setIsOtherLoaded(!isOtherLoaded);
-                    setIsHotspotShowed(false);
-                  }}
-                  checked={isOtherLoaded}
-                />
-              </div>
-              <div className='flex flex-row items-center space-x-2'>
-                <div>
-                  <div className='bg-[#fba046] rounded-full w-5 h-5'></div>
-                </div>
-                <div className='font-kanit text-[#212121] dark:text-white'>{`${t(
-                  'landUse.อื่น ๆ'
-                )}`}</div>
-              </div>
-            </div>
+            )}
           </div>
-        </ThemeProvider>
-        {!isHotspotLoaded && (
-          <div className='absolute inset-0 flex items-center justify-center'>
-            <span className='loading loading-infinity w-12 text-[#f390b0]'></span>
-          </div>
-        )}
-      </div>
-      {isHotspotLoaded ? (
-        rows.length === 0 ? (
-          <div className='flex flex-col items-center justify-center space-y-4 flex-1'>
-            <p className='font-kanit text-2xl font-semibalmostHarvest text-gray-500 dark:text-gray-400'>
-              {t('noData')}
-            </p>
-          </div>
-        ) : (
-          <div className='drop-shadow-md aspect-square xl:flex-1'>
-            <TableOverview
-              columns={columns}
-              rows={rows}
-              height='100%'
-              colSortDisabled={['district']}
-              colSortDefault='hotspot'
-              direction='desc'
-            />
-          </div>
-        )
+          {isHotspotLoaded ? (
+            rows.length === 0 ? (
+              <div className='flex flex-col items-center justify-center space-y-4 flex-1'>
+                <p className='font-kanit text-2xl font-semibalmostHarvest text-gray-500 dark:text-gray-400'>
+                  {t('noData')}
+                </p>
+              </div>
+            ) : (
+              <div className='drop-shadow-md aspect-square xl:flex-1'>
+                <TableOverview
+                  columns={columns}
+                  rows={rows}
+                  height='100%'
+                  colSortDisabled={['district']}
+                  colSortDefault='hotspot'
+                  direction='desc'
+                />
+              </div>
+            )
+          ) : (
+            <ThemeProvider theme={skeletonTheme}>
+              <Stack spacing={2}>
+                {Array.from({ length: 7 }).map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    variant='rounded'
+                    animation='wave'
+                    height={50}
+                    width='100%'
+                  />
+                ))}
+              </Stack>
+            </ThemeProvider>
+          )}
+        </>
       ) : (
-        <ThemeProvider theme={skeletonTheme}>
-          <Stack spacing={2}>
-            {Array.from({ length: 7 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                variant='rounded'
-                animation='wave'
-                height={50}
-                width='100%'
-              />
-            ))}
-          </Stack>
-        </ThemeProvider>
+        <div className='flex flex-col items-center justify-center space-y-4 flex-1'>
+          <p className='font-kanit text-2xl font-semibalmostHarvest text-gray-500 dark:text-gray-400'>
+            {t('noData')}
+          </p>
+        </div>
       )}
     </div>
   );
