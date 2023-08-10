@@ -27,7 +27,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { map } from '../components';
 
-const baseURL = 'http://localhost:3001/';
+const baseURL = 'https://opendata.gistda.or.th/dulapahv/api/';
 
 const tableTheme = createTheme({
   palette: {

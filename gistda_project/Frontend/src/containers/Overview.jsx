@@ -35,7 +35,7 @@ import pvList from './province.json';
 import { map, sphere } from '../components';
 import { TableOverview } from '../components';
 
-const baseURL = 'http://localhost:3001/';
+const baseURL = 'https://opendata.gistda.or.th/dulapahv/api/';
 
 const riceAgeColor = [
   '#0d3353',
@@ -670,26 +670,26 @@ export default function DetailHotspot() {
     if (subDistrict !== 0) {
       coordQuery = `data=thai_coord&select=lat,long&where=ta_id='${subDistrict}'`;
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND t_code='${subDistrict}') AS subquery`,
       ];
     } else if (district !== 0) {
       coordQuery = `data=thai_coord&select=lat,long&where=am_id='${district}'`;
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND a_code='${district}') AS subquery`,
       ];
     } else {
       coordQuery = `data=thai_coord&select=lat,long&where=ch_id='${province}'`;
       cropQueries = [
-        `data=rice_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=maize_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=sugarcane_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
-        `data=cassava_2023${month}${lastCropDate}&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', geom, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=rice_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=maize_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=sugarcane_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
+        `data=cassava_2023${month}${lastCropDate} as b&select=json_agg(features) AS features FROM (SELECT json_build_object('type', 'Feature', 'geometry', ST_AsGeoJSON(b.geom)::jsonb, 'properties', json_build_object('legend', legend)) AS features&where=data_date = '${lastDateCrop}' AND p_code='${province}') AS subquery`,
       ];
     }
 
