@@ -63,10 +63,7 @@ const buttonTheme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main:
-        localStorage.getItem('theme') === 'dark'
-          ? '#fff'
-          : '#212121',
+      main: localStorage.getItem('theme') === 'dark' ? '#fff' : '#212121',
     },
   },
   typography: {
@@ -1922,6 +1919,7 @@ export default function Analysis() {
                 irrOfficeChartOptions
               )}
               {cropBurnDatePrediction(
+                t,
                 riceArea,
                 maizeArea,
                 sugarcaneArea,
@@ -1974,6 +1972,7 @@ export default function Analysis() {
             irrOfficeChartOptions
           )}
           {cropBurnDatePrediction(
+            t,
             riceArea,
             maizeArea,
             sugarcaneArea,
@@ -2450,6 +2449,7 @@ const getHarvestDate = (cropData, growthPeriod) => {
 };
 
 const cropBurnDatePrediction = (
+  t,
   riceArea,
   maizeArea,
   sugarcaneArea,
@@ -2464,59 +2464,71 @@ const cropBurnDatePrediction = (
       <div className='flex justify-center'>
         <div className='stats stats-vertical shadow w-full'>
           <div className={`stat bg-[${agriColor.rice}]`}>
-            <div className='stat-title text-white'>
-              Date with possible highest heat concentration in rice area
+            <div className='stat-title text-white font-kanit'>
+              {t('Date with possible highest heat concentration in rice area')}
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(riceAgeData, 4)}
             </div>
-            <div className='stat-desc text-gray-100'>
+            <div className='stat-desc text-gray-100 font-kanit'>
               {riceAgeData.datasets[0].data.indexOf(
                 Math.max(...riceAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming rice takes approximately 4 months to grow and harvest'}
+                t(
+                  'Assuming rice takes approximately 4 months to grow and harvest'
+                )}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.maize}]`}>
-            <div className='stat-title text-white'>
-              Date with possible highest heat concentration in maize area
+            <div className='stat-title text-white font-kanit'>
+              {t('Date with possible highest heat concentration in maize area')}
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(maizeAgeData, 2)}
             </div>
-            <div className='stat-desc text-gray-100'>
+            <div className='stat-desc text-gray-100 font-kanit'>
               {maizeAgeData.datasets[0].data.indexOf(
                 Math.max(...maizeAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming maize takes approximately 2 months to grow and harvest'}
+                t(
+                  'Assuming maize takes approximately 2 months to grow and harvest'
+                )}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.sugarcane}]`}>
-            <div className='stat-title text-white'>
-              Date with possible highest heat concentration in sugarcane area
+            <div className='stat-title text-white font-kanit'>
+              {t(
+                'Date with possible highest heat concentration in sugarcane area'
+              )}
             </div>
-            <div className='stat-value text-white'>
+            <div className='stat-value text-white font-kanit'>
               {getHarvestDate(sugarcaneAgeData, 12)}
             </div>
-            <div className='stat-desc text-gray-100'>
+            <div className='stat-desc text-gray-100 font-kanit'>
               {sugarcaneAgeData.datasets[0].data.indexOf(
                 Math.max(...sugarcaneAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming sugarcane takes approximately 12 months to grow and harvest'}
+                t(
+                  'Assuming sugarcane takes approximately 12 months to grow and harvest'
+                )}
             </div>
           </div>
           <div className={`stat bg-[${agriColor.cassava}]`}>
-            <div className='stat-title text-white'>
-              Date with possible highest heat concentration in cassava area
+            <div className='stat-title text-white font-kanit'>
+              {t(
+                'Date with possible highest heat concentration in cassava area'
+              )}
             </div>
             <div className='stat-value text-white'>
               {getHarvestDate(cassavaAgeData, 12)}
             </div>
-            <div className='stat-desc text-gray-100'>
+            <div className='stat-desc text-gray-100 font-kanit'>
               {cassavaAgeData.datasets[0].data.indexOf(
                 Math.max(...cassavaAgeData.datasets[0].data)
               ) !== -1 &&
-                'Assuming cassava takes approximately 12 months to grow and harvest'}
+                t(
+                  'Assuming cassava takes approximately 12 months to grow and harvest'
+                )}
             </div>
           </div>
         </div>
