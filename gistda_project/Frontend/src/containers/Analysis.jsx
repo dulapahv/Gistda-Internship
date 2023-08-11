@@ -1861,7 +1861,13 @@ export default function Analysis() {
                 id='analysisBackBtn'
                 aria-label='back'
                 startIcon={<ArrowBackIosIcon />}
-                onClick={() => setShowResult(false)}
+                onClick={() => {
+                  setShowResult(false);
+                  setRiceData(null);
+                  setMaizeData(null);
+                  setSugarcaneData(null);
+                  setCassavaData(null);
+                }}
               >
                 {t('back')}
               </Button>
