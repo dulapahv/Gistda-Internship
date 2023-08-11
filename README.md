@@ -5,6 +5,12 @@
 ![Preview 1](https://i.imgur.com/On5wGUO.png)
 ![Preview 2](https://i.imgur.com/MSvVbtA.png)
 
+## Table of Contents
+
+- [Spatial Correlation Analysis System Between Crop Cultivation And Hotspot Occurrences Using Satellite Technology And Geospatial Data](#spatial-correlation-analysis-system-between-crop-cultivation-and-hotspot-occurrences-using-satellite-technology-and-geospatial-data)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Analysis Page](#analysis-page)
 ## Overview
 
 The **Spatial Correlation Analysis System Between Crop Cultivation And Hotspot Occurrences Using Satellite Technology And Geospatial Data** is a web-based platform designed to analyze and visualize the spatial relationship between crop cultivation and hotspot occurrences using satellite technology and geospatial data. This project leverages the [GISTDA Sphere API](https://sphere.gistda.or.th/) and provides an intuitive interface for users to explore and gain insights into the patterns and correlations between crop types, cultivation practices, and the emergence of hotspots, thereby aiding in proactive disaster management and informed decision-making.
