@@ -805,16 +805,16 @@ export default function Analysis() {
 
       hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from1}' AND '${to1}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
-      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))UNION ALL SELECT latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
+      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude::double precision, latitude::double precision), 4326))UNION ALL SELECT latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence FROM hotspot_2023${month} where acq_date BETWEEN '${from2}' AND '${to2}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
-      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))`;
+      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude::double precision, latitude::double precision), 4326))`;
     } else {
       const from = getDate().subtract(15, 'day').format('DD-MM-YY');
       const to = getDate().format('DD-MM-YY');
 
       hotspotQuery = `data=hotspot_2023${month}&select=latitude,longitude,lu_hp,pv_tn,ap_tn,tb_tn,pv_en,ap_en,tb_en,pv_idn,th_date,th_time,village,confidence&where=acq_date BETWEEN '${from}' AND '${to}' AND ST_Intersects(ST_SetSRID(ST_GeomFromGeoJSON('${JSON.stringify(
         geom
-      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))`;
+      )}'), 4326), ST_SetSRID(ST_MakePoint(longitude::double precision, latitude::double precision), 4326))`;
     }
 
     fetchData({
